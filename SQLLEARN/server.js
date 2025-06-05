@@ -4,8 +4,8 @@ const app = express();
 const bodyparser = require("body-parser");
 const os = require("os");
 const ip = require("ip");
-const mysql = require("mysql2/promise");
 require("dotenv").config();
+
 const {
   middleware,
   staticfiles,
@@ -13,25 +13,14 @@ const {
   limit,
   limiter,
   ipuser,
-  redirection,
 } = require("./middleware/middleware");
-const { connexion } = require("./connection/dbconnection");
 
-const {
-  datapost,
-  userfind,
-  uniqueFind,
-  updatingDAta,
-  putdata,
-  delUser,
-  userconect,
-  createuser,
-  getuser,
-  getuser_byid,
-} = require("./routes/userRoutes");
+const router = require("./routes/userRoutes");
+app.use(router);
 
 const port = process.env.PORT || 5000;
-
+app.use(express.Router);
+// const { connexion } = require("./connection/dbconnection");
 // const getWifiIP = () => {
 //   const interfaces = os.networkInterfaces();
 //   return (
@@ -41,12 +30,6 @@ const port = process.env.PORT || 5000;
 //   );
 // };
 
-app.use(middleware);
-app.use(staticfiles);
-app.use(limiter);
-app.use(createuser);
-app.use(getuser);
-app.use(getuser_byid);
 (async () => {
   try {
     // const localip = getWifiIP();
