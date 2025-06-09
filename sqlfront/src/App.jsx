@@ -9,6 +9,6 @@ function App() {
   );
 }
 {
-  /* chrinore esambu ng */
+  /* chrinore esambu ng careme*/
 }
 export default App;
