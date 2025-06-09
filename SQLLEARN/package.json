@@ -19,6 +19,7 @@
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
     "ip": "^2.0.1",
     "mysql2": "^3.14.0",
     "nodemon": "^3.1.10",

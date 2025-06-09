@@ -4,22 +4,38 @@ const app = express();
 const bodyparser = require("body-parser");
 const os = require("os");
 const ip = require("ip");
+const session = require("express-session");
+const cors = require("cors");
 require("dotenv").config();
 
 const {
   middleware,
-  staticfiles,
-  parser,
-  limit,
-  limiter,
-  ipuser,
+  validate,
+  usersession,
+  corsV,
+  
 } = require("./middleware/middleware");
-
 const router = require("./routes/userRoutes");
-app.use(router);
 
+app.use(middleware);
+app.use(router);
+app.use(validate);
+app.use(usersession);
+app.use(corsV)
 const port = process.env.PORT || 5000;
 app.use(express.Router);
+
+(async () => {
+  try {
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Server runnig on port http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.log("error durring the server start ", error);
+  }
+})();
+
+// const localip = getWifiIP();
 // const { connexion } = require("./connection/dbconnection");
 // const getWifiIP = () => {
 //   const interfaces = os.networkInterfaces();
@@ -29,14 +45,3 @@ app.use(express.Router);
 //     ip.address()
 //   );
 // };
-
-(async () => {
-  try {
-    // const localip = getWifiIP();
-    app.listen(port, "0.0.0.0", () => {
-      console.log(`Server runnig on port http://localhost:${port}`);
-    });
-  } catch (error) {
-    console.log("error durring the server start ", error);
-  }
-})();
