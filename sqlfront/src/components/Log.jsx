@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import "../App.css";
-function login() {
+function Login() {
   const [user_id, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -32,4 +32,4 @@ function login() {
 
 }
 
-export default login;
+export default Login;
