@@ -33,7 +33,7 @@ app.use(express.Router);
     console.log("error durring the server start ", error);
   }
 })();
-// ojj
+
 // const localip = getWifiIP();
 // const { connexion } = require("./connection/dbconnection");
 // const getWifiIP = () => {
