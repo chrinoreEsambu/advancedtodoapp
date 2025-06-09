@@ -4,11 +4,11 @@ import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <h1>
-      hello <p>f</p>
+      hello chrinore <p>fi</p>
     </h1>
   );
 }
 {
-  /* chrinore esa */
+  /* chrinore esambu */
 }
 export default App;
