@@ -13,7 +13,6 @@ const {
   validate,
   usersession,
   corsV,
-  
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
@@ -21,7 +20,7 @@ app.use(middleware);
 app.use(router);
 app.use(validate);
 app.use(usersession);
-app.use(corsV)
+app.use(corsV);
 const port = process.env.PORT || 5000;
 app.use(express.Router);
 
@@ -34,7 +33,7 @@ app.use(express.Router);
     console.log("error durring the server start ", error);
   }
 })();
-
+// sign
 // const localip = getWifiIP();
 // const { connexion } = require("./connection/dbconnection");
 // const getWifiIP = () => {
