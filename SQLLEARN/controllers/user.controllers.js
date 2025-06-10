@@ -184,7 +184,7 @@ exports.logOut = async (req, res) => {
       }
     });
     res.clearCookie("connect.sid");
-    res.status(200).json({ message: "Logout successful", user_id: user_id });
+    // res.status(200).json({ message: "Logout successful", user_id: user_id });
   } catch (error) {
     res.status(500).json({
       message: "error during logout request",

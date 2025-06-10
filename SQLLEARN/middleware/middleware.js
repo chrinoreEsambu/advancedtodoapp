@@ -31,13 +31,13 @@ exports.usersession = session({
   },
 });
 
-exports.islog = (req, res, next) => {
-  if (req.session.user_id) {
-    next();
-  } else {
-    return res.status(401).json({ message: "Not authorized" });
-  }
-};
+// exports.islog = (req, res, next) => {
+//   if (req.session.user_id) {
+//     next();
+//   } else {
+//     return res.status(401).json({ message: "Not authorized" });
+//   }
+// };
 
 exports.validate = async (req, res, next) => {
   const { nom, mail, password } = req.body;
