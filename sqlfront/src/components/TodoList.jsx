@@ -34,17 +34,18 @@ function TodoList() {
     }
   };
 
+  // ➕ Ajouter une tâche
   const handleAddTask = async () => {
     if (task.trim() === "") return;
 
     try {
       await axios.post(
         "http://localhost:8000/api/addtask",
-        { task: task },
+        { task: task }, // ✅ adapte cette ligne si le backend attend un autre champ
         { withCredentials: true }
       );
       setTask("");
-      fetchTasks();
+      fetchTasks(); // recharger les tâches après ajout
     } catch (error) {
       console.error(
         "Erreur lors de l'ajout :",
@@ -82,6 +83,7 @@ function TodoList() {
                   marginBottom: "10px",
                 }}
               >
+                {/* ✅ Adapter selon le nom réel de la propriété */}
                 {t.task || t.content || t.title || JSON.stringify(t)}
               </li>
             ))
