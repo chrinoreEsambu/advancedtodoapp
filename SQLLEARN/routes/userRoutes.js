@@ -33,5 +33,5 @@ router.post("/api/connexion", usersession, connexion, getusertasks);
 router.post("/api/logOut", logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
-
+// dela route 
 module.exports = router;
