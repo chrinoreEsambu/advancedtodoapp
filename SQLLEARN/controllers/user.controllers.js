@@ -152,6 +152,7 @@ exports.connexion = async (req, res) => {
 
     if (!userfinder) {
       return res.status(401).json({ message: "User not found" });
+      // ohooh
     }
 
     const compare = await argon2.verify(userfinder.password, password);
