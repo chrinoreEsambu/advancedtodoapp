@@ -175,16 +175,18 @@ exports.connexion = async (req, res) => {
 exports.logOut = async (req, res) => {
   try {
     const { user_id } = req.body;
-    const boom = req.session.destroy((err) => {
+    req.session.destroy((err) => {
       if (err) {
         return res.status(500).json({
           message: "logout during logout request",
           error: { message: error.message },
         });
       }
+      res.clearCookie("connect.sid");
+      return res
+        .status(200)
+        .json({ message: "Logout successful", user_id: user_id });
     });
-    res.clearCookie("connect.sid");
-    // res.status(200).json({ message: "Logout successful", user_id: user_id });
   } catch (error) {
     res.status(500).json({
       message: "error during logout request",

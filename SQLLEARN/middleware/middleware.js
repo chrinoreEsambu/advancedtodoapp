@@ -18,26 +18,19 @@ exports.staticfiles = app.use(
 exports.limiter = ratelimit({
   window: 15 * 60 * 1000,
   max: 10,
-  message: "too mus h request",
+  message: "too musch request",
 });
 
 exports.usersession = session({
-  secret: "tonSecretTrèsSecret",
+  secret: "votre_clef_secrete_supersecrete",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
+    httpOnly: true,
     secure: false,
-    maxAge: 1000 * 60 * 60, // 1h
+    maxAge: 1000 * 60 * 60 * 1,
   },
 });
-
-// exports.islog = (req, res, next) => {
-//   if (req.session.user_id) {
-//     next();
-//   } else {
-//     return res.status(401).json({ message: "Not authorized" });
-//   }
-// };
 
 exports.validate = async (req, res, next) => {
   const { nom, mail, password } = req.body;
@@ -64,3 +57,4 @@ app.use(
     credentials: true,
   })
 );
+// <- Pas de double parenthèse `}););`

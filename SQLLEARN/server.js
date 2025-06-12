@@ -12,20 +12,15 @@ const {
   middleware,
   validate,
   usersession,
-  book,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
-// const corsV = require("./middleware/middleware");
 
 app.use(middleware);
 app.use(router);
 app.use(validate);
 app.use(usersession);
-// app.use(corsV);
-// app.use(book);
-const port = process.env.PORT || 5000;
 app.use(express.Router);
-
+const port = process.env.PORT || 5000;
 (async () => {
   try {
     app.listen(port, "0.0.0.0", () => {

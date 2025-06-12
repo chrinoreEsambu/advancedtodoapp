@@ -7,7 +7,6 @@ const router = express.Router();
 const {
   limiter,
   validate,
-
   usersession,
   book,
 } = require("../middleware/middleware");
@@ -30,7 +29,7 @@ router.get("/api/getuserbyid/:user_id", getUserByid);
 router.put("/api/userupdate/:user_id", userUpdate);
 router.delete("/api/userdelete/:user_id", userDelete);
 router.post("/api/connexion", usersession, connexion, getusertasks);
-router.post("/api/logOut", logOut);
+router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
 module.exports = router;
