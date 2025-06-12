@@ -18,7 +18,7 @@ exports.staticfiles = app.use(
 exports.limiter = ratelimit({
   window: 15 * 60 * 1000,
   max: 10,
-  message: "trop de requette",
+  message: "too mus h request",
 });
 
 exports.usersession = session({
