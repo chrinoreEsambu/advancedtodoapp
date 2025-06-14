@@ -24,7 +24,7 @@ const handleLogin = async () => {
       user_id: user_id.value,
       password: password.value,
     });
-    router.push("www.google.com");
+    router.push("../todopage");
   } catch (error) {
     console.error({
       message: "erreur coter clien lors de l envoi",
