@@ -1,6 +1,3 @@
-import Login from 'frontend/src/pages/Login.vue'
+import Login from "../pages/Login.vue";
 
-const router =
-[
-    {path:'/', component: {Login}}
-]
+const router = [{ path: "/", component: { Login } }];
