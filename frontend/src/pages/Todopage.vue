@@ -37,11 +37,11 @@ const router = useRouter();
 const taskText = ref("");
 const userStore = useUserStore();
 
-// Sécurisation : si jamais tasks est null ou undefined, retourne un tableau vide
+
 const safeTasks = computed(() => Array.isArray(userStore.tasks) ? userStore.tasks : []);
 
 onMounted(async () => {
-  await userStore.fetchTasks(); // ← On récupère seulement les tâches
+  await userStore.fetchTasks(); 
 });
 
 const handleAddTask = async () => {

@@ -9,6 +9,9 @@
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
         <button @click="handleLogin">Se connecter</button>
+        <p class="login-link">
+          Pas de compte ? <a @click="goToregistration">S'inscrire</a>
+        </p>
       </div>
     </div>
   </div>
@@ -32,6 +35,9 @@ const handleLogin = async () => {
     alert("Erreur de connexion");
   }
 };
+const goToregistration = () => {
+  router.push("/register");
+};
 </script>
 
 <style scoped>
@@ -44,7 +50,23 @@ const handleLogin = async () => {
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
 
+.login-link a {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
 .login-image {
   flex: 0 0 60%;
   background-color: #f5f5f5;

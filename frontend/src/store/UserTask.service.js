@@ -22,13 +22,13 @@ export const useUserStore = defineStore("user", {
     async fetchTasks() {
       const res = await axios.get("http://localhost:8000/api/getusertasks", {
         withCredentials: true,
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
+        // headers: {
+        //   "Cache-Control": "no-cache",
+        //   Pragma: "no-cache",
+        // },
       });
       console.log("Tâches récupérées :", res.data);
-      // Correction ici :
+      
       this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
     },
 
@@ -39,7 +39,7 @@ export const useUserStore = defineStore("user", {
       await this.fetchTasks();
     },
 
-    // 🔐 Déconnexion
+    
     async logout() {
       await axios.post(
         "http://localhost:8000/api/logOut",
