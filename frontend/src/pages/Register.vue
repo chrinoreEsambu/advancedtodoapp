@@ -6,13 +6,11 @@
     <div class="login-form-wrapper">
       <div class="login-form">
         <h2>Inscription</h2>
-        <input v-model="user_name" placeholder="Nom complet" />
-        <input type="email" v-model="user_mail" placeholder="Email" />
+        <input v-model="nom" placeholder="Nom complet" />
+        <input type="email" v-model="mail" placeholder="Email" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
-        <div v-if="error" class="error-message">{{ error }}</div>
-        <button @click="handleInscription" :disabled="loading">
-          {{ loading ? "En cours..." : "S'inscrire" }}
-        </button>
+        <!-- <div v-if="error" class="error-message">{{ error }}</div> -->
+        <button @click="handleInscription">S'inscrire</button>
         <p class="login-link">
           Déjà un compte ? <a @click="goToLogin">Se connecter</a>
         </p>
@@ -29,54 +27,20 @@ import { useUserStore } from "../store/UserTask.service";
 const router = useRouter();
 const userStore = useUserStore();
 
-const user_name = ref("");
-const user_mail = ref("");
+const nom = ref("");
+const mail = ref("");
 const password = ref("");
-const loading = ref(false);
-const error = ref("");
-
-const validateForm = () => {
-  if (!user_name.value || !user_mail.value || !password.value) {
-    error.value = "Tous les champs sont obligatoires";
-    return false;
-  }
-
-  if (user_name.value.length > 10) {
-    error.value = "Le nom ne doit pas dépasser 30 caractères";
-    return false;
-  }
-
-  if (password.value.length > 50) {
-    error.value = "mdp trop long ";
-    return false;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(user_mail.value)) {
-    error.value = "Veuillez entrer un email valide";
-    return false;
-  }
-
-  error.value = "";
-  return true;
-};
 
 const handleInscription = async () => {
-  if (!validateForm()) return;
-
-  loading.value = true;
   try {
     await userStore.register({
-      user_name: user_name.value,
-      user_mail: user_mail.value,
+      nom: nom.value,
+      mail: mail.value,
       password: password.value,
     });
-    router.push("/"); 
-  } catch (err) {
-    error.value = err.response?.data?.message || "Erreur lors de l'inscription";
-    console.error("Erreur d'inscription:", err);
-  } finally {
-    loading.value = false;
+    router.push("/");
+  } catch (error) {
+    // console.error("Erreur d'inscription:", error);
   }
 };
 
@@ -134,7 +98,6 @@ const goToLogin = () => {
   margin-bottom: 1.5rem;
   color: #333;
   font-weight: 700;
-  
 }
 
 .login-form input {

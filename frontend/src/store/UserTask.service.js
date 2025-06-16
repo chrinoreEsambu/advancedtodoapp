@@ -28,7 +28,7 @@ export const useUserStore = defineStore("user", {
         // },
       });
       console.log("Tâches récupérées :", res.data);
-      
+
       this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
     },
 
@@ -39,7 +39,6 @@ export const useUserStore = defineStore("user", {
       await this.fetchTasks();
     },
 
-    
     async logout() {
       await axios.post(
         "http://localhost:8000/api/logOut",
@@ -50,8 +49,12 @@ export const useUserStore = defineStore("user", {
       this.tasks = [];
     },
 
-    async register(userData) {
-      await axios.post("http://localhost:8000/api/usercreat", userData);
+    async register(nom, mail, password) {
+      await axios.post(
+        "http://localhost:8000/api/usercreat",
+        { nom: nom, mail: mail, password: password },
+        { withCredentials: true }
+      );
     },
 
     async fetchUsers() {
