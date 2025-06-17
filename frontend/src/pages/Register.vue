@@ -9,7 +9,6 @@
         <input v-model="nom" placeholder="Nom complet" />
         <input type="email" v-model="mail" placeholder="Email" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
-        <!-- <div v-if="error" class="error-message">{{ error }}</div> -->
         <button @click="handleInscription">S'inscrire</button>
         <p class="login-link">
           Déjà un compte ? <a @click="goToLogin">Se connecter</a>
@@ -40,7 +39,7 @@ const handleInscription = async () => {
     });
     router.push("/");
   } catch (error) {
-    // console.error("Erreur d'inscription:", error);
+    console.error("Erreur d'inscription:", error);
   }
 };
 
