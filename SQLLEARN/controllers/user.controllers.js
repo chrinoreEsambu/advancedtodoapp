@@ -145,7 +145,6 @@ exports.userDelete = async (req, res) => {
 exports.connexion = async (req, res) => {
   try {
     const { user_id, password } = req.body;
-
     const userfinder = await prisma.user.findUnique({
       where: { user_id },
     });
