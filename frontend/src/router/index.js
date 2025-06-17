@@ -6,7 +6,7 @@ import Todopage from "../pages/Todopage.vue";
 const routes = [
   { path: "/", component: Login },
   { path: "/register", component: Register },
-  { path: "/todopage", component: Todopage },
+  { path: "/todopage", component: Todopage, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
