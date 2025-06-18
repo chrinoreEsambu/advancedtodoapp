@@ -1,7 +1,7 @@
 <template>
   <div class="todo-container">
     <header class="header">
-      <h2>Bonjour, {{ userStore.user?.user_id }}</h2>
+      <h2>Bonjour, {{ userStore.user }}</h2>
       <button @click="handleLogout" class="logout-btn">Déconnexion</button>
     </header>
 

@@ -20,7 +20,7 @@ tasks Task[] @relation("usertasks")
 }
 
 model Task{
-  task_id Int @id @default(autoincrement())
+  task_id String @id @default(uuid(7))
   task String
   creatAt DateTime @default(now())
   UpdateAt DateTime @updatedAt

@@ -30,6 +30,7 @@ const userStore = useUserStore();
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
     alert("champs vide");
+    
   }
   try {
     await userStore.login(user_id.value, password.value);

@@ -32,11 +32,7 @@ const password = ref("");
 
 const handleInscription = async () => {
   try {
-    await userStore.register({
-      nom: nom.value,
-      mail: mail.value,
-      password: password.value,
-    });
+    await userStore.register(nom.value, mail.value, password.value);
     router.push("/");
   } catch (error) {
     console.error("Erreur d'inscription:", error);
