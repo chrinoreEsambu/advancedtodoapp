@@ -148,11 +148,9 @@ exports.connexion = async (req, res) => {
     const userfinder = await prisma.user.findUnique({
       where: { user_id },
     });
-
     if (!userfinder) {
       return res.status(401).json({ message: "User not found" });
     }
-
     const compare = await argon2.verify(userfinder.password, password);
 
     if (compare) {

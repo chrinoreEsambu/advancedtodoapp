@@ -8,6 +8,7 @@
         <h2>Connexion</h2>
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
+        <!-- <p>{{ password }}</p> -->
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
           Pas de compte ? <a @click="goToregistration">S'inscrire</a>
@@ -27,10 +28,10 @@ const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
 
+
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
     alert("champs vide");
-    
   }
   try {
     await userStore.login(user_id.value, password.value);
