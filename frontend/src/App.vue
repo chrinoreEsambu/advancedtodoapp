@@ -1,6 +1,5 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import Login from "./pages/Login.vue";
+
 import { RouterView } from "vue-router";
 </script>
 
