@@ -1,8 +1,6 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-const os = require("os");
-const ip = require("ip");
 const session = require("express-session");
 const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
@@ -58,6 +56,6 @@ app.use(
   })
 );
 
-exports.schekrole = async (req, res, next) => {
-  
-}
+// exports.schekrole = async (req, res, next) => {
+
+// }

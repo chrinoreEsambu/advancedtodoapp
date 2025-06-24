@@ -17,6 +17,7 @@ const router = require("./routes/userRoutes");
 
 app.use(middleware);
 app.use(router);
+
 app.use(validate);
 app.use(usersession);
 app.use(express.Router);
