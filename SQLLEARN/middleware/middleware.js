@@ -57,4 +57,4 @@ app.use(
     credentials: true,
   })
 );
-// <- Pas de double parenthèse `}););`
+

@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
+model Users{
 user_id   String @id
 nom String @unique
 mail String @unique
@@ -19,7 +19,7 @@ updateAt  DateTime @updatedAt
 tasks Task[] @relation("usertasks")
 }
 
-model Task{
+model Tasks{
   task_id String @id @default(uuid(7))
   task String
   creatAt DateTime @default(now())

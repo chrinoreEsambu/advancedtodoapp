@@ -17,7 +17,6 @@ export const useUserStore = defineStore("user", {
       );
       this.user = res.data.user;
       this.tasks = res.data.tasks;
-      
     },
 
     async fetchTasks() {
