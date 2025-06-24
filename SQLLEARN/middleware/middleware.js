@@ -57,3 +57,7 @@ app.use(
     credentials: true,
   })
 );
+
+exports.schekrole = async (req, res, next) => {
+  
+}
