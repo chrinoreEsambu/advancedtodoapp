@@ -36,6 +36,33 @@ exports.admincreateUser = async (req, res) => {
   }
 };
 
+exports.connexion = async (req, res) => {
+  try {
+    const { user_id, password } = req.body;
+    const userfinder = await prisma.users.findUnique({
+      where: { user_id },
+    });
+    if (!userfinder) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    const compare = await argon2.verify(userfinder.password, password);
+
+    if (compare) {
+      req.session.user_id = user_id;
+      return res.status(200).json({ message: "bienvenue", user: user_id });
+    } else {
+      return res
+        .status(401)
+        .json({ message: "mot de passe ou userId incorrect" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "error during connexion",
+      error: { message: error.message },
+    });
+  }
+};
+
 exports.admingetUser = async (req, res) => {
   try {
     const findalluser = await prisma.users.findMany({
@@ -140,33 +167,6 @@ exports.userDelete = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "error durring delete request",
-      error: { message: error.message },
-    });
-  }
-};
-
-exports.connexion = async (req, res) => {
-  try {
-    const { user_id, password } = req.body;
-    const userfinder = await prisma.users.findUnique({
-      where: { user_id },
-    });
-    if (!userfinder) {
-      return res.status(401).json({ message: "User not found" });
-    }
-    const compare = await argon2.verify(userfinder.password, password);
-
-    if (compare) {
-      req.session.user_id = user_id;
-      return res.status(200).json({ message: "bienvenue", user: user_id });
-    } else {
-      return res
-        .status(401)
-        .json({ message: "mot de passe ou userId incorrect" });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: "error during connexion",
       error: { message: error.message },
     });
   }
