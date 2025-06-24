@@ -16,7 +16,8 @@ exports.createUser = async (req, res) => {
       hachLegth: 50,
       parallelism: 3,
     });
-    const usercreation = await prisma.user.create({
+
+    const usercreation = await prisma.users.create({
       data: {
         user_id,
         nom,
@@ -35,7 +36,7 @@ exports.createUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const findalluser = await prisma.user.findMany({
+    const findalluser = await prisma.users.findMany({
       // skip:1,
       // take:2
     });
@@ -57,7 +58,7 @@ exports.getUser = async (req, res) => {
 exports.getUserByid = async (req, res) => {
   try {
     const { user_id } = req.params;
-    const findbyid = await prisma.user.findUnique({
+    const findbyid = await prisma.users.findUnique({
       where: {
         user_id,
       },
@@ -79,13 +80,13 @@ exports.userUpdate = async (req, res) => {
   const { user_id } = req.params;
   const { nom, mail } = req.body;
   try {
-    const finduser = await prisma.user.findUnique({
+    const finduser = await prisma.users.findUnique({
       where: {
         user_id,
       },
     });
 
-    const putuser = await prisma.user.update({
+    const putuser = await prisma.users.update({
       where: { user_id },
       data: {
         nom,
@@ -125,7 +126,7 @@ exports.userDelete = async (req, res) => {
         message: "User doesn't exit in db",
       });
     }
-    const deleted = await prisma.user.delete({
+    const deleted = await prisma.users.delete({
       where: {
         user_id: user_id,
       },
@@ -145,7 +146,7 @@ exports.userDelete = async (req, res) => {
 exports.connexion = async (req, res) => {
   try {
     const { user_id, password } = req.body;
-    const userfinder = await prisma.user.findUnique({
+    const userfinder = await prisma.users.findUnique({
       where: { user_id },
     });
     if (!userfinder) {
@@ -200,7 +201,7 @@ exports.getusertasks = async (req, res) => {
         .status(401)
         .json({ message: "you need to be connect to your acount" });
     }
-    const Alltasks = await prisma.task.findMany({
+    const Alltasks = await prisma.tasks.findMany({
       where: {
         user_id: user_id,
       },
