@@ -41,7 +41,7 @@ exports.adminConnexion = async (req, res) => {
     const { mail, password } = req.body;
 
     const userfinder = await prisma.users.findUnique({
-      where: { data: { mail: mail } },
+      where: { mail },
     });
     if (!userfinder) {
       return res.status(401).json({ message: "User not found" });
