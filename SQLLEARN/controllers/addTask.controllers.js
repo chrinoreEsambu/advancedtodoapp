@@ -8,7 +8,7 @@ exports.addtask = async (req, res) => {
     if (!user_id) {
       return res.status(401).json({ message: "Utilisateur non connecté" });
     }
-    const newtask = await prisma.task.create({
+    const newtask = await prisma.tasks.create({
       data: {
         task,
         user: {
