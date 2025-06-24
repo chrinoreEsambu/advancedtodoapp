@@ -13,6 +13,7 @@ user_id   String @id
 nom String @unique
 mail String @unique
 password  String 
+role String @default("users")
 createdAt DateTime @default(now())
 updateAt  DateTime @updatedAt
 
