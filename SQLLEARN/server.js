@@ -22,13 +22,14 @@ app.use(validate);
 app.use(usersession);
 app.use(express.Router);
 const port = process.env.PORT || 5000;
+
 (async () => {
   try {
     app.listen(port, "0.0.0.0", () => {
       console.log(`Server runnig on port http://localhost:${port}`);
     });
   } catch (error) {
-    console.log("error durring the server start ", error);
+    console.log("error starting the server", error);
   }
 })();
 

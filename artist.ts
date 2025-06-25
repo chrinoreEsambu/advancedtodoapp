@@ -1,5 +1,5 @@
-let nom:string|null ='Chrinore'
-nom='Ronice'
-nom=null
+// let nom:string|null ='Chrinore'
+// nom='Ronice'
+// nom=null
 
-let x:any
+// let x:any

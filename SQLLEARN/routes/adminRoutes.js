@@ -9,9 +9,7 @@ const {
   adminConnexion,
 } = require("../controllers/adminController");
 
-const { validate } = require("../middleware/middleware");
-
-router.post("/api/adminCreateUser", validate, adminCreateUser);
+router.post("/api/adminCreateUser", adminCreateUser);
 router.post("/api/adminConnexion", adminConnexion);
 
 module.exports = router;

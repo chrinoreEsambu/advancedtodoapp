@@ -36,7 +36,7 @@ exports.adminCreateUser = async (req, res) => {
   }
 };
 
-exports.connexion = async (req, res) => {
+exports.adminconnexion = async (req, res) => {
   try {
     const { mail, password } = req.body;
 

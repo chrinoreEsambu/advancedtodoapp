@@ -40,6 +40,7 @@ exports.validate = async (req, res, next) => {
       return res.status(400).json({ message: "Empty Fields" });
     } else {
       await createUser(req, res);
+      return res.status(200).json({ message: "Format d'email invalide" });
     }
   } catch (error) {
     return res
