@@ -59,21 +59,17 @@ exports.validate = async (req, res, next) => {
 
 exports.schekrole = async (req, res, next) => {
   try {
-    if (!req.session || req.session.role === "users") {
+    const role = req.session?.role;
+    if (!role || role.toLowerCase() !== "admin") {
       return res
         .status(403)
         .json({ message: "Accès réservé aux administrateurs" });
-    } else {
-      next();
     }
-    
+    next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        message: "somethind went wrong",
-        error: { message: error.message },
-      });
+    return res.status(500).json({
+      message: "somethind went wrong",
+      error: { message: error.message },
+    });
   }
-  
 };

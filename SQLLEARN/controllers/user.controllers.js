@@ -2,7 +2,6 @@ const argon2 = require("argon2");
 const prisma = require("../config/prismaClient");
 const session = require("express-session");
 
-
 exports.createUser = async (req, res) => {
   try {
     const { nom, mail, password } = req.body;
@@ -269,6 +268,9 @@ exports.adminconnexion = async (req, res) => {
       return res
         .status(401)
         .json({ message: "mot de passe ou mail incorrect" });
+    }
+    if (userfinder.role.toLocaleLowerCase() !== "admin") {
+      res.status(403).json({ message: "Accès réservé aux administrateurs" });
     }
     req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
