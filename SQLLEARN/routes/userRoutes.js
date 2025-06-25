@@ -19,6 +19,7 @@ const {
   connexion,
   logOut,
   getusertasks,
+  adminconnexion,
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -32,4 +33,5 @@ router.post("/api/connexion", usersession, connexion, getusertasks);
 router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
+router.post("/api/adminconnexion", adminconnexion);
 module.exports = router;

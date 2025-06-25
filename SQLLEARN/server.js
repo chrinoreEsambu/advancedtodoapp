@@ -7,7 +7,7 @@ const ip = require("ip");
 const session = require("express-session");
 const cors = require("cors");
 require("dotenv").config();
-
+// const adminRoutes = require("./routes/adminRoutes");
 const {
   middleware,
   validate,
@@ -15,12 +15,15 @@ const {
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
+
 app.use(middleware);
 app.use(router);
 
 app.use(validate);
 app.use(usersession);
 app.use(express.Router);
+// app.use("/api", adminRoutes);
+// app.use(adminconnexion);
 const port = process.env.PORT || 5000;
 
 (async () => {

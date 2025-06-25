@@ -23,6 +23,7 @@ exports.usersession = session({
   secret: "votre_clef_secrete_supersecrete",
   resave: false,
   saveUninitialized: false,
+  
   cookie: {
     httpOnly: true,
     secure: false,

@@ -217,3 +217,66 @@ exports.getusertasks = async (req, res) => {
     });
   }
 };
+// ADMIN PARTS
+exports.adminCreateUser = async (req, res) => {
+  try {
+    const { nom, mail, password, role } = req.body;
+    const date = new Date().getFullYear();
+    const suffix = Math.floor(100 + Math.random() * 900);
+    const user_id = `${date}todox${suffix}`;
+    const finalrole = role || "users";
+
+    const hachpass = await argon2.hash(password, {
+      type: argon2.argon2id,
+      memoryCost: 2 * 12,
+      timeCost: 2,
+      hashLegth: 50,
+      parallelism: 3,
+    });
+
+    const usercreation = await prisma.users.create({
+      data: {
+        user_id,
+        nom,
+        mail,
+        password: hachpass,
+        role: finalrole,
+      },
+    });
+    res.status(201).json({ message: "user creat successfully", usercreation });
+  } catch (error) {
+    res.status(500).json({
+      Message: "error during user creation",
+      error: { message: error.message },
+    });
+  }
+};
+
+exports.adminconnexion = async (req, res) => {
+  try {
+    const { mail, password } = req.body;
+
+    const userfinder = await prisma.users.findUnique({
+      where: { mail },
+    });
+    if (!userfinder) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    const compare = await argon2.verify(userfinder.password, password);
+
+    if (compare) {
+      req.session.mail = user_id;
+
+      return res.status(200).json({ message: "bienvenue", user: mail });
+    } else {
+      return res
+        .status(401)
+        .json({ message: "mot de passe ou mail incorrect" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "error during admin connexion",
+      error: { message: error.message },
+    });
+  }
+};
