@@ -15,6 +15,7 @@ const {
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
+
 app.use(middleware);
 app.use(router);
 

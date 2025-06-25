@@ -33,5 +33,6 @@ router.post("/api/connexion", usersession, connexion, getusertasks);
 router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
-router.post("/api/adminconnexion", adminconnexion);
+
+router.post("/api/adminconnexion", usersession, adminconnexion);
 module.exports = router;
