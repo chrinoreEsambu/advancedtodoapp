@@ -36,10 +36,15 @@ exports.createUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
+    const role = req.session?.role;
+    if (role !== "admin") {
+      return res.status(401).json({ message: "Aucune session admin ouverte" });
+    }
     const findalluser = await prisma.users.findMany({
       // skip:1,
       // take:2
     });
+
     if (findalluser.length > 0) {
       res.status(200).json({ message: "All user", findalluser });
     } else {

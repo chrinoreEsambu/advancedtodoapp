@@ -68,7 +68,7 @@ exports.schekrole = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(500).json({
-      message: "somethind went wrong",
+      message: "something went wrong",
       error: { message: error.message },
     });
   }

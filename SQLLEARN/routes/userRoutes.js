@@ -26,7 +26,6 @@ const {
 const { addtask } = require("../controllers/addTask.controllers");
 
 router.post("/api/usercreat", validate, createUser);
-router.get("/api/getuser", getUser);
 router.get("/api/getuserbyid/:user_id", getUserByid);
 router.put("/api/userupdate/:user_id", userUpdate);
 router.delete("/api/userdelete/:user_id", userDelete);
@@ -37,4 +36,5 @@ router.get("/api/getusertasks", usersession, getusertasks);
 
 router.post("/api/admincreateuser", adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
+router.get("/api/admingetuser", usersession, getUser);
 module.exports = router;
