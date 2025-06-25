@@ -1,6 +1,7 @@
 const argon2 = require("argon2");
 const prisma = require("../config/prismaClient");
 const session = require("express-session");
+const usersession = require("../middleware/middleware");
 
 exports.createUser = async (req, res) => {
   try {
@@ -255,7 +256,6 @@ exports.adminCreateUser = async (req, res) => {
 exports.adminconnexion = async (req, res) => {
   try {
     const { mail, password } = req.body;
-
     const userfinder = await prisma.users.findUnique({
       where: { mail },
     });
@@ -263,16 +263,29 @@ exports.adminconnexion = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
     const compare = await argon2.verify(userfinder.password, password);
-
-    if (compare) {
-      req.session.mail = user_id;
-
-      return res.status(200).json({ message: "bienvenue", user: mail });
-    } else {
+    if (!compare) {
       return res
         .status(401)
         .json({ message: "mot de passe ou mail incorrect" });
     }
+    if (userfinder.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Accès réservé aux administrateurs" });
+    }
+
+    req.session.admin_id = userfinder.user_id;
+    req.session.role = userfinder.role;
+
+    return res.status(200).json({
+      message: "Bienvenue admin",
+      user: {
+        user_id: userfinder.user_id,
+        mail: userfinder.mail,
+        nom: userfinder.nom,
+        role: userfinder.role,
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: "error during admin connexion",
