@@ -11,6 +11,7 @@ const {
   middleware,
   validate,
   usersession,
+  schekrole,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
@@ -20,6 +21,7 @@ app.use(router);
 app.use(validate);
 app.use(usersession);
 app.use(express.Router);
+app.use(schekrole);
 const port = process.env.PORT || 5000;
 
 (async () => {

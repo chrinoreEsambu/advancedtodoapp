@@ -57,6 +57,11 @@ app.use(
   })
 );
 
-// exports.schekrole = async (req, res, next) => {
-
-// }
+exports.schekrole = async (req, res, next) => {
+  if (userfinder.role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Accès réservé aux administrateurs" });
+  }
+  next();
+};

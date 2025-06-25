@@ -8,7 +8,7 @@ const {
   limiter,
   validate,
   usersession,
-  book,
+  schekrole,
 } = require("../middleware/middleware");
 const {
   createUser,
