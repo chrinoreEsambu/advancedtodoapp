@@ -6,6 +6,7 @@ const os = require("os");
 const ip = require("ip");
 const session = require("express-session");
 const cors = require("cors");
+
 require("dotenv").config();
 const {
   middleware,
@@ -14,7 +15,6 @@ const {
   schekrole,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
-
 
 app.use(middleware);
 app.use(router);
