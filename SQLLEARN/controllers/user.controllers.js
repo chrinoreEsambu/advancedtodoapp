@@ -261,7 +261,7 @@ exports.adminconnexion = async (req, res) => {
     });
 
     if (!userfinder) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     const compare = await argon2.verify(userfinder.password, password);
     if (!compare) {
@@ -269,15 +269,13 @@ exports.adminconnexion = async (req, res) => {
         .status(401)
         .json({ message: "mot de passe ou mail incorrect" });
     }
-    req.session.admin_id = userfinder.user_id;
+    req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
 
     return res.status(200).json({
       message: "Bienvenue admin",
       user: {
-        user_id: userfinder.user_id,
-        mail: userfinder.mail,
-        nom: userfinder.nom,
+        user_id: userfinder.mail,
         role: userfinder.role,
       },
     });
