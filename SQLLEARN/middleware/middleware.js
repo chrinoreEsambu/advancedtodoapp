@@ -30,6 +30,13 @@ exports.usersession = session({
   },
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 exports.validate = async (req, res, next) => {
   const { nom, mail, password } = req.body;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
@@ -50,18 +57,23 @@ exports.validate = async (req, res, next) => {
   next();
 };
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-
 exports.schekrole = async (req, res, next) => {
-  if (userfinder.role !== "admin") {
+  try {
+    if (!req.session || req.session.role === "users") {
+      return res
+        .status(403)
+        .json({ message: "Accès réservé aux administrateurs" });
+    } else {
+      next();
+    }
+    
+  } catch (error) {
     return res
-      .status(403)
-      .json({ message: "Accès réservé aux administrateurs" });
+      .status(500)
+      .json({
+        message: "somethind went wrong",
+        error: { message: error.message },
+      });
   }
-  next();
+  
 };

@@ -256,6 +256,7 @@ exports.adminCreateUser = async (req, res) => {
 exports.adminconnexion = async (req, res) => {
   try {
     const { mail, password } = req.body;
+
     const userfinder = await prisma.users.findUnique({
       where: { mail },
     });
@@ -275,7 +276,7 @@ exports.adminconnexion = async (req, res) => {
     return res.status(200).json({
       message: "Bienvenue admin",
       user: {
-        user_id: userfinder.mail,
+        user_mail: userfinder.mail,
         role: userfinder.role,
       },
     });

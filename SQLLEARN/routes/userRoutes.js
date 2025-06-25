@@ -34,5 +34,5 @@ router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
 
-router.post("/api/adminconnexion", usersession, adminconnexion);
+router.post("/api/adminconnexion", usersession, schekrole,adminconnexion);
 module.exports = router;
