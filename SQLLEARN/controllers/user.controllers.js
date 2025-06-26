@@ -117,7 +117,7 @@ exports.userUpdate = async (req, res) => {
 
 exports.userDelete = async (req, res) => {
   async function finder(user_id) {
-    return await prisma.user.findUnique({
+    return await prisma.users.findUnique({
       where: {
         user_id: user_id,
       },
@@ -297,5 +297,10 @@ exports.adminconnexion = async (req, res) => {
 
 exports.admincreatTask = async (req, res) => {
   try {
+    const { user, taskUser, fromAdmin, state } = req.body;
+
+    const userfind = await prisma.users.findUnique({
+      where: { user: nom },
+    });
   } catch (error) {}
 };
