@@ -297,10 +297,28 @@ exports.adminconnexion = async (req, res) => {
 
 exports.admincreatTask = async (req, res) => {
   try {
+    const role = req.session?.role;
     const { user, taskUser, fromAdmin, state } = req.body;
 
     const userfind = await prisma.users.findUnique({
-      where: { user: nom },
+      where: { nom: user },
+    });
+    if (!userfind) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!role) {
+      return res.status(403).json({ message: "Aucune session admin ouverte" });
+    }
+    const admincreatTask = await prisma.tasks.create({
+      data: {
+        taskUser,
+        fromAdmin: {
+          connect: {
+            from: role,
+          },
+        },
+        state,
+      },
     });
   } catch (error) {}
 };
