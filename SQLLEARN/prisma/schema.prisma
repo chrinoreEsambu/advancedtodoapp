@@ -23,8 +23,9 @@ tasks Tasks[] @relation("usertasks")
 model Tasks{
   task_id String @id @default(uuid(7))
   task String
-  
+
   state String @default("non assignée")
+  
   fromAdmin Users? @relation("taskcreated", fields: [fromAdminId], references: [user_id])
   fromAdminId String?
 
