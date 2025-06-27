@@ -298,27 +298,49 @@ exports.adminconnexion = async (req, res) => {
 exports.admincreatTask = async (req, res) => {
   try {
     const role = req.session?.role;
-    const { user, taskUser, fromAdmin, state } = req.body;
+    const admin_id = req.session?.admin_id;
+
+    if (!role || role.toLowerCase() !== "admin" || !admin_id) {
+      return res
+        .status(403)
+        .json({ message: "Accès refusé : admin uniquement" });
+    }
+
+    const { user_id, taskUser, state } = req.body;
 
     const userfind = await prisma.users.findUnique({
-      where: { nom: user },
+      where: { user_id },
     });
+
     if (!userfind) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Utilisateur cible non trouvé" });
     }
-    if (!role) {
-      return res.status(403).json({ message: "Aucune session admin ouverte" });
-    }
-    const admincreatTask = await prisma.tasks.create({
+
+    const newTask = await prisma.tasks.create({
       data: {
         taskUser,
         fromAdmin: {
           connect: {
-            from: role,
+            user_id: admin_id,
           },
         },
-        state,
+        state: state || "pedding",
+        assignedTo: {
+          connect: {
+            user_id,
+          },
+        },
       },
     });
-  } catch (error) {}
+
+    return res.status(201).json({
+      message: "Tâche créée et assignée avec succès",
+      task: newTask,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la création de la tâche",
+      error: { message: error.message },
+    });
+  }
 };

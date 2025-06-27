@@ -18,16 +18,21 @@ createdAt DateTime @default(now())
 updateAt  DateTime @updatedAt
 
 tasks Tasks[] @relation("usertasks")
+
+tasksCreated  Tasks[] @relation("TaskCreated")
+tasksAssigned Tasks[] @relation("TaskAssigned")
 }
 
-model Tasks{
-  task_id String @id @default(uuid(7))
-  task String
-  state String @default("pendding")
-
-  creatAt DateTime @default(now())
-  UpdateAt DateTime @updatedAt
+model Tasks {
+  task_id     String   @id @default(uuid())
+  taskUser    String
+  state       String   @default("non assignée")
   
-  user_id String
-  user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
+  userId   String
+  fromAdmin   Users?   @relation("TaskCreated", fields: [userId], references: [user_id])
+
+  toUserId String
+  assignedTo  Users?   @relation("TaskAssigned", fields: [toUserId], references: [user_id])
+
+  createdAt   DateTime @default(now())
 }
