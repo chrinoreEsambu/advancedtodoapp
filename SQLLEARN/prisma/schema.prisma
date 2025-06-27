@@ -23,8 +23,8 @@ tasks Tasks[] @relation("usertasks")
 model Tasks{
   task_id String @id @default(uuid(7))
   task String
-  state String @default("pedding")
-  
+  state String @default("pendding")
+
   creatAt DateTime @default(now())
   UpdateAt DateTime @updatedAt
   
