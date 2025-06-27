@@ -324,7 +324,7 @@ exports.admincreatTask = async (req, res) => {
             user_id: admin_id,
           },
         },
-        state: state || "pedding",
+        state: state || "pendding",
         assignedTo: {
           connect: {
             user_id,
