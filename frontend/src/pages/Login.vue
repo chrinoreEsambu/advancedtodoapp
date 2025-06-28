@@ -6,6 +6,7 @@
     <div class="login-form-wrapper">
       <div class="login-form">
         <h2>Connexion</h2>
+        <label class="alert">{{ alert }}</label>
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
         <!-- <p>{{ password }}</p> -->
@@ -27,10 +28,12 @@ const user_id = ref("");
 const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
+const alert = ref("");
 
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
-    alert("champs vide");
+    // alert("champs vide");
+    alert.value = "champs vide";
   }
   try {
     await userStore.login(user_id.value, password.value);
@@ -47,6 +50,11 @@ const goToregistration = () => {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.alert {
+  color: red;
+  margin-top: -10px;
+  padding-top: -50px;
 }
 .login-container {
   display: flex;
@@ -104,7 +112,7 @@ const goToregistration = () => {
 }
 
 .login-form h2 {
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
   color: #333;
   /* font-size: 1.8rem; */
   font-weight: 700;
