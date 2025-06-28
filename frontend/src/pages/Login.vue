@@ -5,8 +5,9 @@
     </div>
     <div class="login-form-wrapper">
       <div class="login-form">
-        <h2>Connexion</h2>
         <label class="alert">{{ alert }}</label>
+        <h2>Connexion</h2>
+        
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
         <!-- <p>{{ password }}</p> -->
@@ -53,8 +54,8 @@ const goToregistration = () => {
 }
 .alert {
   color: red;
-  margin-top: -10px;
-  padding-top: -50px;
+  text-align: center;
+  display: flex;
 }
 .login-container {
   display: flex;
@@ -112,7 +113,7 @@ const goToregistration = () => {
 }
 
 .login-form h2 {
-  /* margin-bottom: 1.5rem; */
+  margin-bottom: 1.5rem;
   color: #333;
   /* font-size: 1.8rem; */
   font-weight: 700;
