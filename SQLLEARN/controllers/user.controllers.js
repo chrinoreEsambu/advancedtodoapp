@@ -248,7 +248,7 @@ exports.adminCreateUser = async (req, res) => {
         role: finalrole,
       },
     });
-    res.status(201).json({ message: "user creat successfully", usercreation });
+    res.status(201).json({ message: "User creat successfully", usercreation });
   } catch (error) {
     res.status(500).json({
       Message: "Error during user creation",
