@@ -36,5 +36,6 @@ model Tasks{
   fromAdminId String
   fromAdmin Users @relation("taskCreatBy", fields:[fromAdminId],references: [user_id])
 
-  
+  assignToId String
+  assignTo Users @relation("taskassigned",fields: [assignToId],references: [user_id])
 }
