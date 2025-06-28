@@ -28,7 +28,7 @@ model Tasks {
   taskUser    String
   state       String   @default("non assignée")
   
-  userId   String
+  // userId   String
   fromAdmin   Users?   @relation("TaskCreated", fields: [userId], references: [user_id])
 
   toUserId String
