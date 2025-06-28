@@ -18,6 +18,8 @@ createdAt DateTime @default(now())
 updateAt  DateTime @updatedAt
 
 tasks Tasks[] @relation("usertasks")
+
+taskCreatBy Tasks[] @relation("taskCreatBy")
 }
 
 model Tasks{
@@ -30,4 +32,9 @@ model Tasks{
   
   user_id String
   user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
+
+  fromAdminId String
+  fromAdmin Users @relation("taskCreatBy", fields:[fromAdminId],references: [user_id])
+
+  
 }
