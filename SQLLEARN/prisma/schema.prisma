@@ -19,8 +19,8 @@ updateAt  DateTime @updatedAt
 
 tasks Tasks[] @relation("usertasks")
 
-// tasksCreated  Tasks[] @relation("TaskCreated")
-// tasksAssigned Tasks[] @relation("TaskAssigned")
+tasksCreated  Tasks[] @relation("TaskCreated")
+tasksAssigned Tasks[] @relation("TaskAssigned")
 }
 
 model Tasks {
