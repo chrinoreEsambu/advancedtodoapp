@@ -19,7 +19,7 @@ updateAt  DateTime @updatedAt
 
 tasks Tasks[] @relation("usertasks")
 
-taskCreatBy Tasks[] @relation("taskCreatBy")
+taskCreatBy Tasks[] @relation("taskCreatByAdmin")
 taskassignedto Tasks[] @relation("taskassignedto")
 }
 
@@ -35,7 +35,7 @@ model Tasks{
   user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
 
   fromAdminId String
-  fromAdmin Users @relation("taskCreatBy", fields:[fromAdminId],references: [user_id])
+  fromAdmin Users @relation("taskCreatByAdmin", fields:[fromAdminId],references: [user_id])
 
   assignToId String
   assignTo Users @relation("taskassignedto",fields: [assignToId],references: [user_id])
