@@ -22,10 +22,10 @@ export const useUserStore = defineStore("user", {
     async fetchTasks() {
       const res = await axios.get("http://localhost:8000/api/getusertasks", {
         withCredentials: true,
-        // headers: {
-        //   "Cache-Control": "no-cache",
-        //   Pragma: "no-cache",
-        // },
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
       });
       console.log("Tâches récupérées :", res.data);
 

@@ -209,6 +209,9 @@ exports.getusertasks = async (req, res) => {
     const Alltasks = await prisma.tasks.findMany({
       where: {
         user_id: user_id,
+        Not: {
+          state: "pendding",
+        },
       },
     });
     res.status(200).json({
@@ -321,22 +324,17 @@ exports.admincreatTask = async (req, res) => {
       data: {
         task,
         state: state || "pendding",
-
-        // Relation obligatoire : user
         user: {
           connect: {
             user_id: user_id,
           },
         },
 
-        // Admin qui crée
         fromAdmin: {
           connect: {
             user_id: admin_id,
           },
         },
-
-        // Utilisateur assigné
         assignTo: {
           connect: {
             user_id: user_id,

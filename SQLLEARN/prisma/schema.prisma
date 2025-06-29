@@ -33,11 +33,11 @@ model Tasks{
   user_id String
   user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
 
-  fromAdminId String
-  fromAdmin Users @relation("taskCreatByAdmin", fields:[fromAdminId],references: [user_id])
+  fromAdminId String?
+  fromAdmin Users? @relation("taskCreatByAdmin", fields:[fromAdminId],references: [user_id])
 
-  assignToId String
-  assignTo Users @relation("taskassignedto",fields: [assignToId],references: [user_id])
+  assignToId String?
+  assignTo Users? @relation("taskassignedto",fields: [assignToId],references: [user_id])
 
   creatAt DateTime @default(now())
   UpdateAt DateTime @updatedAt
