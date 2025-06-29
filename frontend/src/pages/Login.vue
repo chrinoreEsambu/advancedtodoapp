@@ -5,7 +5,7 @@
     </div>
     <div class="login-form-wrapper">
       <div class="login-form">
-        <label class="alert">{{ alert }}</label>
+        <!-- <label class="alert">{{ alert }}</label> -->
         <h2>Connexion</h2>
         
         <input v-model="user_id" placeholder="User ID" />
@@ -29,12 +29,12 @@ const user_id = ref("");
 const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
-const alert = ref("");
+// const alert = ref("");
 
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
-    // alert("champs vide");
-    alert.value = "champs vide";
+    alert("champs vide");
+    // alert.value = "champs vide";
   }
   try {
     await userStore.login(user_id.value, password.value);

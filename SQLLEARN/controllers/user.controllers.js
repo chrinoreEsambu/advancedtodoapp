@@ -279,6 +279,7 @@ exports.adminconnexion = async (req, res) => {
     }
     req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
+    req.session.admin_id = userfinder.user_id;
 
     return res.status(200).json({
       message: "Bienvenue admin",
@@ -306,7 +307,7 @@ exports.admincreatTask = async (req, res) => {
         .json({ message: "Accès refusé : admin uniquement" });
     }
 
-    const { user_id, taskUser, state } = req.body;
+    const { user_id, task, state } = req.body;
 
     const userfind = await prisma.users.findUnique({
       where: { user_id },
@@ -318,16 +319,27 @@ exports.admincreatTask = async (req, res) => {
 
     const newTask = await prisma.tasks.create({
       data: {
-        taskUser,
+        task,
+        state: state || "pendding",
+
+        // Relation obligatoire : user
+        user: {
+          connect: {
+            user_id: user_id,
+          },
+        },
+
+        // Admin qui crée
         fromAdmin: {
           connect: {
             user_id: admin_id,
           },
         },
-        state: state || "pendding",
-        assignedTo: {
+
+        // Utilisateur assigné
+        assignTo: {
           connect: {
-            user_id,
+            user_id: user_id,
           },
         },
       },
