@@ -20,7 +20,7 @@ updateAt  DateTime @updatedAt
 tasks Tasks[] @relation("usertasks")
 
 taskCreatBy Tasks[] @relation("taskCreatBy")
-taskassigned Tasks[] @relation("taskassigned")
+// taskassigned Tasks[] @relation("taskassigned")
 }
 
 model Tasks{
