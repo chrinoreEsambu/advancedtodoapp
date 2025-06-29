@@ -20,10 +20,10 @@ updateAt  DateTime @updatedAt
 tasks Tasks[] @relation("usertasks")
 
 taskCreatBy Tasks[] @relation("taskCreatBy")
-// taskassigned Tasks[] @relation("taskassigned")
+taskassignedto Tasks[] @relation("taskassignedto")
 }
 
-model Tasks{
+model Tasks{ 
   task_id String @id @default(uuid(7))
   task String
   state String @default("pendding")
