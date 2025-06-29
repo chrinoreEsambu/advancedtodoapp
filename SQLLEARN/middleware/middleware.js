@@ -8,6 +8,17 @@ const cors = require("cors");
 const prisma = require("../config/prismaClient");
 const { createUser } = require("../controllers/user.controllers");
 
+exports.usersession = session({
+  secret: "votre_clef_secrete_supersecrete",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    maxAge: 1000 * 60 * 60,
+  },
+});
+
 exports.middleware = app.use(express.json());
 exports.staticfiles = app.use(
   express.static(path.join(__dirname, "../public"))
@@ -19,16 +30,7 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-exports.usersession = session({
-  secret: "votre_clef_secrete_supersecrete",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 1,
-  },
-});
+
 
 app.use(
   cors({

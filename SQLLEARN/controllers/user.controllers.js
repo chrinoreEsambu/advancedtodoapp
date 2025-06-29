@@ -209,9 +209,7 @@ exports.getusertasks = async (req, res) => {
     const Alltasks = await prisma.tasks.findMany({
       where: {
         user_id: user_id,
-        Not: {
-          state: "pendding",
-        },
+        
       },
     });
     res.status(200).json({

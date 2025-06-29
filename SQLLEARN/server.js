@@ -16,11 +16,13 @@ const {
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
+app.use(usersession);
+
 app.use(middleware);
 app.use(router);
 
 app.use(validate);
-app.use(usersession);
+
 app.use(express.Router);
 app.use(schekrole);
 const port = process.env.PORT || 5000;
