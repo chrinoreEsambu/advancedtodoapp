@@ -20,6 +20,7 @@ updateAt  DateTime @updatedAt
 tasks Tasks[] @relation("usertasks")
 
 taskCreatBy Tasks[] @relation("taskCreatByAdmin")
+
 taskassignedto Tasks[] @relation("taskassignedto")
 }
 
