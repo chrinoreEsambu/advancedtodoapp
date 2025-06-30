@@ -12,7 +12,7 @@
 
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
-          Pas Admin ? <a @click="loginAdmin">Connexion</a>
+          Pas Admin ? <a @click="loginAdmin">connexion</a>
         </p>
       </div>
     </div>
@@ -22,9 +22,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "../store/UserTask.service";
+import { adminstore } from "../store/admin.service";
 
-const mail= ref("");
+const mail = ref("");
 const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
@@ -34,12 +34,13 @@ const handleLogin = async () => {
     alert("champs vide");
   }
   try {
-    await userStore.adminlogin(mail.value, password.value);
-    router.push("/todopage");
+    await adminstore.admin(mail.value, password.value);
+    router.push("/dashboad");
   } catch (err) {
     alert("Erreur de connexion");
   }
 };
+
 const loginAdmin = () => {
   router.push("/");
 };
@@ -79,7 +80,7 @@ const loginAdmin = () => {
 }
 .login-image {
   flex: 0 0 60%;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,13 +107,12 @@ const loginAdmin = () => {
 
 .login-form {
   width: 100%;
-  
 }
 
 .login-form h2 {
   margin-bottom: 1.5rem;
   color: #333;
-  
+
   font-weight: 700;
 }
 
@@ -134,7 +134,7 @@ const loginAdmin = () => {
 .login-form button {
   width: 100%;
   padding: 0.8rem;
-  background-color: #FAE04D;
+  background-color: #fae04d;
   color: rgb(0, 0, 0);
   border: none;
   border-radius: 6px;
@@ -145,7 +145,7 @@ const loginAdmin = () => {
 }
 
 .login-form button:hover {
-  background-color: #FAE37D;
+  background-color: #fae37d;
 }
 
 @media (max-width: 768px) {
