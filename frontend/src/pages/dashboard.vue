@@ -1,9 +1,8 @@
 <template>
   <div class="dashboard-container">
-    
     <div class="sidebar-fixed">
       <div class="sidebar-header">
-        <h3>Menu Admin</h3>
+        <h3>Admin-Dash</h3>
       </div>
       <nav class="sidebar-nav">
         <button
@@ -17,7 +16,6 @@
       </nav>
     </div>
 
-    
     <div class="content-area">
       <keep-alive>
         <component :is="activeComponent" class="tab-content" />
@@ -28,12 +26,9 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import dashelement from "../components/dashelement.vue"
+import dashelement from "../components/dashelement.vue";
 
-const tabs = [
-  { id: "home", label: "Tableau de bord", component: dashelement },
-
-];
+const tabs = [{ id: "home", label: "User creation", component: dashelement }];
 
 const activeTab = ref("home");
 
@@ -43,21 +38,26 @@ const activeComponent = computed(() => {
 </script>
 
 <style scoped>
-
+h3 {
+  align-items: center;
+  text-align: center;
+  color: black;
+}
 .dashboard-container {
   display: flex;
   min-height: 100vh;
- 
 }
 
 .sidebar-fixed {
   width: 280px;
-  background-color: #2c3e50;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   color: white;
   padding: 1rem;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  border-radius: 10px;
 }
 
 .sidebar-header {
@@ -78,11 +78,12 @@ const activeComponent = computed(() => {
   text-align: left;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .nav-button:hover {
@@ -90,16 +91,16 @@ const activeComponent = computed(() => {
 }
 
 .nav-button.active {
-  background-color: #C3EBFC;
+  background-color: #c3ebfc;
   color: rgb(0, 0, 0);
-  font-weight: 500;
+  font-weight: 520;
 }
 
 .content-area {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 300px;
   padding: 2rem;
-  background-color: #F7F8FA;
+  background-color: #f7f8fa;
 }
 
 .tab-content {
