@@ -3,7 +3,7 @@ const session = require("express-session");
 
 exports.addtask = async (req, res) => {
   try {
-    const { task } = req.body;
+    const { task,state } = req.body;
     const user_id = req.session.user_id;
     if (!user_id) {
       return res.status(401).json({ message: "Utilisateur non connecté" });
@@ -11,6 +11,7 @@ exports.addtask = async (req, res) => {
     const newtask = await prisma.tasks.create({
       data: {
         task,
+        state: state || "delivered",
         user: {
           connect: {
             user_id: user_id,

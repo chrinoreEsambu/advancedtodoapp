@@ -28,7 +28,7 @@ updateAt  DateTime @updatedAt
 model Tasks{ 
   task_id String @id @default(uuid(7))
   task String
-  state String @default("pendding")
+  state String? @default("pendding")
   
   user_id String
   user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
