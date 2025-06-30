@@ -22,26 +22,28 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { adminstore } from "../store/admin.service";
+import { useAdminStore } from "../store/admin.service";
 
 const mail = ref("");
 const password = ref("");
 const router = useRouter();
-const useadminstore = adminstore();
+const adminstore = useAdminStore();
 
 
 const handleLogin = async () => {
   if (!mail.value || !password.value) {
-    alert("champs vide");
+    alert("Veuillez remplir tous les champs");
+    return;
   }
-  try {
-    await useadminstore.adminlogin(mail.value, password.value);
-    router.push("/dashboad");
-  } catch (err) {
-    alert("Erreur de connexion");
+  
+  const success = await adminstore.adminlogin(mail.value, password.value);
+  
+  if (success) {
+    router.push("/dashboard");
+  } else {
+    alert(adminstore.errorMessage || "Échec de la connexion");
   }
 };
-
 const loginAdmin = () => {
   router.push("/");
 };

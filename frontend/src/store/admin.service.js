@@ -1,22 +1,32 @@
 import { defineStore } from "pinia";
-import axios, { Axios } from "axios";
+import axios from "axios";
 
-export const adminstore = defineStore("adminstore", {
-  state: () => ({
-    admin: null,
-    role: null,
-    users: [],
-    tasks: [],
-  }),
 
+const api = axios.create({
+  baseURL: "http://localhost:8000/api",
+  withCredentials: true, 
+});
+
+export const useAdminStore = defineStore("adminstore", {
   actions: {
-    async adminlogin(req, res) {
-      const resp = await axios.post(
-        "https//google.com",
-        { mail, password },
-        { withCredentials: true }
-          );
-        //   this.
+    async adminlogin(mail, password) {
+      try {
+        const resp = await api.post("/adminconnexion", { mail, password });
+
+        if (resp.data.user.role.toLowerCase() !== "admin") {
+          throw new Error("Accès réservé aux administrateurs");
+        }
+
+        this.admin = resp.data.user.user_mail;
+        this.role = resp.data.user.role;
+        this.errorMessage = null;
+        return true;
+      } catch (error) {
+        this.errorMessage = error.response?.data?.message || error.message;
+        this.admin = null;
+        this.role = null;
+        return false;
+      }
     },
   },
 });

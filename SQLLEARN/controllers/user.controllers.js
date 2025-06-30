@@ -297,7 +297,7 @@ exports.adminconnexion = async (req, res) => {
         .json({ message: "mot de passe ou mail incorrect" });
     }
     if (userfinder.role.toLocaleLowerCase() !== "admin") {
-      res.status(403).json({ message: "Accès réservé aux administrateurs" });
+      return res.status(403).json({ message: "Accès réservé aux administrateurs" });
     }
     req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
