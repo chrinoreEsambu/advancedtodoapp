@@ -11,7 +11,9 @@
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
-        
+        <p class="login-link">
+          Pas de compte ? <a @click="loginAdmin">S'inscrire</a>
+        </p>
       </div>
     </div>
   </div>
@@ -39,7 +41,7 @@ const handleLogin = async () => {
   }
 };
 const loginAdmin = () => {
-  router.push("/dashboad");
+  router.push("/");
 };
 </script>
 

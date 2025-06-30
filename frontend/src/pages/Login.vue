@@ -14,7 +14,9 @@
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
           Pas de compte ? <a @click="goToregistration">S'inscrire</a>
+          
         </p>
+        <p class="space" @click="admin">Admin-space</p>
       </div>
     </div>
   </div>
@@ -46,11 +48,20 @@ const handleLogin = async () => {
 const goToregistration = () => {
   router.push("/register");
 };
+const admin = () => {
+  router.push("/adminlogin")
+}
 </script>
 
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.space{
+  display: flex;
+  text-align: center ;
+  margin:0;
+
 }
 .alert {
   color: red;
