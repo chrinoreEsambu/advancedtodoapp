@@ -4,7 +4,7 @@ import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import Todopage from "../pages/Todopage.vue";
 import { useUserStore } from "../store/UserTask.service";
-import adminLog from "../pages/adminLog.vue";
+// import adminLog from "../pages/adminLog.vue";
 import AdminLog from "../pages/adminLog.vue";
 
 const routes = [

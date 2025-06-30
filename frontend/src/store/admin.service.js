@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Axios } from "axios";
+import axios, { Axios } from "axios";
 
 export const adminstore = defineStore("adminstore", {
   state: () => ({
@@ -11,7 +11,12 @@ export const adminstore = defineStore("adminstore", {
 
   actions: {
     async adminlogin(req, res) {
-      console.log("okey");
+      const resp = await axios.post(
+        "https//google.com",
+        { mail, password },
+        { withCredentials: true }
+          );
+        //   this.
     },
   },
 });
