@@ -212,7 +212,6 @@ exports.getusertasks = async (req, res) => {
     let tasks;
 
     if (role === "admin") {
-      // Admin voit toutes les tâches
       tasks = await prisma.tasks.findMany({
         include: {
           creator: true,
@@ -221,7 +220,7 @@ exports.getusertasks = async (req, res) => {
         },
       });
     } else {
-      // Utilisateur normal voit seulement les tâches qui lui sont assignées avec state="delivered"
+      
       tasks = await prisma.tasks.findMany({
         where: {
           assigneeId: user_id,
