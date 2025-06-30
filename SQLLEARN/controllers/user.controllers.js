@@ -321,7 +321,7 @@ exports.admincreatTask = async (req, res) => {
     const newTask = await prisma.tasks.create({
       data: {
         task,
-        state: state || "pendding",
+        state: state || "pending",
         user: {
           connect: {
             user_id: user_id,
