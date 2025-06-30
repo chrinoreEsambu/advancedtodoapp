@@ -210,7 +210,6 @@ exports.getusertasks = async (req, res) => {
     }
 
     let tasks;
-
     if (role === "admin") {
       tasks = await prisma.tasks.findMany({
         include: {
@@ -220,7 +219,6 @@ exports.getusertasks = async (req, res) => {
         },
       });
     } else {
-      
       tasks = await prisma.tasks.findMany({
         where: {
           assigneeId: user_id,

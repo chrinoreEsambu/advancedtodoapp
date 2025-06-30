@@ -28,7 +28,6 @@ model Tasks {
   task       String
   state      String   @default("pending")
   
-  
   creatorId  String?
   creator    Users?    @relation("createdTasks", fields: [creatorId], references: [user_id])
  

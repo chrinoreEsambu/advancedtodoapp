@@ -24,7 +24,10 @@ const {
   admincreatTask,
 } = require("../controllers/user.controllers");
 
-const { addtask } = require("../controllers/addTask.controllers");
+const {
+  addtask,
+  adminUpdateTaskState,
+} = require("../controllers/addTask.controllers");
 
 router.post("/api/usercreat", validate, createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
@@ -39,5 +42,5 @@ router.post("/api/admincreateuser", adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
-
+router.post("/api/adminUpdateTaskState", adminUpdateTaskState);
 module.exports = router;
