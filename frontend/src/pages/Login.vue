@@ -7,16 +7,15 @@
       <div class="login-form">
         <!-- <label class="alert">{{ alert }}</label> -->
         <h2>Connexion</h2>
-        
+
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
         <!-- <p>{{ password }}</p> -->
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
           Pas de compte ? <a @click="goToregistration">S'inscrire</a>
-          
         </p>
-        <p class="space" @click="admin">Admin-space</p>
+        <label class="space" @click="admin">Admin-space</label>
       </div>
     </div>
   </div>
@@ -49,19 +48,24 @@ const goToregistration = () => {
   router.push("/register");
 };
 const admin = () => {
-  router.push("/adminlogin")
-}
+  router.push("/adminlogin");
+};
 </script>
 
 <style scoped>
 * {
   box-sizing: border-box;
 }
-.space{
+.space {
   display: flex;
-  text-align: center ;
-  margin:0;
-
+  text-align: center;
+  width: 100px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.space:hover {
+  text-decoration: underline;
 }
 .alert {
   color: red;

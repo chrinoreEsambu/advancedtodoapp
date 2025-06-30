@@ -12,7 +12,7 @@
 
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
-          Pas de compte ? <a @click="loginAdmin">S'inscrire</a>
+          Pas Admin ? <a @click="loginAdmin">Connexion</a>
         </p>
       </div>
     </div>
@@ -92,7 +92,7 @@ const loginAdmin = () => {
   background-color: #e0e0e0;
   border-radius: 8px;
   background-image: url("/one.jpg");
-  /* background-size: cover; */
+  background-size: cover;
   /* background-position: center; */
 }
 
