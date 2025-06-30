@@ -4,11 +4,14 @@ import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import Todopage from "../pages/Todopage.vue";
 import { useUserStore } from "../store/UserTask.service";
+import adminLog from "../pages/adminLog.vue";
+import AdminLog from "../pages/adminLog.vue";
 
 const routes = [
   { path: "/", component: Login },
   { path: "/register", component: Register },
   { path: "/todopage", component: Todopage, meta: { requiresAuth: true } },
+  { path: "/adminlogin", component: AdminLog },
 ];
 
 const router = createRouter({

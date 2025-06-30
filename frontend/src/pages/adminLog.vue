@@ -11,9 +11,9 @@
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
-        <p class="login-link">
+        <!-- <p class="login-link">
           Pas de compte ? <a @click="loginAdmin">S'inscrire</a>
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
@@ -106,13 +106,13 @@ const loginAdmin = () => {
 
 .login-form {
   width: 100%;
-  /* max-width: 350px; */
+  
 }
 
 .login-form h2 {
   margin-bottom: 1.5rem;
   color: #333;
-  /* font-size: 1.8rem; */
+  
   font-weight: 700;
 }
 
@@ -134,18 +134,18 @@ const loginAdmin = () => {
 .login-form button {
   width: 100%;
   padding: 0.8rem;
-  background-color: #000;
+  background-color: #FFC300;
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .login-form button:hover {
-  background-color: #222;
+  background-color: #FAE37D;
 }
 
 @media (max-width: 768px) {
