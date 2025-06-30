@@ -201,28 +201,52 @@ exports.logOut = async (req, res) => {
 exports.getusertasks = async (req, res) => {
   try {
     const user_id = req.session.user_id;
+    const role = req.session?.role;
+
     if (!user_id) {
-      res
+      return res
         .status(401)
-        .json({ message: "You need to be connect to your acount" });
+        .json({ message: "Vous devez être connecté à votre compte" });
     }
-    const Alltasks = await prisma.tasks.findMany({
-      where: {
-        user_id: user_id,
-        
-      },
-    });
-    res.status(200).json({
-      message: `User ${user_id} your task are`,
-      tasks: Alltasks,
+
+    let tasks;
+
+    if (role === "admin") {
+      // Admin voit toutes les tâches
+      tasks = await prisma.tasks.findMany({
+        include: {
+          creator: true,
+          assignedBy: true,
+          assignee: true,
+        },
+      });
+    } else {
+      // Utilisateur normal voit seulement les tâches qui lui sont assignées avec state="delivered"
+      tasks = await prisma.tasks.findMany({
+        where: {
+          assigneeId: user_id,
+          state: "delivered",
+        },
+        include: {
+          creator: true,
+          assignedBy: true,
+          assignee: true,
+        },
+      });
+    }
+
+    return res.status(200).json({
+      message: role === "admin" ? "Toutes les tâches" : "Vos tâches assignées",
+      tasks,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Erreur lors de la récupération des tâches",
       error: { message: error.message },
     });
   }
 };
+
 // ADMIN PARTS
 exports.adminCreateUser = async (req, res) => {
   try {
@@ -322,22 +346,26 @@ exports.admincreatTask = async (req, res) => {
       data: {
         task,
         state: state || "pending",
-        user: {
+        creator: {
           connect: {
-            user_id: user_id,
+            user_id: admin_id, // L'admin est le créateur
           },
         },
-
-        fromAdmin: {
+        assignedBy: {
           connect: {
-            user_id: admin_id,
+            user_id: admin_id, // L'admin assigne la tâche
           },
         },
-        assignTo: {
+        assignee: {
           connect: {
-            user_id: user_id,
+            user_id: user_id, // L'utilisateur cible
           },
         },
+      },
+      include: {
+        creator: true,
+        assignedBy: true,
+        assignee: true,
       },
     });
 

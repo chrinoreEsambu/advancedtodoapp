@@ -8,37 +8,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users{
-user_id   String @id
-nom String @unique
-mail String @unique
-password  String 
-role String @default("users")
+model Users {
+  user_id   String   @id
+  nom       String   @unique
+  mail      String   @unique
+  password  String  
+  role      String   @default("users")
+  
+  createdTasks Tasks[] @relation("createdTasks") 
+  assignedTasks Tasks[] @relation("assignedTasks") 
+  adminAssignedTasks Tasks[] @relation("adminAssignedTasks")
 
-tasks Tasks[] @relation("usertasks")
-
-taskCreatBy Tasks[] @relation("taskCreatByAdmin")
-
-taskassignedto Tasks[] @relation("taskassignedto")
-
-createdAt DateTime @default(now())
-updateAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Tasks{ 
-  task_id String @id @default(uuid(7))
-  task String
-  state String? @default("pending")
+model Tasks {
+  task_id    String   @id @default(uuid())
+  task       String
+  state      String   @default("pending")
   
-  user_id String
-  user  Users @relation("usertasks", fields: [user_id], references: [user_id] )
+  
+  creatorId  String?
+  creator    Users?    @relation("createdTasks", fields: [creatorId], references: [user_id])
+ 
+  assignedById String?
+  assignedBy  Users?  @relation("adminAssignedTasks", fields: [assignedById], references: [user_id])
+ 
+  assigneeId String?
+  assignee   Users ?   @relation("assignedTasks", fields: [assigneeId], references: [user_id])
 
-  fromAdminId String?
-  fromAdmin Users? @relation("taskCreatByAdmin", fields:[fromAdminId],references: [user_id])
-
-  assignToId String?
-  assignTo Users? @relation("taskassignedto",fields: [assignToId],references: [user_id])
-
-  creatAt DateTime @default(now())
-  UpdateAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

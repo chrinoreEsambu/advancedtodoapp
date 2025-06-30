@@ -27,7 +27,7 @@ const {
 const { addtask } = require("../controllers/addTask.controllers");
 
 router.post("/api/usercreat", validate, createUser);
-router.get("/api/getuserbyid/:user_id", getUserByid);
+router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
 router.put("/api/userupdate/:user_id", userUpdate);
 router.delete("/api/userdelete/:user_id", userDelete);
 router.post("/api/connexion", usersession, connexion, getusertasks);
