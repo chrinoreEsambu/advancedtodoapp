@@ -27,14 +27,15 @@ import { adminstore } from "../store/admin.service";
 const mail = ref("");
 const password = ref("");
 const router = useRouter();
-const userStore = useUserStore();
+const useadminstore = adminstore();
+
 
 const handleLogin = async () => {
   if (!mail.value || !password.value) {
     alert("champs vide");
   }
   try {
-    await adminstore.admin(mail.value, password.value);
+    await useadminstore.adminlogin(mail.value, password.value);
     router.push("/dashboad");
   } catch (err) {
     alert("Erreur de connexion");
