@@ -5,15 +5,13 @@
     </div>
     <div class="login-form-wrapper">
       <div class="login-form">
-        <h2>Connexion</h2>
+        <h2>Admin-space</h2>
 
-        <input v-model="user_id" placeholder="User ID" />
+        <input v-model="mail" type="email" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
-        <!-- <p class="login-link">
-          Pas de compte ? <a @click="loginAdmin">S'inscrire</a>
-        </p> -->
+        
       </div>
     </div>
   </div>
@@ -24,24 +22,24 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
 
-const user_id = ref("");
+const mail= ref("");
 const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
 
 const handleLogin = async () => {
-  if (!user_id.value || !password.value) {
+  if (!mail.value || !password.value) {
     alert("champs vide");
   }
   try {
-    await userStore.login(user_id.value, password.value);
+    await userStore.adminlogin(mail.value, password.value);
     router.push("/todopage");
   } catch (err) {
     alert("Erreur de connexion");
   }
 };
 const loginAdmin = () => {
-  router.push("/dash");
+  router.push("/dashboad");
 };
 </script>
 
@@ -91,9 +89,9 @@ const loginAdmin = () => {
   height: 80%;
   background-color: #e0e0e0;
   border-radius: 8px;
-  background-image: url("/log.jpg");
-  background-size: cover;
-  background-position: center;
+  background-image: url("/one.jpg");
+  /* background-size: cover; */
+  /* background-position: center; */
 }
 
 .login-form-wrapper {
@@ -134,8 +132,8 @@ const loginAdmin = () => {
 .login-form button {
   width: 100%;
   padding: 0.8rem;
-  background-color: #FFC300;
-  color: white;
+  background-color: #FAE04D;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
