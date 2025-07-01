@@ -345,17 +345,17 @@ exports.admincreatTask = async (req, res) => {
         state: state || "pending",
         creator: {
           connect: {
-            user_id: admin_id, // L'admin est le créateur
+            user_id: admin_id, 
           },
         },
         assignedBy: {
           connect: {
-            user_id: admin_id, // L'admin assigne la tâche
+            user_id: admin_id, 
           },
         },
         assignee: {
           connect: {
-            user_id: user_id, // L'utilisateur cible
+            user_id: user_id, 
           },
         },
       },

@@ -61,5 +61,21 @@ export const useAdminStore = defineStore("adminstore", {
         this.loadingUsers = false;
       }
     },
+
+    async deleteUser(userId) {
+      try {
+        await api.delete(`/userdelete/${userId}`);
+
+        this.users = this.users.filter((user) => user.user_id !== userId);
+        return { success: true };
+      } catch (error) {
+        console.error("Delete error:", error);
+        return {
+          success: false,
+          error:
+            error.response?.data?.message || "Erreur lors de la suppression",
+        };
+      }
+    },
   },
 });
