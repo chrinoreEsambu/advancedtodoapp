@@ -64,8 +64,6 @@ const deleteUser = async (userId) => {
     errorMessage.value = result.error;
   }
 };
-
-// Chargement initial
 onMounted(fetchUsers);
 </script>
 

@@ -42,5 +42,5 @@ router.post("/api/admincreateuser", adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
-router.post("/api/adminUpdateTaskState", adminUpdateTaskState);
+router.post("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
 module.exports = router;

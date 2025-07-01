@@ -12,6 +12,7 @@ export const useAdminStore = defineStore("adminstore", {
     role: null,
     errorMessage: null,
     users: [],
+    tasks: [],
     loading: false,
   }),
   actions: {
@@ -74,6 +75,40 @@ export const useAdminStore = defineStore("adminstore", {
           success: false,
           error:
             error.response?.data?.message || "Erreur lors de la suppression",
+        };
+      }
+    },
+
+    async createTask(taskData) {
+      this.loadingTasks = true;
+      try {
+        const response = await api.post("/admincreattask", taskData);
+        this.tasks.push(response.data.task);
+        return { success: true, data: response.data };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.response?.data?.message || "Erreur de création",
+        };
+      } finally {
+        this.loadingTasks = false;
+      }
+    },
+
+    async updateTaskState(taskId, newState) {
+      try {
+        const response = await api.patch(`/adminUpdateTaskState/${taskId}`, {
+          state: newState,
+        });
+        const index = this.tasks.findIndex((t) => t.task_id === taskId);
+        if (index !== -1) {
+          this.tasks[index].state = newState;
+        }
+        return { success: true };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.response?.data?.message || "Erreur de mise à jour",
         };
       }
     },

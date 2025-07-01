@@ -28,10 +28,13 @@
 import { ref, computed } from "vue";
 import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
-
+import assign from "../components/assign.vue";
+import tasklist from "../components/tasklist.vue"
 const tabs = [
   { id: "home", label: "User creation", component: dashelement },
   { id: "user", label: "Users list", component: creatUser },
+  { id: "assign", label: "Assign task", component: assign },
+  { id: "Tasklist", label: "Tasklist", component: tasklist },
 ];
 
 const activeTab = ref("home");
@@ -102,7 +105,7 @@ h3 {
 
 .content-area {
   flex: 1;
-  margin-left: 300px;
+  margin-left: 350px;
   padding: 2rem;
   background-color: #f7f8fa;
 }
@@ -119,7 +122,7 @@ h3 {
     width: 240px;
   }
   .content-area {
-    margin-left: 240px;
+    margin-left: 260px;
   }
 }
 
