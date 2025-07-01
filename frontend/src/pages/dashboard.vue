@@ -12,7 +12,6 @@
           :class="['nav-button', { active: activeTab === tab.id }]"
         >
           {{ tab.label }}
-          
         </button>
       </nav>
     </div>
@@ -22,7 +21,6 @@
         <component :is="activeComponent" class="tab-content" />
       </keep-alive>
     </div>
-    
   </div>
 </template>
 
@@ -33,7 +31,7 @@ import creatUser from "../components/creatUser.vue";
 
 const tabs = [
   { id: "home", label: "User creation", component: dashelement },
-  { id: "user", label: "Assign tasks", component: creatUser },
+  { id: "user", label: "Users list", component: creatUser },
 ];
 
 const activeTab = ref("home");

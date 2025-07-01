@@ -48,5 +48,18 @@ export const useAdminStore = defineStore("adminstore", {
         };
       }
     },
+    async fetchUsers() {
+      this.loadingUsers = true;
+      try {
+        const response = await api.get("/admingetuser");
+        this.users = response.data.findalluser;
+        return { success: true };
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        return { success: false, error: error.response?.data };
+      } finally {
+        this.loadingUsers = false;
+      }
+    },
   },
 });
