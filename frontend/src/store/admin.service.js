@@ -7,6 +7,13 @@ const api = axios.create({
 });
 
 export const useAdminStore = defineStore("adminstore", {
+  state: () => ({
+    admin: null,
+    role: null,
+    errorMessage: null,
+    users: [],
+    loading: false,
+  }),
   actions: {
     async adminlogin(mail, password) {
       try {
@@ -25,6 +32,20 @@ export const useAdminStore = defineStore("adminstore", {
         this.admin = null;
         this.role = null;
         return false;
+      }
+    },
+
+    async createUser(userData) {
+      try {
+        const response = await api.post("/adminCreateUser", userData);
+        return { success: true, data: response.data };
+      } catch (error) {
+        return {
+          success: false,
+          error: {
+            message: error.response?.data?.Message || "Erreur de création",
+          },
+        };
       }
     },
   },
