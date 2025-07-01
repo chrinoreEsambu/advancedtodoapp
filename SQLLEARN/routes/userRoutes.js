@@ -22,6 +22,7 @@ const {
   adminconnexion,
   adminCreateUser,
   admincreatTask,
+  getusertasksfront,
 } = require("../controllers/user.controllers");
 
 const {
@@ -43,4 +44,5 @@ router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
 router.post("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
+router.get("/api/getusertasksfront",getusertasksfront);
 module.exports = router;

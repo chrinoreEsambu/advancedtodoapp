@@ -378,3 +378,49 @@ exports.admincreatTask = async (req, res) => {
   }
 };
 
+
+exports.getusertasksfront = async (req, res) => {
+  try {
+    const user_id = req.session.user_id || req.session.admin_id;
+    const role = req.session?.role;
+
+    if (!user_id) {
+      return res
+        .status(401)
+        .json({ message: "Vous devez être connecté à votre compte" });
+    }
+
+    let tasks;
+    if (role === "admin") {
+      tasks = await prisma.tasks.findMany({
+        include: {
+          creator: true,
+          assignedBy: true,
+          assignee: true,
+        },
+      });
+    } else {
+      tasks = await prisma.tasks.findMany({
+        where: {
+          OR: [{ assigneeId: user_id }, { creatorId: user_id }],
+          state: "delivered",
+        },
+        include: {
+          creator: true,
+          assignedBy: true,
+          assignee: true,
+        },
+      });
+    }
+
+    return res.status(200).json({
+      message: role === "admin" ? "Toutes les tâches" : "Vos tâches",
+      tasks,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la récupération des tâches",
+      error: { message: error.message },
+    });
+  }
+};

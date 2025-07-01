@@ -67,8 +67,8 @@ export const useAdminStore = defineStore("adminstore", {
       this.loadingTasks = true;
       this.error = null;
       try {
-        const response = await api.get("/getusertasks");
-        this.tasks = response.data.tasks || []; // Adapté à votre réponse backend
+        const response = await api.get("/getusertasksfront");
+        this.tasks = response.data.tasks || [];
         return { success: true };
       } catch (error) {
         this.error = error.response?.data?.message || "Erreur de chargement";
@@ -126,6 +126,16 @@ export const useAdminStore = defineStore("adminstore", {
           error: error.response?.data?.message || "Erreur de mise à jour",
         };
       }
+    },
+
+    async logout() {
+      await axios.post(
+        "http://localhost:8000/api/logOut",
+        {},
+        { withCredentials: true }
+      );
+      this.user = null;
+      this.tasks = [];
     },
   },
 });

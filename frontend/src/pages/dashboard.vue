@@ -30,7 +30,9 @@ import { ref, computed } from "vue";
 import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
-import tasklist from "../components/tasklist.vue"
+import tasklist from "../components/tasklist.vue";
+import { useAdminStore } from "../store/admin.service";
+const adminstore = useAdminStore();
 const tabs = [
   { id: "home", label: "User creation", component: dashelement },
   { id: "user", label: "Users list", component: creatUser },
@@ -44,14 +46,24 @@ const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
 
-
 const handleLogout = async () => {
-  await userStore.logout();
+  await adminstore.logout();
   router.push("/");
 };
 </script>
 
 <style scoped>
+.logout-btn {
+  color: rgb(0, 0, 0);
+  background-color: #fdf6d9;
+  outline: none;
+  border: 1px solid #d0ceff;
+  width: 100px;
+  height: 30px;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+}
 h3 {
   align-items: center;
   text-align: center;
