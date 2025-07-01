@@ -13,6 +13,7 @@
         >
           {{ tab.label }}
         </button>
+        <button @click="handleLogout" class="logout-btn">Déconnexion</button>
       </nav>
     </div>
 
@@ -42,6 +43,12 @@ const activeTab = ref("home");
 const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
+
+
+const handleLogout = async () => {
+  await userStore.logout();
+  router.push("/");
+};
 </script>
 
 <style scoped>

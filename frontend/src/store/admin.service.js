@@ -14,6 +14,7 @@ export const useAdminStore = defineStore("adminstore", {
     users: [],
     tasks: [],
     loading: false,
+    error: null,
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -60,6 +61,20 @@ export const useAdminStore = defineStore("adminstore", {
         return { success: false, error: error.response?.data };
       } finally {
         this.loadingUsers = false;
+      }
+    },
+    async getAllUserTasks() {
+      this.loadingTasks = true;
+      this.error = null;
+      try {
+        const response = await api.get("/getusertasks");
+        this.tasks = response.data.tasks || []; // Adapté à votre réponse backend
+        return { success: true };
+      } catch (error) {
+        this.error = error.response?.data?.message || "Erreur de chargement";
+        return { success: false };
+      } finally {
+        this.loadingTasks = false;
       }
     },
 
