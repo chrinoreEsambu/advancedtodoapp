@@ -24,7 +24,7 @@
         <div v-if="role === 'admin'" class="task-state">
           <select
             v-model="task.state"
-            @change="updateTaskState(task.task_id, task.state)"
+            @change ="updateTaskState(task.task_id, task.state)"
             class="state-select"
             :disabled="updatingState === task.task_id"
           >

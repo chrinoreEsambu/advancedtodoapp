@@ -12,7 +12,10 @@
           :class="['nav-button', { active: activeTab === tab.id }]"
         >
           {{ tab.label }}
+
         </button>
+
+        
         <button @click="handleLogout" class="logout-btn">Déconnexion</button>
       </nav>
     </div>

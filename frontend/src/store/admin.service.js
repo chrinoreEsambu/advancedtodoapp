@@ -15,6 +15,7 @@ export const useAdminStore = defineStore("adminstore", {
     tasks: [],
     loading: false,
     error: null,
+    updatingStates: {},
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -124,6 +125,40 @@ export const useAdminStore = defineStore("adminstore", {
         return {
           success: false,
           error: error.response?.data?.message || "Erreur de mise à jour",
+        };
+      }
+    },
+
+    async updateTaskState(taskId, newState) {
+      try {
+        const response = await api.patch(
+          `/admin/adminUpdateTaskState/${taskId}`,
+          {
+            state: newState,
+          }
+        );
+        // ... reste du code
+      } catch (error) {
+        // ... gestion des erreurs
+      }
+    },
+    async updateTaskState(taskId, newState) {
+      try {
+        const response = await api.put(`/taskstate/${taskId}`, {
+          state: newState,
+        });
+
+        // mettre à jour localement la tâche dans this.tasks
+        const index = this.tasks.findIndex((t) => t.task_id === taskId);
+        if (index !== -1) {
+          this.tasks[index].state = newState;
+        }
+
+        return { success: true };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.response?.data?.message || "Erreur inconnue",
         };
       }
     },

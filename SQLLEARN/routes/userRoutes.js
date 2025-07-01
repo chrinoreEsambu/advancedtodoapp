@@ -44,5 +44,10 @@ router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
 router.post("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
-router.get("/api/getusertasksfront",getusertasksfront);
+router.get("/api/getusertasksfront", getusertasksfront);
+router.put(
+  "/api/adminUpdateTaskState:taskId",
+  usersession,
+  adminUpdateTaskState
+);
 module.exports = router;
