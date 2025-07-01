@@ -11,12 +11,11 @@
           @click="activeTab = tab.id"
           :class="['nav-button', { active: activeTab === tab.id }]"
         >
+          <component :is="tab.icon" class="icon" />
           {{ tab.label }}
-
         </button>
 
-        
-        <button @click="handleLogout" class="logout-btn">Déconnexion</button>
+        <button @click="handleLogout" class="logout-btn" > <LogOut class="icon2"/>Déconnexion</button>
       </nav>
     </div>
 
@@ -29,18 +28,36 @@
 </template>
 
 <script setup>
+import {
+  UserRoundPlus,
+  UsersRound,
+  ClipboardCheck,
+  ListTodo,LogOut
+} from "lucide-vue-next";
+
 import { ref, computed } from "vue";
 import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
 import { useAdminStore } from "../store/admin.service";
+
 const adminstore = useAdminStore();
 const tabs = [
-  { id: "home", label: "User creation", component: dashelement },
-  { id: "user", label: "Users list", component: creatUser },
-  { id: "assign", label: "Assign task", component: assign },
-  { id: "Tasklist", label: "Tasklist", component: tasklist },
+  {
+    id: "home",
+    icon: UserRoundPlus,
+    label: "User creation",
+    component: dashelement,
+  },
+  { id: "user", icon: UsersRound, label: "Users list", component: creatUser },
+  {
+    id: "assign",
+    icon: ClipboardCheck,
+    label: "Assign task",
+    component: assign,
+  },
+  { id: "Tasklist", icon: ListTodo, label: "Tasklist", component: tasklist },
 ];
 
 const activeTab = ref("home");
@@ -56,12 +73,21 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+.icon {
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
 .logout-btn {
+  display:flex;
+  align-items: center;
+  justify-content: center;
   color: rgb(0, 0, 0);
   background-color: #fdf6d9;
   outline: none;
   border: 1px solid #d0ceff;
-  width: 100px;
+  width: 110px;
   height: 30px;
   border-radius: 4px;
   margin-top: 20px;
@@ -75,6 +101,9 @@ h3 {
 .dashboard-container {
   display: flex;
   min-height: 100vh;
+  justify-content: left;
+  
+ 
 }
 
 .sidebar-fixed {
@@ -87,18 +116,21 @@ h3 {
   height: 100vh;
   overflow-y: auto;
   border-radius: 10px;
+  
 }
 
 .sidebar-header {
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
+  
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  
 }
 
 .nav-button {
@@ -113,6 +145,9 @@ h3 {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  
 }
 
 .nav-button:hover {
