@@ -201,7 +201,6 @@ exports.logOut = async (req, res) => {
 exports.getusertasks = async (req, res) => {
   try {
     const user_id = req.session.user_id;
-    const role = req.session?.role;
 
     if (!user_id) {
       return res
@@ -209,31 +208,20 @@ exports.getusertasks = async (req, res) => {
         .json({ message: "Vous devez être connecté à votre compte" });
     }
 
-    let tasks;
-    if (role === "admin") {
-      tasks = await prisma.tasks.findMany({
-        include: {
-          creator: true,
-          assignedBy: true,
-          assignee: true,
-        },
-      });
-    } else {
-      tasks = await prisma.tasks.findMany({
-        where: {
-          assigneeId: user_id,
-          state: "delivered",
-        },
-        include: {
-          creator: true,
-          assignedBy: true,
-          assignee: true,
-        },
-      });
-    }
+    const tasks = await prisma.tasks.findMany({
+      where: {
+        assigneeId: user_id,
+        state: "delivered",
+      },
+      include: {
+        creator: true,
+        assignedBy: true,
+        assignee: true,
+      },
+    });
 
     return res.status(200).json({
-      message: role === "admin" ? "Toutes les tâches" : "Vos tâches assignées",
+      message: "Vos tâches assignées",
       tasks,
     });
   } catch (error) {
@@ -297,7 +285,9 @@ exports.adminconnexion = async (req, res) => {
         .json({ message: "mot de passe ou mail incorrect" });
     }
     if (userfinder.role.toLocaleLowerCase() !== "admin") {
-      return res.status(403).json({ message: "Accès réservé aux administrateurs" });
+      return res
+        .status(403)
+        .json({ message: "Accès réservé aux administrateurs" });
     }
     req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
@@ -345,17 +335,17 @@ exports.admincreatTask = async (req, res) => {
         state: state || "pending",
         creator: {
           connect: {
-            user_id: admin_id, 
+            user_id: admin_id,
           },
         },
         assignedBy: {
           connect: {
-            user_id: admin_id, 
+            user_id: admin_id,
           },
         },
         assignee: {
           connect: {
-            user_id: user_id, 
+            user_id: user_id,
           },
         },
       },
@@ -377,7 +367,6 @@ exports.admincreatTask = async (req, res) => {
     });
   }
 };
-
 
 exports.getusertasksfront = async (req, res) => {
   try {
