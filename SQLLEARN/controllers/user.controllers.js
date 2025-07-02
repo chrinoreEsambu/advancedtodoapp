@@ -413,3 +413,30 @@ exports.getusertasksfront = async (req, res) => {
     });
   }
 };
+
+exports.userTasksCount = async (req, res) => {
+  try {
+    const totalUsers = await prisma.users.count();
+    const totalAdmin = await prisma.users.count({ where: { role: "admin" } });
+    const totalNormalUsers = await prisma.users.count({
+      where: { role: "users" },
+    });
+    const totaltasks = await prisma.tasks.count();
+    return res.status(200).json({
+      success:true,
+      message: "totalCouns",
+      stats: {
+        totalUsers,
+        totalAdmin,
+        totalNormalUsers,
+        totaltasks,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la mise à jour de l'état",
+      error: { message: error.message },
+    });
+  }
+};
+

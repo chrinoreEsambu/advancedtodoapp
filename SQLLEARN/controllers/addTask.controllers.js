@@ -108,7 +108,7 @@ exports.adminUpdateTaskState = async (req, res) => {
   }
 };
 
-exports.userTaskCount = async (req, res) => {
+exports.userTasksCount = async (req, res) => {
   try {
     const totalUsers = await prisma.users.count();
     const totalAdmin = await prisma.users.count({ where: { role: "admin" } });
@@ -116,7 +116,15 @@ exports.userTaskCount = async (req, res) => {
       where: { role: "users" },
     });
     const totaltasks = await prisma.tasks.count();
-    return totalUsers, totalAdmin, totalNormalUsers, totaltasks;
+    return res
+      .status(200)
+      .json({
+        message: "totalCouns",
+        totalUsers,
+        totalAdmin,
+        totalNormalUsers,
+        totaltasks,
+      });
   } catch (error) {
     return res.status(500).json({
       message: "Erreur lors de la mise à jour de l'état",

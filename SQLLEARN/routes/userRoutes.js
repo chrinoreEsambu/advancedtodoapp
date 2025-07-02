@@ -23,6 +23,7 @@ const {
   adminCreateUser,
   admincreatTask,
   getusertasksfront,
+  userTasksCount,
 } = require("../controllers/user.controllers");
 
 const {
@@ -50,5 +51,7 @@ router.put(
   usersession,
   adminUpdateTaskState
 );
+
+router.get("/api/adminTaskCount", userTasksCount);
 
 module.exports = router;

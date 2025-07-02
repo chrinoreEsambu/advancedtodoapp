@@ -27,6 +27,18 @@
     </div>
 
     <div class="content-area">
+      <!-- STAT CARDS -->
+      <div class="dashboard-stats">
+        <div class="stat-card" v-for="stat in stats" :key="stat.title">
+          <component :is="stat.icon" class="stat-icon" />
+          <div class="stat-info">
+            <h4>{{ stat.title }}</h4>
+            <p>{{ stat.value }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE CONTENT -->
       <keep-alive>
         <component :is="activeComponent" class="tab-content" />
       </keep-alive>
@@ -44,13 +56,15 @@ import {
   Menu,
 } from "lucide-vue-next";
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
 import { useAdminStore } from "../store/admin.service";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const adminstore = useAdminStore();
 
 const tabs = [
@@ -72,15 +86,28 @@ const tabs = [
 
 const activeTab = ref("home");
 const isSidebarVisible = ref(true);
-
 const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
 
-const handleLogout = async () => {
-  await adminstore.logout();
-  router.push("/");
-};
+const stats = ref([
+  { title: "Utilisateurs", value: 0, icon: UsersRound },
+  { title: "Tâches totales", value: 0, icon: ListTodo },
+  { title: "Tâches livrées", value: 0, icon: ClipboardCheck },
+  { title: "Tâches en attente", value: 0, icon: UserRoundPlus },
+]);
+
+onMounted(async () => {
+  await adminstore.fetchStats();
+  stats.value[0].value = adminstore.users.length;
+  stats.value[1].value = adminstore.tasks.length;
+  stats.value[2].value = adminstore.tasks.filter(
+    (t) => t.state === "delivered"
+  ).length;
+  stats.value[3].value = adminstore.tasks.filter(
+    (t) => t.state === "pending"
+  ).length;
+});
 
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
@@ -91,6 +118,11 @@ const selectTab = (id) => {
   if (window.innerWidth < 768) {
     isSidebarVisible.value = false;
   }
+};
+
+const handleLogout = async () => {
+  await adminstore.logout();
+  router.push("/");
 };
 </script>
 
@@ -210,6 +242,47 @@ h3 {
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 1rem;
+  color: #3f3f3f;
+}
+
+.stat-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.stat-info p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {
