@@ -162,10 +162,13 @@ export const useAdminStore = defineStore("adminstore", {
         };
       }
     },
-
+    async fetchStats() {
+  await axios.get("/adminTaskCount");
+    },
+  
     async logout() {
       await axios.post(
-        "http://localhost:8000/api/logOut",
+        "/logOut",
         {},
         { withCredentials: true }
       );

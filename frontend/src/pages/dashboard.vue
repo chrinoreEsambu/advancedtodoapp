@@ -27,7 +27,7 @@
     </div>
 
     <div class="content-area">
-      <!-- STAT CARDS -->
+      <!-- Statistiques -->
       <div class="dashboard-stats">
         <div class="stat-card" v-for="stat in stats" :key="stat.title">
           <component :is="stat.icon" class="stat-icon" />
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <!-- PAGE CONTENT -->
+      <!-- Page active -->
       <keep-alive>
         <component :is="activeComponent" class="tab-content" />
       </keep-alive>
@@ -57,12 +57,12 @@ import {
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useAdminStore } from "../store/admin.service";
 import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
-import { useAdminStore } from "../store/admin.service";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const adminstore = useAdminStore();
@@ -90,23 +90,20 @@ const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
 
+// Statistiques affichées
 const stats = ref([
-  { title: "Utilisateurs", value: 0, icon: UsersRound },
-  { title: "Tâches totales", value: 0, icon: ListTodo },
-  { title: "Tâches livrées", value: 0, icon: ClipboardCheck },
-  { title: "Tâches en attente", value: 0, icon: UserRoundPlus },
+  { title: "Total utilisateurs", value: 0, icon: UsersRound },
+  { title: "Total admins", value: 0, icon: ListTodo },
+  { title: "Utilisateurs normaux", value: 0, icon: ClipboardCheck },
+  { title: "Tâches totales", value: 0, icon: UserRoundPlus },
 ]);
 
 onMounted(async () => {
   await adminstore.fetchStats();
-  stats.value[0].value = adminstore.users.length;
-  stats.value[1].value = adminstore.tasks.length;
-  stats.value[2].value = adminstore.tasks.filter(
-    (t) => t.state === "delivered"
-  ).length;
-  stats.value[3].value = adminstore.tasks.filter(
-    (t) => t.state === "pending"
-  ).length;
+  stats.value[0].value = adminstore.stats.totalUsers;
+  stats.value[1].value = adminstore.stats.totalAdmin;
+  stats.value[2].value = adminstore.stats.totalNormalUsers;
+  stats.value[3].value = adminstore.stats.totaltasks;
 });
 
 const toggleSidebar = () => {
@@ -127,6 +124,7 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+/* même style que tu as déjà fourni (inchangé) */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -243,7 +241,6 @@ h3 {
   padding: 2rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
-
 
 .dashboard-stats {
   display: grid;
