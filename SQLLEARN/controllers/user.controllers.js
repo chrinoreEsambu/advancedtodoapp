@@ -423,7 +423,7 @@ exports.userTasksCount = async (req, res) => {
     });
     const totaltasks = await prisma.tasks.count();
     return res.status(200).json({
-      success:true,
+      success: true,
       message: "totalCouns",
       stats: {
         totalUsers,
@@ -439,4 +439,3 @@ exports.userTasksCount = async (req, res) => {
     });
   }
 };
-

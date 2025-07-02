@@ -16,6 +16,12 @@ export const useAdminStore = defineStore("adminstore", {
     loading: false,
     error: null,
     updatingStates: {},
+    stats: {
+      totalUsers: 0,
+      totalAdmin: 0,
+      totalNormalUsers: 0,
+      totaltasks: 0,
+    },
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -137,10 +143,7 @@ export const useAdminStore = defineStore("adminstore", {
             state: newState,
           }
         );
-        // ... reste du code
-      } catch (error) {
-        // ... gestion des erreurs
-      }
+      } catch (error) {}
     },
     async updateTaskState(taskId, newState) {
       try {
@@ -163,15 +166,16 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
     async fetchStats() {
-  await axios.get("/adminTaskCount");
+      try {
+        const response = await api.get("/adminTaskCount");
+        this.stats = response.data.stats;
+      } catch (error) {
+        console.log("erreur de la recuperation des stat", error);
+      }
     },
-  
+
     async logout() {
-      await axios.post(
-        "/logOut",
-        {},
-        { withCredentials: true }
-      );
+      await axios.post("/logOut", {}, { withCredentials: true });
       this.user = null;
       this.tasks = [];
     },
