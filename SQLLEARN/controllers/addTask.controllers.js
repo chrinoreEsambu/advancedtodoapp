@@ -107,3 +107,7 @@ exports.adminUpdateTaskState = async (req, res) => {
     });
   }
 };
+
+exports.userTaskCount = async (req, res) => {
+  
+}
