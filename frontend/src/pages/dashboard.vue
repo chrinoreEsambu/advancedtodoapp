@@ -27,7 +27,6 @@
     </div>
 
     <div class="content-area">
-      <!-- Statistiques -->
       <div class="dashboard-stats">
         <div class="stat-card" v-for="stat in stats" :key="stat.title">
           <component :is="stat.icon" class="stat-icon" />
@@ -38,7 +37,6 @@
         </div>
       </div>
 
-      <!-- Page active -->
       <keep-alive>
         <component :is="activeComponent" class="tab-content" />
       </keep-alive>
@@ -90,7 +88,6 @@ const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
 
-// Statistiques affichées
 const stats = ref([
   { title: "Total utilisateurs", value: 0, icon: UsersRound },
   { title: "Total admins", value: 0, icon: ListTodo },
@@ -124,7 +121,6 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
-/* même style que tu as déjà fourni (inchangé) */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
