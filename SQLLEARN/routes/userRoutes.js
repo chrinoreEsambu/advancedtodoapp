@@ -40,7 +40,7 @@ router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
 
-router.post("/api/admincreateuser", adminCreateUser);
+router.post("/api/admincreateuser", validate, adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
