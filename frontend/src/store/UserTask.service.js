@@ -16,7 +16,7 @@ export const useUserStore = defineStore("user", {
         { withCredentials: true }
       );
       this.user = res.data.user;
-      this.tasks = res.data.tasks;
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // Sauvegarde dans localStorage
     },
 
     async fetchTasks() {
