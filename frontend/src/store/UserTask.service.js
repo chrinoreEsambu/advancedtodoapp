@@ -5,7 +5,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
     tasks: [],
-    usersList: [], // pour getuser
+    usersList: [],
   }),
 
   actions: {
@@ -16,7 +16,7 @@ export const useUserStore = defineStore("user", {
         { withCredentials: true }
       );
       this.user = res.data.user;
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // Sauvegarde dans localStorage
+      localStorage.setItem("user", JSON.stringify(res.data.user));
     },
 
     async fetchTasks() {
