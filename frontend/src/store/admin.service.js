@@ -28,13 +28,23 @@ export const useAdminStore = defineStore("adminstore", {
       try {
         const resp = await api.post("/adminconnexion", { mail, password });
 
-        // if (resp.data.user.role.toLowerCase() !== "admin") {
-        //   throw new Error("Accès réservé aux administrateurs");
-        // }
+        if (resp.data.user.role.toLowerCase() !== "admin") {
+          throw new Error("Accès réservé aux administrateurs");
+        }
 
         this.admin = resp.data.user.user_mail;
         this.role = resp.data.user.role;
         this.errorMessage = null;
+
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({
+            email: resp.data.user.
+            user_mail,
+            userRole: resp.data.user.role,
+          })
+        );
+
         return true;
       } catch (error) {
         this.errorMessage = error.response?.data?.message || error.message;
@@ -151,7 +161,6 @@ export const useAdminStore = defineStore("adminstore", {
           state: newState,
         });
 
-        // mettre à jour localement la tâche dans this.tasks
         const index = this.tasks.findIndex((t) => t.task_id === taskId);
         if (index !== -1) {
           this.tasks[index].state = newState;

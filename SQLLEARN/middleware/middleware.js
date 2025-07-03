@@ -11,12 +11,12 @@ const { createUser } = require("../controllers/user.controllers");
 exports.usersession = session({
   secret: "votre_clef_secrete_supersecrete",
   resave: false,
+  sameSite: "lax",
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure: false,
-    maxAge: 1000 * 60 * 60,
-    
+    // maxAge: 1000 * 60 * 60,
   },
 });
 
