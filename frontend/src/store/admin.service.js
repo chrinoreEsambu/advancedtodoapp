@@ -39,9 +39,8 @@ export const useAdminStore = defineStore("adminstore", {
         localStorage.setItem(
           "admin",
           JSON.stringify({
-            email: resp.data.user.
-            user_mail,
-            userRole: resp.data.user.role,
+            email: resp.data.user.user_mail,
+            role: resp.data.user.role,
           })
         );
 
