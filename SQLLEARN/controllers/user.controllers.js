@@ -219,7 +219,7 @@ exports.getusertasks = async (req, res) => {
         assignee: true,
       },
     });
-
+    console.log(user_id);
     return res.status(200).json({
       message: "Vos tâches assignées",
       tasks,
