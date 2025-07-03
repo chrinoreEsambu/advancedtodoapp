@@ -27,7 +27,6 @@
     </div>
 
     <div class="content-area">
-      
       <div class="dashboard-stats">
         <div class="stat-card" v-for="stat in stats" :key="stat.title">
           <component :is="stat.icon" class="stat-icon" />
@@ -38,7 +37,6 @@
         </div>
       </div>
 
-      
       <keep-alive>
         <component :is="activeComponent" class="tab-content" />
       </keep-alive>
@@ -90,12 +88,11 @@ const activeComponent = computed(() => {
   return tabs.find((tab) => tab.id === activeTab.value)?.component;
 });
 
-
 const stats = ref([
-  { title: "Total utilisateurs", value: 0, icon: UsersRound },
+  { title: "Total users", value: 0, icon: UsersRound },
   { title: "Total admins", value: 0, icon: ListTodo },
-  { title: "Utilisateurs normaux", value: 0, icon: ClipboardCheck },
-  { title: "Tâches totales", value: 0, icon: UserRoundPlus },
+  { title: "Normal users", value: 0, icon: ClipboardCheck },
+  { title: "Total tasks", value: 0, icon: UserRoundPlus },
 ]);
 
 onMounted(async () => {
@@ -253,7 +250,7 @@ h3 {
   align-items: center;
   padding: 1.2rem;
   border-radius: 10px;
-  background: #FAE37D;
+  background: #fae37d;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s;
 }
