@@ -123,53 +123,6 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
-    async updateTaskState(taskId, newState) {
-      try {
-        const response = await api.patch(`/adminUpdateTaskState/${taskId}`, {
-          state: newState,
-        });
-        const index = this.tasks.findIndex((t) => t.task_id === taskId);
-        if (index !== -1) {
-          this.tasks[index].state = newState;
-        }
-        return { success: true };
-      } catch (error) {
-        return {
-          success: false,
-          error: error.response?.data?.message || "Erreur de mise à jour",
-        };
-      }
-    },
-
-    async updateTaskState(taskId, newState) {
-      try {
-        const response = await api.patch(
-          `/admin/adminUpdateTaskState/${taskId}`,
-          {
-            state: newState,
-          }
-        );
-      } catch (error) {}
-    },
-    async updateTaskState(taskId, newState) {
-      try {
-        const response = await api.put(`/taskstate/${taskId}`, {
-          state: newState,
-        });
-
-        const index = this.tasks.findIndex((t) => t.task_id === taskId);
-        if (index !== -1) {
-          this.tasks[index].state = newState;
-        }
-
-        return { success: true };
-      } catch (error) {
-        return {
-          success: false,
-          error: error.response?.data?.message || "Erreur inconnue",
-        };
-      }
-    },
     async fetchStats() {
       try {
         const response = await api.get("/adminTaskCount");
@@ -179,16 +132,41 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
-    // async logout() {
-    //   try {
-    //     await api.post("/logOut");
-    //     this.admin = null;
-    //     this.users = [];
-    //     this.tasks = [];
-    //     localStorage.removeItem("admin");
-    //   } catch (error) {
-    //     console.error("Logout error:", error);
-    //   }
-    // },
+    async updateTaskState(taskId, newState) {
+      this.updatingStates[taskId] = true;
+
+      try {
+        const response = await api.patch(`/adminUpdateTaskState/${taskId}`, {
+          newState,
+        });
+
+        const index = this.tasks.findIndex((t) => t.task_id === taskId);
+        if (index !== -1) {
+          this.tasks[index].state = newState;
+        }
+
+        return { success: true };
+      } catch (error) {
+        this.error = error.response?.data?.message || "Échec de la mise à jour";
+        return {
+          success: false,
+          error: this.error,
+        };
+      } finally {
+        this.updatingStates[taskId] = false;
+      }
+    },
+
+    async logoutAdmin() {
+      try {
+        api.post("/logOutAdmin");
+        this.admin = null;
+        this.role = null;
+        localStorage.removeItem(this.admin);
+        console.log("user desconnected successfully");
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    },
   },
 });

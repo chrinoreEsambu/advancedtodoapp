@@ -115,7 +115,7 @@ const selectTab = (id) => {
 };
 
 const handleLogout = async () => {
-  await adminstore.logout();
+  await adminstore.logoutAdmin();
   router.push("/adminlogin");
 };
 </script>

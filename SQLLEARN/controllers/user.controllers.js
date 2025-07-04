@@ -440,7 +440,7 @@ exports.userTasksCount = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+exports.logOutAdmin = async (req, res) => {
   try {
     req.session.destroy((err) => {
       if (err) {
