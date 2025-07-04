@@ -26,21 +26,17 @@ export const useAdminStore = defineStore("adminstore", {
   actions: {
     async adminlogin(mail, password) {
       try {
-        const resp = await api.post("/adminconnexion", { mail, password });
+        const response = await api.post("/adminconnexion", { mail, password });
 
-        if (resp.data.user.role.toLowerCase() !== "admin") {
-          throw new Error("Accès réservé aux administrateurs");
-        }
-
-        this.admin = resp.data.user.user_mail;
-        this.role = resp.data.user.role;
+        this.admin = response.data.user.user_mail;
+        this.role = response.data.user.role;
         this.errorMessage = null;
 
         localStorage.setItem(
-          "admin",
+          "admin_info",
           JSON.stringify({
-            email: resp.data.user.user_mail,
-            role: resp.data.user.role,
+            email: response.data.user.user_mail,
+            role: response.data.user.role,
           })
         );
 
@@ -66,6 +62,7 @@ export const useAdminStore = defineStore("adminstore", {
         };
       }
     },
+
     async fetchUsers() {
       this.loadingUsers = true;
       try {
@@ -182,10 +179,16 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
-    async logout() {
-      await axios.post("/logOut", {}, { withCredentials: true });
-      this.user = null;
-      this.tasks = [];
-    },
+    // async logout() {
+    //   try {
+    //     await api.post("/logOut");
+    //     this.admin = null;
+    //     this.users = [];
+    //     this.tasks = [];
+    //     localStorage.removeItem("admin");
+    //   } catch (error) {
+    //     console.error("Logout error:", error);
+    //   }
+    // },
   },
 });
