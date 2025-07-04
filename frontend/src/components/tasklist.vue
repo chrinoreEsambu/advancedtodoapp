@@ -4,12 +4,17 @@
 
     <div v-if="loading" class="loading-message">Chargement en cours...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
-    <div v-else-if="tasks.length === 0" class="empty-message">
+    <div v-else-if="!tasks.length" class="empty-message">
       Aucune tâche disponible
     </div>
 
     <div v-else class="tasks-container">
-      <div v-for="task in tasks" :key="task.task_id" class="task-item">
+      <div
+        v-for="task in tasks"
+        :key="task.task_id"
+        class="task-item"
+        :class="{ updating: updatingStates[task.task_id] }"
+      >
         <div class="task-info">
           <span class="task-user">{{
             task.assignee?.nom || "Non assigné"
@@ -18,26 +23,29 @@
           <span class="task-meta">
             Créée par {{ task.creator?.nom }} le
             {{ formatDate(task.createdAt) }}
+            <span v-if="task.updatedAt !== task.createdAt">
+              • Modifiée le {{ formatDate(task.updatedAt) }}
+            </span>
           </span>
         </div>
 
         <div v-if="role === 'admin'" class="task-state">
           <select
             v-model="task.state"
-            @change="updateTaskState(task.task_id, task.state)"
+            @change="handleStateChange(task.task_id, $event.target.value)"
             class="state-select"
-            :disabled="updatingState === task.task_id"
+            :disabled="updatingStates[task.task_id]"
           >
             <option value="pending">En attente</option>
             <option value="delivered">Livré</option>
           </select>
-          <span v-if="updatingState === task.task_id" class="updating-text"
-            >Mise à jour...</span
-          >
+          <span v-if="updatingStates[task.task_id]" class="updating-text">
+            Mise à jour...
+          </span>
         </div>
         <div v-else class="task-state">
           <span :class="['state-badge', task.state]">
-            {{ task.state === "delivered" ? "Livré" : "En attente" }}
+            {{ taskStateLabel(task.state) }}
           </span>
         </div>
       </div>
@@ -46,27 +54,36 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 
 const adminStore = useAdminStore();
-const { tasks, loadingTasks, error, role } = storeToRefs(adminStore);
+const {
+  tasks,
+  error,
+  role,
+  updatingStates, // ◽ Utilisation directe du state de mise à jour
+} = storeToRefs(adminStore);
 const loading = ref(false);
-const updatingState = ref(null);
 
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString("fr-FR");
-};
+// Helpers
+const formatDate = (dateString) =>
+  new Date(dateString).toLocaleDateString("fr-FR");
+const taskStateLabel = (state) =>
+  state === "delivered" ? "Livré" : "En attente";
 
-const updateTaskState = async (taskId, newState) => {
-  const result = await adminStore.updateTaskState(taskId, newState);
-  if (!result.success) {
-    
-    console.error(result.error);
+// Gestion des changements d'état
+const handleStateChange = async (taskId, newState) => {
+  const success = await adminStore.updateTaskState(taskId, newState);
+  if (!success) {
+    // Réinitialiser la valeur en cas d'erreur
+    const task = tasks.value.find((t) => t.task_id === taskId);
+    if (task) task.state = task.state === "pending" ? "delivered" : "pending";
   }
 };
 
+// Chargement initial
 const fetchTasks = async () => {
   loading.value = true;
   try {
@@ -77,29 +94,49 @@ const fetchTasks = async () => {
 };
 
 defineExpose({ fetchTasks });
-
 onMounted(fetchTasks);
 </script>
 
 <style scoped>
-/* Styles existants améliorés */
+.tasks-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.task-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  transition: background 0.3s;
+}
+
+.task-item.updating {
+  background-color: #f8f9fa;
+}
+
 .error-message {
-  color: #ff4444;
+  color: #dc3545;
+  padding: 10px;
   text-align: center;
-  padding: 15px;
 }
 
 .task-meta {
   font-size: 0.8rem;
-  color: #666;
-  display: block;
-  margin-top: 5px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.state-select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
 }
 
 .state-badge {
+  display: inline-block;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .state-badge.pending {
@@ -113,8 +150,8 @@ onMounted(fetchTasks);
 }
 
 .updating-text {
-  font-size: 0.8rem;
-  color: #666;
   margin-left: 8px;
+  color: #6c757d;
+  font-size: 0.8rem;
 }
 </style>
