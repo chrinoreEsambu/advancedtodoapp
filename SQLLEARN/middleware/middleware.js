@@ -31,8 +31,6 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-
-
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -41,22 +39,19 @@ app.use(
 );
 
 exports.validate = async (req, res, next) => {
-  const { nom, mail, password } = req.body;
+  const { nom, mail, password, role } = req.body;
+  if (!nom || !mail || !password) {
+    return res
+      .status(400)
+      .json({ message: "Tous les champs sont obligatoires" });
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
     return res.status(400).json({ message: "Format d'email invalide" });
   }
-  try {
-    if (!nom || !mail || !password) {
-      return res.status(400).json({ message: "Empty Fields" });
-    } else {
-      await createUser(req, res);
-      // faire attention a ce middleware
-      return res.status(200).json({ message: "Format d'email invalide" });
-    }
-  } catch (error) {
+  if (role && role !== "admin" && role !== "users") {
     return res
-      .status(500)
-      .json({ message: "server is down", error: { message: error.message } });
+      .status(400)
+      .json({ message: "Rôle invalide. Choisissez 'admin' ou 'users'" });
   }
   next();
 };

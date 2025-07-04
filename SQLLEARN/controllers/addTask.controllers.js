@@ -116,18 +116,50 @@ exports.userTasksCount = async (req, res) => {
       where: { role: "users" },
     });
     const totaltasks = await prisma.tasks.count();
-    return res
-      .status(200)
-      .json({
-        message: "totalCouns",
-        totalUsers,
-        totalAdmin,
-        totalNormalUsers,
-        totaltasks,
-      });
+    return res.status(200).json({
+      message: "totalCouns",
+      totalUsers,
+      totalAdmin,
+      totalNormalUsers,
+      totaltasks,
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Erreur lors de la mise à jour de l'état",
+      error: { message: error.message },
+    });
+  }
+};
+
+exports.adminCreateUser = async (req, res) => {
+  try {
+    const { nom, mail, password, role } = req.body;
+    const date = new Date().getFullYear();
+    const suffix = Math.floor(100 + Math.random() * 900);
+    const user_id = `${date}todox${suffix}`;
+    const finalrole = role || "users";
+
+    const hachpass = await argon2.hash(password, {
+      type: argon2.argon2id,
+      memoryCost: 2 * 12,
+      timeCost: 2,
+      hashLegth: 50,
+      parallelism: 3,
+    });
+
+    const usercreation = await prisma.users.create({
+      data: {
+        user_id,
+        nom,
+        mail,
+        password: hachpass,
+        role: finalrole,
+      },
+    });
+    res.status(201).json({ message: "User creat successfully", usercreation });
+  } catch (error) {
+    res.status(500).json({
+      Message: "Error during user creation",
       error: { message: error.message },
     });
   }
