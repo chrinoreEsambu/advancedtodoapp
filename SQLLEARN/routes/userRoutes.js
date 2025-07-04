@@ -53,5 +53,6 @@ router.put(
 );
 
 router.get("/api/adminTaskCount", userTasksCount);
+router.post("/api/logOutAdmin");
 
 module.exports = router;
