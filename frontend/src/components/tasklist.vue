@@ -24,7 +24,7 @@
         <div v-if="role === 'admin'" class="task-state">
           <select
             v-model="task.state"
-            @change ="updateTaskState(task.task_id, task.state)"
+            @change="updateTaskState(task.task_id, task.state)"
             class="state-select"
             :disabled="updatingState === task.task_id"
           >
@@ -60,14 +60,10 @@ const formatDate = (dateString) => {
 };
 
 const updateTaskState = async (taskId, newState) => {
-  updatingState.value = taskId;
-  try {
-    const result = await adminStore.updateTaskState(taskId, newState);
-    if (!result.success) {
-      console.error(result.error);
-    }
-  } finally {
-    updatingState.value = null;
+  const result = await adminStore.updateTaskState(taskId, newState);
+  if (!result.success) {
+    
+    console.error(result.error);
   }
 };
 

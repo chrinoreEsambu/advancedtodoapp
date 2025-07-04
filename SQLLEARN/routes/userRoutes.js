@@ -25,12 +25,10 @@ const {
   getusertasksfront,
   userTasksCount,
   logOutAdmin,
+  adminUpdateTaskState,
 } = require("../controllers/user.controllers");
 
-const {
-  addtask,
-  adminUpdateTaskState,
-} = require("../controllers/addTask.controllers");
+const { addtask } = require("../controllers/addTask.controllers");
 
 router.post("/api/usercreat", validate, createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
@@ -45,13 +43,13 @@ router.post("/api/admincreateuser", validate, adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
-router.post("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
+router.put("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
 router.get("/api/getusertasksfront", getusertasksfront);
-router.put(
-  "/api/adminUpdateTaskState:taskId",
-  usersession,
-  adminUpdateTaskState
-);
+// router.put(
+//   "/api/adminUpdateTaskState:taskId",
+//   usersession,
+//   adminUpdateTaskState
+// );
 
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);

@@ -136,7 +136,7 @@ export const useAdminStore = defineStore("adminstore", {
       this.updatingStates[taskId] = true;
 
       try {
-        const response = await api.patch(`/adminUpdateTaskState/${taskId}`, {
+        const response = await api.put(`/adminUpdateTaskState/${taskId}`, {
           newState,
         });
 

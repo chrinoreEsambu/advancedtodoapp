@@ -36,77 +36,39 @@ exports.addtask = async (req, res) => {
   }
 };
 
-exports.adminUpdateTaskState = async (req, res) => {
-  try {
-    const role = req.session?.role;
-    const admin_id = req.session?.admin_id;
+// exports.adminUpdateTaskState = async (req, res) => {
+//   try {
+//     const { taskId } = req.params;
+//     const { state } = req.body;
+//     const role = req.session?.role;
 
-    if (!role || role.toLowerCase() !== "admin" || !admin_id) {
-      return res
-        .status(403)
-        .json({ message: "Accès refusé : admin uniquement" });
-    }
+//     if (role !== "admin") {
+//       return res
+//         .status(403)
+//         .json({ message: "Accès réservé aux administrateurs" });
+//     }
 
-    const { task_id } = req.params;
-    const { newState } = req.body;
+//     const updatedTask = await prisma.tasks.update({
+//       where: { task_id: taskId },
+//       data: { state },
+//       include: {
+//         creator: true,
+//         assignedBy: true,
+//         assignee: true,
+//       },
+//     });
 
-    const task = await prisma.tasks.findUnique({ where: { task_id } });
-    if (!task) {
-      return res.status(404).json({ message: "Tâche non trouvée" });
-    }
-
-    const updatedTask = await prisma.tasks.update({
-      where: { task_id },
-      data: {
-        state: newState,
-      },
-    });
-
-    return res.status(200).json({
-      message: `État de la tâche mis à jour : ${newState}`,
-      task: updatedTask,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Erreur lors de la mise à jour de la tâche",
-      error: { message: error.message },
-    });
-  }
-};
-
-exports.adminUpdateTaskState = async (req, res) => {
-  try {
-    const { taskId } = req.params;
-    const { state } = req.body;
-    const role = req.session?.role;
-
-    if (role !== "admin") {
-      return res
-        .status(403)
-        .json({ message: "Accès réservé aux administrateurs" });
-    }
-
-    const updatedTask = await prisma.tasks.update({
-      where: { task_id: taskId },
-      data: { state },
-      include: {
-        creator: true,
-        assignedBy: true,
-        assignee: true,
-      },
-    });
-
-    return res.status(200).json({
-      message: "État de la tâche mis à jour",
-      task: updatedTask,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Erreur lors de la mise à jour de l'état",
-      error: { message: error.message },
-    });
-  }
-};
+//     return res.status(200).json({
+//       message: "État de la tâche mis à jour",
+//       task: updatedTask,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "Erreur lors de la mise à jour de l'état",
+//       error: { message: error.message },
+//     });
+//   }
+// };
 
 exports.userTasksCount = async (req, res) => {
   try {
