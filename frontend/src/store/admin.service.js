@@ -133,14 +133,16 @@ export const useAdminStore = defineStore("adminstore", {
     },
 
     async updateTaskState(taskId, newState) {
+      
       this.updatingStates[taskId] = true;
 
+      console.log("task_id2 :", taskId);
       try {
         const response = await api.put(`/adminUpdateTaskState/${taskId}`, {
           newState,
         });
 
-        const index = this.tasks.findIndex((t) => t.task_id === taskId);
+        const index = this.tasks.findIndex((t) => t.taskId === taskId);
         if (index !== -1) {
           this.tasks[index].state = newState;
         }

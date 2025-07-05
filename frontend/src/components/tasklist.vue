@@ -11,9 +11,9 @@
     <div v-else class="tasks-container">
       <div
         v-for="task in tasks"
-        :key="task.task_id"
+        :key="task.taskId"
         class="task-item"
-        :class="{ updating: updatingStates[task.task_id] }"
+        :class="{ updating: updatingStates[task.taskId] }"
       >
         <div class="task-info">
           <span class="task-user">{{
@@ -34,12 +34,12 @@
             v-model="task.state"
             @change="handleStateChange(task.task_id, $event.target.value)"
             class="state-select"
-            :disabled="updatingStates[task.task_id]"
+            :disabled="updatingStates[task.taskId]"
           >
             <option value="pending">En attente</option>
             <option value="delivered">Livré</option>
           </select>
-          <span v-if="updatingStates[task.task_id]" class="updating-text">
+          <span v-if="updatingStates[task.taskId]" class="updating-text">
             Mise à jour...
           </span>
         </div>
@@ -78,7 +78,7 @@ const handleStateChange = async (taskId, newState) => {
   const success = await adminStore.updateTaskState(taskId, newState);
   if (!success) {
     // Réinitialiser la valeur en cas d'erreur
-    const task = tasks.value.find((t) => t.task_id === taskId);
+    const task = tasks.value.find((t) => t.taskId === taskId);
     if (task) task.state = task.state === "pending" ? "delivered" : "pending";
   }
 };

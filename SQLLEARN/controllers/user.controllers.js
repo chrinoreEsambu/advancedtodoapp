@@ -459,6 +459,7 @@ exports.logOutAdmin = async (req, res) => {
     });
   }
 };
+
 exports.adminUpdateTaskState = async (req, res) => {
   try {
     const role = req.session?.role;
@@ -470,16 +471,18 @@ exports.adminUpdateTaskState = async (req, res) => {
         .json({ message: "Accès refusé : admin uniquement" });
     }
 
-    const { task_id } = req.params;
+    const { taskId } = req.params;
     const { newState } = req.body;
 
-    const task = await prisma.tasks.findUnique({ where: { task_id } });
+    console.log("task_id = ", req.params);
+    const task = await prisma.tasks.findUnique({ where: { task_id: taskId } });
+
     if (!task) {
       return res.status(404).json({ message: "Tâche non trouvée" });
     }
 
     const updatedTask = await prisma.tasks.update({
-      where: { task_id },
+      where: { task_id: taskId },
       data: {
         state: newState,
       },
