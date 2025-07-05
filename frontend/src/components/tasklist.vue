@@ -59,31 +59,22 @@ import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 
 const adminStore = useAdminStore();
-const {
-  tasks,
-  error,
-  role,
-  updatingStates, // ◽ Utilisation directe du state de mise à jour
-} = storeToRefs(adminStore);
+const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
 const loading = ref(false);
 
-// Helpers
 const formatDate = (dateString) =>
   new Date(dateString).toLocaleDateString("fr-FR");
 const taskStateLabel = (state) =>
   state === "delivered" ? "Livré" : "En attente";
 
-// Gestion des changements d'état
 const handleStateChange = async (taskId, newState) => {
   const success = await adminStore.updateTaskState(taskId, newState);
   if (!success) {
-    // Réinitialiser la valeur en cas d'erreur
     const task = tasks.value.find((t) => t.taskId === taskId);
     if (task) task.state = task.state === "pending" ? "delivered" : "pending";
   }
 };
 
-// Chargement initial
 const fetchTasks = async () => {
   loading.value = true;
   try {
