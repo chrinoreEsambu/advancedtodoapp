@@ -35,8 +35,6 @@ exports.addtask = async (req, res) => {
     });
   }
 };
-
-// exports.adminUpdateTaskState = async (req, res) => {
 //   try {
 //     const { taskId } = req.params;
 //     const { state } = req.body;
