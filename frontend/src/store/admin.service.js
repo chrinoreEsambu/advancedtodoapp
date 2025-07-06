@@ -133,7 +133,6 @@ export const useAdminStore = defineStore("adminstore", {
     },
 
     async updateTaskState(taskId, newState) {
-      
       this.updatingStates[taskId] = true;
 
       console.log("task_id2 :", taskId);
@@ -165,7 +164,6 @@ export const useAdminStore = defineStore("adminstore", {
         this.admin = null;
         this.role = null;
         localStorage.removeItem(this.admin);
-        console.log("user desconnected successfully");
       } catch (error) {
         console.error("Logout error:", error);
       }
