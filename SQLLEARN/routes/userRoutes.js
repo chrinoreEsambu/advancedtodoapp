@@ -45,11 +45,6 @@ router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
 router.put("/api/adminUpdateTaskState/:taskId", adminUpdateTaskState);
 router.get("/api/getusertasksfront", getusertasksfront);
-// router.put(
-//   "/api/adminUpdateTaskState:taskId",
-//   usersession,
-//   adminUpdateTaskState
-// );
 
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
