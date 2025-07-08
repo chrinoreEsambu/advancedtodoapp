@@ -2,7 +2,7 @@
   <div class="form-container">
     <div class="form-wrapper">
       <div class="form">
-        <h2>Add a user</h2>
+        <h2>Add user</h2>
 
         <div class="form-row">
           <div class="form-group">
