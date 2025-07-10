@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const Urlconncect = ["https://n95rp9vf-8000.euw.devtunnels.ms/api"];
+const islocaly = window.location.hostname === "localhost";
 const api = axios.create({
-  baseURL: "http://localhost:8000/api" || Urlconncect,
+  baseURL: islocaly
+    ? "http://localhost:8000/api"
+    : "https://n95rp9vf-8000.euw.devtunnels.ms/api",
   withCredentials: true,
 });
 
