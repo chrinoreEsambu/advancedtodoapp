@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+const Urlconncect = ["https://n95rp9vf-8000.euw.devtunnels.ms/api"];
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "http://localhost:8000/api" || Urlconncect,
   withCredentials: true,
 });
 

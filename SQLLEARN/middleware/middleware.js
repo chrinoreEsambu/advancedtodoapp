@@ -31,9 +31,19 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
+const allowOrigin = [
+  "https://n95rp9vf-5173.euw.devtunnels.ms",
+  "http://localhost:5173",
+];
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowOrigin.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
