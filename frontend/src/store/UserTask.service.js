@@ -1,6 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+const islocaly = window.location.hostname === "localhost";
+const api = axios.create({
+  baseURL: islocaly
+    ? "http://localhost:8000/api"
+    : "https://n95rp9vf-8000.euw.devtunnels.ms/api",
+  withCredentials: true,
+});
+
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
@@ -10,74 +18,53 @@ export const useUserStore = defineStore("user", {
 
   actions: {
     async login(user_id, password) {
-      const res = await axios.post(
-        "http://localhost:8000/api/connexion",
-        { user_id, password },
-        { withCredentials: true }
-      );
+      const res = await api.post("/connexion", { user_id, password });
       this.user = res.data.user;
       localStorage.setItem("user", JSON.stringify(res.data.user));
     },
 
     async fetchTasks() {
-      const res = await axios.get("http://localhost:8000/api/getusertasks", {
-        withCredentials: true,
+      const res = await api.get("/getusertasks", {
         headers: {
           "Cache-Control": "no-cache",
           Pragma: "no-cache",
         },
       });
       console.log("Tâches récupérées :", res.data);
-
       this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
     },
 
     async addTask(taskData) {
-      await axios.post("http://localhost:8000/api/addtask", taskData, {
-        withCredentials: true,
-      });
+      await api.post("/addtask", taskData);
       await this.fetchTasks();
     },
 
     async logout() {
-      await axios.post(
-        "http://localhost:8000/api/logOut",
-        {},
-        { withCredentials: true }
-      );
+      await api.post("/logOut", {});
       this.user = null;
       this.tasks = [];
     },
 
     async register(nom, mail, password) {
-      await axios.post(
-        "http://localhost:8000/api/usercreat",
-        { nom: nom, mail: mail, password: password },
-        { withCredentials: true }
-      );
+      await api.post("/usercreat", { nom, mail, password });
     },
 
     async fetchUsers() {
-      const res = await axios.get("http://localhost:8000/api/getuser");
+      const res = await api.get("/getuser");
       this.usersList = res.data;
     },
 
     async getUserById(id) {
-      const res = await axios.get(
-        `http://localhost:8000/api/getuserbyid/${id}`
-      );
+      const res = await api.get(`/getuserbyid/${id}`);
       return res.data;
     },
 
     async updateUser(id, updatedData) {
-      await axios.put(
-        `http://localhost:8000/api/userupdate/${id}`,
-        updatedData
-      );
+      await api.put(`/userupdate/${id}`, updatedData);
     },
 
     async deleteUser(id) {
-      await axios.delete(`http://localhost:8000/api/userdelete/${id}`);
+      await api.delete(`/userdelete/${id}`);
     },
   },
 });
