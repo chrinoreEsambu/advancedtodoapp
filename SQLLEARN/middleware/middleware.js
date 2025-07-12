@@ -31,7 +31,7 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-const allowrigin = [
+const allowOrigin = [
   "https://n95rp9vf-5173.euw.devtunnels.ms",
   "http://localhost:5173",
 ];
