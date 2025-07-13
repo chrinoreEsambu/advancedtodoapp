@@ -6,6 +6,8 @@ const os = require("os");
 const ip = require("ip");
 const session = require("express-session");
 const cors = require("cors");
+import { server } from "socket.io";
+import http from "http";
 
 require("dotenv").config();
 const {
