@@ -26,6 +26,7 @@ model Users {
 model Tasks {
   task_id    String   @id @default(uuid())
   task       String
+  message    String?
   state      String   @default("pending")
   
   creatorId  String?

@@ -3,7 +3,7 @@ const session = require("express-session");
 
 exports.addtask = async (req, res) => {
   try {
-    const { task, state } = req.body;
+    const { task, message, state } = req.body;
     const user_id = req.session.user_id;
 
     if (!user_id) {
@@ -13,6 +13,7 @@ exports.addtask = async (req, res) => {
     const newtask = await prisma.tasks.create({
       data: {
         task,
+        message,
         state: state || "delivered",
         creatorId: user_id,
         assigneeId: user_id,
