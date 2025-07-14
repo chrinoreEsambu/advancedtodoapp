@@ -26,6 +26,7 @@ const {
   userTasksCount,
   logOutAdmin,
   adminUpdateTaskState,
+  addComments,
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -48,5 +49,6 @@ router.get("/api/getusertasksfront", getusertasksfront);
 
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
+router.put("/api/addComments/:task_id", addComments);
 
 module.exports = router;

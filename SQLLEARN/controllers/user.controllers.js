@@ -502,29 +502,39 @@ exports.adminUpdateTaskState = async (req, res) => {
 
 exports.addComments = async (req, res) => {
   try {
-    const { task_id_params } = req.params;
+    const { task_id } = req.params;
     const { commentaire } = req.body;
     const userId = req.session.user_id;
 
-    const taskfinder = await prisma.tasks.findUnique({
-      where: { task_id: parseInt(task_id_params) },
-    });
-    if (!taskfinder) {
-      return res.status(404).json({ message: "Tâche non trouvée" });
-    }
     if (!userId) {
-      return res
-        .status(404)
-        .json({ message: "session Utilisateur non trouvée" });
+      return res.status(401).json({ message: "Utilisateur non authentifié." });
     }
+
+    const task = await prisma.tasks.findUnique({
+      where: { task_id },
+    });
+
+    if (!task) {
+      return res.status(404).json({ message: "Tâche non trouvée." });
+    }
+
+    if (task.assigneeId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Tâche non autorisée pour cet utilisateur." });
+    }
+
     await prisma.tasks.update({
       where: { task_id },
       data: { commentaire },
     });
+
     res.status(200).json({ message: "Commentaire enregistré avec succès." });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "erreur lors de la requete", error: error.message });
+    console.error("Erreur dans addComments :", error);
+    res.status(500).json({
+      message: "Erreur lors de la requête.",
+      error: error.message,
+    });
   }
 };
