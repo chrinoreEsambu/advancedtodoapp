@@ -502,9 +502,21 @@ exports.adminUpdateTaskState = async (req, res) => {
 
 exports.addComments = async (req, res) => {
   try {
-    const { task_id } = req.params;
+    const { task_id_params } = req.params;
     const { commentaire } = req.body;
-    
+    const userId = req.session.user_id;
+
+    const taskfinder = await prisma.tasks.findUnique({
+      where: { task_id: parseInt(task_id_params) },
+    });
+    if (!taskfinder) {
+      return res.status(404).json({ message: "Tâche non trouvée" });
+    }
+    if (!userId) {
+      return res
+        .status(404)
+        .json({ message: "session Utilisateur non trouvée" });
+    }
   } catch (error) {
     res
       .status(500)
