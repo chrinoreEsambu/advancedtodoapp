@@ -6,8 +6,8 @@ const os = require("os");
 const ip = require("ip");
 const session = require("express-session");
 const cors = require("cors");
-import { server } from "socket.io";
-import http from "http";
+const { Server } = require("socket.io");
+const http = require("http");
 
 require("dotenv").config();
 const {
@@ -15,6 +15,7 @@ const {
   validate,
   usersession,
   schekrole,
+  allowOrigin,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
@@ -28,6 +29,10 @@ app.use(validate);
 app.use(express.Router);
 app.use(schekrole);
 const port = process.env.PORT || 5000;
+
+// const io = new Server(Server, {
+//   cors: { origin: [allowOrigin], credentials: true },
+// });
 
 (async () => {
   try {

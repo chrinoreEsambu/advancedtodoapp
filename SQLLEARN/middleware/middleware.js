@@ -48,6 +48,7 @@ app.use(
   })
 );
 
+
 exports.validate = async (req, res, next) => {
   const { nom, mail, password, role } = req.body;
   if (!nom || !mail || !password) {
