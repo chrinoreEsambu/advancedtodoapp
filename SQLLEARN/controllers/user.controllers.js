@@ -499,3 +499,15 @@ exports.adminUpdateTaskState = async (req, res) => {
     });
   }
 };
+
+exports.addComments = async (req, res) => {
+  try {
+    const { task_id } = req.params;
+    const { commentaire } = req.body;
+    
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "erreur lors de la requete", error: error.message });
+  }
+};
