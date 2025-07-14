@@ -517,6 +517,11 @@ exports.addComments = async (req, res) => {
         .status(404)
         .json({ message: "session Utilisateur non trouvée" });
     }
+    await prisma.tasks.update({
+      where: { task_id },
+      data: { commentaire },
+    });
+    res.status(200).json({ message: "Commentaire enregistré avec succès." });
   } catch (error) {
     res
       .status(500)
