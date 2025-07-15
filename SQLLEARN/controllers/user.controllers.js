@@ -259,13 +259,13 @@ exports.adminCreateUser = async (req, res) => {
         role: finalrole,
       },
     });
-    res.status(201).json({ message: "User creat successfully", usercreation });
-
     await logAdminAction(
       req.session.user_id,
       "creation utilisateur",
-      `a créé l'utilisateur ${newUser.user_id} (${newUser.nom})`
+      `a créé l'utilisateur ${usercreation.user_id} (${usercreation.nom})`
     );
+
+    res.status(201).json({ message: "User creat successfully", usercreation });
   } catch (error) {
     res.status(500).json({
       Message: "Error during user creation",

@@ -1,7 +1,5 @@
 const prisma = require("../config/prismaClient");
 
-
-
 const logAdminAction = async (adminId, action, details) => {
   try {
     if (!adminId) {
