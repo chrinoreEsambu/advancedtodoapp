@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE `Log` (
+    `id` VARCHAR(191) NOT NULL,
+    `adminId` VARCHAR(191) NOT NULL,
+    `action` VARCHAR(191) NOT NULL,
+    `details` VARCHAR(191) NOT NULL,
+    `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Log` ADD CONSTRAINT `Log_adminId_fkey` FOREIGN KEY (`adminId`) REFERENCES `Users`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -19,7 +19,7 @@ model Users {
   assignedTasks Tasks[] @relation("assignedTasks") 
   adminAssignedTasks Tasks[] @relation("adminAssignedTasks")
 
-  logRelation Log[] @relation("logRelation")
+  logRelation Logs[] @relation("logRelation")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,7 +44,7 @@ model Tasks {
   updatedAt DateTime @updatedAt
 }
 
-model Log{
+model Logs{
   id String @id @default(uuid())
   adminId  String
   action String
