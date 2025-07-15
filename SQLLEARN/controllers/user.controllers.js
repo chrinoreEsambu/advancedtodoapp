@@ -1,6 +1,7 @@
 const argon2 = require("argon2");
 const prisma = require("../config/prismaClient");
 const session = require("express-session");
+const { logAdminAction } = require("../log/logger.controller");
 
 exports.createUser = async (req, res) => {
   try {
@@ -259,6 +260,12 @@ exports.adminCreateUser = async (req, res) => {
       },
     });
     res.status(201).json({ message: "User creat successfully", usercreation });
+
+    await logAdminAction(
+      req.session.user_id,
+      "creation utilisateur",
+      `a créé l'utilisateur ${newUser.user_id} (${newUser.nom})`
+    );
   } catch (error) {
     res.status(500).json({
       Message: "Error during user creation",
