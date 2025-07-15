@@ -6,18 +6,20 @@ const logAdminAction = async (adminId, action, details) => {
     if (!adminId) {
       console.warn("Admin non identifié. Impossible de logger l'action.");
       return;
-      }
-      
+    }
+
     await prisma.logs.create({
       data: {
         adminId,
         action,
         details,
-        },
-        
+      },
     });
-      
   } catch (error) {
-      res.status(500).json({ message:"error logger",error:{message:error.message} })
+    res
+      .status(500)
+      .json({ message: "error logger", error: { message: error.message } });
   }
 };
+
+module.exports = { logAdminAction };
