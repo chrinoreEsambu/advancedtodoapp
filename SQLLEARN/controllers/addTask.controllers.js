@@ -1,5 +1,6 @@
 const prisma = require("../config/prismaClient");
 const session = require("express-session");
+const { logAdminAction } = require("../log/logger.controller");
 
 exports.addtask = async (req, res) => {
   try {
@@ -117,6 +118,13 @@ exports.adminCreateUser = async (req, res) => {
         role: finalrole,
       },
     });
+
+    await logAdminAction(
+      req.session.admin_id,
+      "création utilisateur",
+      `a créé l'utilisateur ${usercreation.user_id} (${usercreation.nom})`
+    );
+
     res.status(201).json({ message: "User creat successfully", usercreation });
   } catch (error) {
     res.status(500).json({

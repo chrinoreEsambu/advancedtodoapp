@@ -143,6 +143,13 @@ exports.userDelete = async (req, res) => {
         user_id: user_id,
       },
     });
+
+    await logAdminAction(
+      req.session.admin_id,
+      "suppression utilisateur",
+      `a supprimé l'utilisateur ${deleted.user_id} (${deleted.nom})`
+    );
+
     res.status(202).json({
       message: "user deleted successfully",
       deleted,
