@@ -26,6 +26,7 @@ export const useAdminStore = defineStore("adminstore", {
       totalNormalUsers: 0,
       totaltasks: 0,
     },
+    logs: [],
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -170,6 +171,20 @@ export const useAdminStore = defineStore("adminstore", {
         localStorage.removeItem(this.admin);
       } catch (error) {
         console.error("Logout error:", error);
+      }
+    },
+    async adminlog() {
+      try {
+        const response = await api.get("/logs");
+        this.logs = response.data.logs;
+        return { success: true };
+      } catch (error) {
+        console.error("Erreur lors de la récupération des logs:", error);
+        return {
+          success: false,
+          error:
+            error.response?.data?.message || "Erreur lors de la récupération",
+        };
       }
     },
   },
