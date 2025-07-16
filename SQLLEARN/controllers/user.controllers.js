@@ -266,7 +266,6 @@ exports.adminCreateUser = async (req, res) => {
       "creation utilisateur",
       `a créé l'utilisateur ${usercreation.user_id} (${usercreation.nom})`
     );
-    
   } catch (error) {
     res.status(500).json({
       Message: "Error during user creation",

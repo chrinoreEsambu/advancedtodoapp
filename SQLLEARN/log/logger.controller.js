@@ -1,7 +1,6 @@
 const prisma = require("../config/prismaClient");
 const session = require("express-session");
 
-
 const logAdminAction = async (adminId, action, details) => {
   try {
     if (!adminId) {
@@ -17,7 +16,7 @@ const logAdminAction = async (adminId, action, details) => {
       },
     });
   } catch (error) {
-    console.error("Erreur lors du logging :", error.message);
+    console.error("Erreur logger :", error);
   }
 };
 
