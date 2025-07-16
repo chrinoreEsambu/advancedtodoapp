@@ -69,7 +69,7 @@ export const useUserStore = defineStore("user", {
     },
 
     async addComment(taskId, commentaire) {
-      await api.post(`/tasks/${taskId}/comments`, {
+      await api.put(`/addComments/${taskId}`, {
         commentaire,
       });
     },
