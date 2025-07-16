@@ -26,7 +26,7 @@
                 class="question-btn"
                 @click="openCommentModal(task.task_id)"
               >
-                Poser une question
+                ?
               </button>
             </div>
           </li>
@@ -34,7 +34,6 @@
       </div>
     </div>
 
-    <!-- Modal Commentaire -->
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h4>Poser une question</h4>
