@@ -198,16 +198,17 @@ async function submitComment() {
 }
 
 .question-btn {
-  background-color: #3182ce;
-  color: white;
+  background-color: #fae04d;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
   cursor: pointer;
+  margin-left: 50px;
 }
 
 .question-btn:hover {
-  background-color: #2c5282;
+  background-color: #c3ebfc;
 }
 
 .modal-overlay {
@@ -259,16 +260,21 @@ async function submitComment() {
 }
 
 .modal-actions button:first-child {
-  background-color: #3182ce;
-  color: white;
+  background-color: #fae04d;
+  color: rgb(0, 0, 0);
 }
 
+.modal-actions button:hover {
+  background-color: #C3EBFC;
+  transition: 0.2s ease-in-out;
+}
 .modal-actions button:first-child:disabled {
-  background-color: #a0aec0;
+  background-color: #c3ebfc;
   cursor: not-allowed;
 }
 
 .modal-actions button:last-child {
-  background-color: #e2e8f0;
+  background-color: rgb(255, 0, 0);
+  color: #ffff;
 }
 </style>
