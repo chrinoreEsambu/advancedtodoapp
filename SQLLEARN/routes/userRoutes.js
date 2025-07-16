@@ -30,6 +30,7 @@ const {
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
+const { logAdminAction } = require("../log/logger.controller");
 
 router.post("/api/usercreat", validate, createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
@@ -50,5 +51,6 @@ router.get("/api/getusertasksfront", getusertasksfront);
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
 router.put("/api/addComments/:task_id", addComments);
+router.get("/api/logs", logAdminAction);
 
 module.exports = router;
