@@ -44,16 +44,22 @@ exports.getUser = async (req, res) => {
     const findalluser = await prisma.users.findMany({
       // skip:1,
       // take:2
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     if (findalluser.length > 0) {
+      await logAdminAction(
+        req.session.admin_id,
+        "récupération utilisateurs",
+        `a consulté la liste des utilisateurs`
+      );
       res.status(200).json({ message: "All user", findalluser });
     } else {
       res.status(204).json({ message: "nothing find", findalluser });
     }
   } catch (error) {
-    if (findalluser > 0) {
-    }
     res.status(500).json({
       Message: "error durring getuser request",
       error: { message: error.message },
