@@ -62,7 +62,7 @@ import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
-import logList from "../components/logList.vue"
+import logList from "../components/logList.vue";
 
 const router = useRouter();
 const adminstore = useAdminStore();

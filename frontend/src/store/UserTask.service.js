@@ -67,5 +67,11 @@ export const useUserStore = defineStore("user", {
     async deleteUser(id) {
       await api.delete(`/userdelete/${id}`);
     },
+
+    async addComment(taskId, commentaire) {
+      await api.post(`/tasks/${taskId}/comments`, {
+        commentaire,
+      });
+    },
   },
 });

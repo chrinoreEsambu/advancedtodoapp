@@ -1,21 +1,19 @@
 <template>
   <div class="logs-container">
-    <h2>Journal des actions admin</h2>
+    <h2>Journal Actions admins</h2>
 
     <div v-if="loading" class="loading-message">Chargement des logs...</div>
     <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
     </div>
     <div v-else class="logs-list">
-      <div
-        v-for="log in logs"
-        :key="log.log_id"
-        class="log-item"
-      >
+      <div v-for="log in logs" :key="log.log_id" class="log-item">
         <p><span class="label">Admin ID:</span> {{ log.adminId }}</p>
         <p><span class="label">Action:</span> {{ log.action }}</p>
         <p><span class="label">Détail:</span> {{ log.details }}</p>
-        <p class="log-date">{{ new Date(log.createdAt).toLocaleString() }}</p>
+        <p class="log-date">{{ new Date(log.createAt).toLocaleString() }}</p>
+
+        
       </div>
     </div>
   </div>
@@ -43,12 +41,12 @@ onMounted(async () => {
 .logs-list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; 
+  gap: 1.25rem;
 }
 
 .log-item {
   padding: 1rem 1.25rem;
-  border-left: 6px solid #e14242; 
+  border-left: 6px solid #e14242;
   border-radius: 0.5rem;
   background-color: #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
@@ -79,5 +77,4 @@ onMounted(async () => {
   border-top: 1px dashed #cbd5e0;
   padding-top: 0.5rem;
 }
-
 </style>

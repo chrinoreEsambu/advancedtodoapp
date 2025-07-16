@@ -19,10 +19,34 @@
         <h3>Mes Tâches :</h3>
         <div v-if="safeTasks.length === 0">Aucune tâche pour le moment.</div>
         <ul>
-          <li v-for="task in safeTasks" :key="task.id">
-            {{ task.task }}
+          <li v-for="task in safeTasks" :key="task.task_id" class="task-item">
+            <div>
+              {{ task.task }}
+              <button
+                class="question-btn"
+                @click="openCommentModal(task.task_id)"
+              >
+                Poser une question
+              </button>
+            </div>
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!-- Modal Commentaire -->
+    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <h4>Poser une question</h4>
+        <textarea
+          v-model="comment"
+          placeholder="Votre question ici..."
+          rows="4"
+        ></textarea>
+        <div class="modal-actions">
+          <button @click="submitComment" :disabled="sending">Envoyer</button>
+          <button @click="closeModal" :disabled="sending">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
@@ -34,14 +58,20 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
 
 const router = useRouter();
-const taskText = ref("");
 const userStore = useUserStore();
 
+const taskText = ref("");
+const comment = ref("");
+const showModal = ref(false);
+const sending = ref(false);
+const currentTaskId = ref(null);
 
-const safeTasks = computed(() => Array.isArray(userStore.tasks) ? userStore.tasks : []);
+const safeTasks = computed(() =>
+  Array.isArray(userStore.tasks) ? userStore.tasks : []
+);
 
 onMounted(async () => {
-  await userStore.fetchTasks(); 
+  await userStore.fetchTasks();
 });
 
 const handleAddTask = async () => {
@@ -55,6 +85,38 @@ const handleLogout = async () => {
   await userStore.logout();
   router.push("/");
 };
+
+function openCommentModal(taskId) {
+  currentTaskId.value = taskId;
+  comment.value = "";
+  showModal.value = true;
+}
+
+function closeModal() {
+  if (sending.value) return;
+  showModal.value = false;
+  currentTaskId.value = null;
+  comment.value = "";
+}
+
+async function submitComment() {
+  if (!comment.value.trim()) {
+    alert("Le commentaire ne peut pas être vide.");
+    return;
+  }
+  sending.value = true;
+  try {
+    await userStore.addComment(currentTaskId.value, comment.value);
+    alert("Question envoyée avec succès.");
+    showModal.value = false;
+    await userStore.fetchTasks();
+  } catch (error) {
+    alert("Erreur lors de l'envoi de la question.");
+    console.error(error);
+  } finally {
+    sending.value = false;
+  }
+}
 </script>
 
 <style scoped>
@@ -131,5 +193,83 @@ const handleLogout = async () => {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-btn {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.question-btn:hover {
+  background-color: #2c5282;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content h4 {
+  margin-bottom: 10px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background-color: #3182ce;
+  color: white;
+}
+
+.modal-actions button:first-child:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.modal-actions button:last-child {
+  background-color: #e2e8f0;
 }
 </style>
