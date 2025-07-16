@@ -580,7 +580,7 @@ exports.getAdminLogs = async (req, res) => {
 
     const logs = await prisma.logs.findMany({
       orderBy: {
-        createdAt: "desc",
+        createAt: "desc",
       },
     });
 
