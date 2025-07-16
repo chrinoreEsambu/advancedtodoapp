@@ -300,6 +300,12 @@ exports.adminconnexion = async (req, res) => {
     req.session.role = userfinder.role;
     req.session.admin_id = userfinder.user_id;
 
+    await logAdminAction(
+      req.session.admin_id,
+      "connexion admi",
+      `admin ${userfinder.mail}`
+    );
+
     return res.status(200).json({
       message: "Bienvenue admin",
       user: {
@@ -541,6 +547,28 @@ exports.addComments = async (req, res) => {
     console.error("Erreur dans addComments :", error);
     res.status(500).json({
       message: "Erreur lors de la requête.",
+      error: error.message,
+    });
+  }
+};
+
+exports.getAdminLogs = async (req, res) => {
+  try {
+    const role = req.session?.role;
+    if (role !== "admin") {
+      return res.status(403).json({ message: "Accès refusé" });
+    }
+
+    const logs = await prisma.logs.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({ message: "Logs des actions admin", logs });
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur lors de la récupération des logs",
       error: error.message,
     });
   }
