@@ -1,29 +1,21 @@
 <template>
-  <div class="p-4">
-    <h2 class="text-xl font-semibold mb-4">Journal des actions admin</h2>
+  <div class="logs-container">
+    <h2>Journal des actions admin</h2>
 
-    <div v-if="loading" class="text-gray-500">Chargement des logs...</div>
-    <div v-else-if="logs.length === 0" class="text-gray-500">
+    <div v-if="loading" class="loading-message">Chargement des logs...</div>
+    <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
     </div>
-    <div v-else class="space-y-3">
+    <div v-else class="logs-list">
       <div
         v-for="log in logs"
         :key="log.log_id"
-        class="p-4 border rounded-md shadow-sm bg-white"
+        class="log-item"
       >
-        <p class="text-sm text-gray-700">
-          <span class="font-semibold">Admin ID:</span> {{ log.adminId }}
-        </p>
-        <p class="text-sm text-gray-700">
-          <span class="font-semibold">Action:</span> {{ log.action }}
-        </p>
-        <p class="text-sm text-gray-700">
-          <span class="font-semibold">Détail:</span> {{ log.details }}
-        </p>
-        <p class="text-xs text-gray-500 italic">
-          {{ new Date(log.createdAt).toLocaleString() }}
-        </p>
+        <p><span class="label">Admin ID:</span> {{ log.adminId }}</p>
+        <p><span class="label">Action:</span> {{ log.action }}</p>
+        <p><span class="label">Détail:</span> {{ log.details }}</p>
+        <p class="log-date">{{ new Date(log.createdAt).toLocaleString() }}</p>
       </div>
     </div>
   </div>
@@ -48,5 +40,44 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; 
+}
+
+.log-item {
+  padding: 1rem 1.25rem;
+  border-left: 6px solid #e14242; 
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* .log-item:hover {
+  background-color: #f1f5f9;
+  transform: scale(1.01); 
+} */
+
+.log-item p {
+  font-size: 0.9rem;
+  color: #2d3748;
+  margin: 0.35rem 0;
+}
+
+.label {
+  font-weight: bold;
+  color: #1a202c;
+}
+
+.log-date {
+  font-size: 0.75rem;
+  color: #718096;
+  font-style: italic;
+  margin-top: 0.75rem;
+  border-top: 1px dashed #cbd5e0;
+  padding-top: 0.5rem;
+}
 
 </style>
