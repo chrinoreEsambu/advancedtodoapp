@@ -52,6 +52,7 @@ import {
   ListTodo,
   LogOut,
   Menu,
+  FileClock,
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
@@ -61,6 +62,7 @@ import dashelement from "../components/dashelement.vue";
 import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
+import logList from "../components/logList.vue"
 
 const router = useRouter();
 const adminstore = useAdminStore();
@@ -80,6 +82,7 @@ const tabs = [
     component: assign,
   },
   { id: "Tasklist", icon: ListTodo, label: "Tasklist", component: tasklist },
+  { id: "logList", icon: FileClock, label: "Log list", component: logList },
 ];
 
 const activeTab = ref("home");
