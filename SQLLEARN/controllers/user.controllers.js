@@ -163,36 +163,29 @@ exports.userDelete = async (req, res) => {
 };
 
 exports.connexion = async (req, res) => {
-  const { mail, password } = req.body;
-
   try {
-    const user = await prisma.users.findUnique({
-      where: { mail },
+    const { user_id, password } = req.body;
+    const userfinder = await prisma.users.findUnique({
+      where: { user_id },
     });
-
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    if (!userfinder) {
+      return res.status(401).json({ message: "User not found" });
     }
+    const compare = await argon2.verify(userfinder.password, password);
 
-    const isMatch = await argon2.verify(user.password, password);
-
-    if (!isMatch) {
-      return res.status(401).json({ message: "Mot de passe incorrect." });
+    if (compare) {
+      req.session.user_id = user_id;
+      return res.status(200).json({ message: "bienvenue", user: user_id });
+    } else {
+      return res
+        .status(401)
+        .json({ message: "mot de passe ou userId incorrect" });
     }
-
-    req.session.user = {
-      id: user.user_id,
-      nom: user.nom,
-      mail: user.mail,
-      role: user.role,
-    };
-
-    res
-      .status(200)
-      .json({ message: "Connexion réussie", user: req.session.user });
   } catch (error) {
-    console.error("Erreur de connexion :", error);
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({
+      message: "error during connexion",
+      error: { message: error.message },
+    });
   }
 };
 

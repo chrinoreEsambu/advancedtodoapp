@@ -264,9 +264,9 @@ async function submitComment() {
   color: rgb(0, 0, 0);
 }
 
-.modal-actions button:hover {
-  background-color: #C3EBFC;
-  transition: 0.2s ease-in-out;
+.modal-actions button:hover r {
+  background-color: #fae04d;
+  color: rgb(0, 0, 0);
 }
 .modal-actions button:first-child:disabled {
   background-color: #c3ebfc;
