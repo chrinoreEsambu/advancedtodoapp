@@ -385,7 +385,7 @@ exports.admincreatTask = async (req, res) => {
     await logAdminAction(
       req.session.admin_id,
       "création tâche",
-      `a assigné une tâche à l'utilisateur ${user_id} (${userfind.nom})`
+      `A assigné une tâche à l'utilisateur ${user_id} (${userfind.nom})`
     );
 
     return res.status(201).json({

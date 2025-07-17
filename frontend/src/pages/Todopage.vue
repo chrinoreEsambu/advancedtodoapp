@@ -36,7 +36,7 @@
 
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
-        <h4>Poser une question</h4>
+        <h4>Poser ta question</h4>
         <textarea
           v-model="comment"
           placeholder="Votre question ici..."
@@ -264,9 +264,10 @@ async function submitComment() {
   color: rgb(0, 0, 0);
 }
 
-.modal-actions button:hover r {
-  background-color: #fae04d;
+.modal-actions button:hover  {
+  background-color: #C3EBFC;
   color: rgb(0, 0, 0);
+  transition: 0.2 ease-out;
 }
 .modal-actions button:first-child:disabled {
   background-color: #c3ebfc;
@@ -276,5 +277,9 @@ async function submitComment() {
 .modal-actions button:last-child {
   background-color: rgb(255, 0, 0);
   color: #ffff;
+}
+.modal-actions button:last-child:hover {
+  background-color: #DC3545;
+  
 }
 </style>

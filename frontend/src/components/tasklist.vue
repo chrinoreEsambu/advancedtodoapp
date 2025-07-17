@@ -19,14 +19,18 @@
           <span class="task-user">{{
             task.assignee?.nom || "Non assigné"
           }}</span>
-          <span class="task-text">{{ task.task }}</span>
+          <span class="task-text">_{{ task.task }}</span>
+          
           <span class="task-meta">
             Créée par {{ task.creator?.nom }} le
             {{ formatDate(task.createdAt) }}
             <span v-if="task.updatedAt !== task.createdAt">
               • Modifiée le {{ formatDate(task.updatedAt) }}
             </span>
+            <br>
+            <span class="redo">Commentaire : {{ task.commentaire }}</span>
           </span>
+          
         </div>
 
         <div v-if="role === 'admin'" class="task-state">
@@ -89,6 +93,9 @@ onMounted(fetchTasks);
 </script>
 
 <style scoped>
+.redo {
+  color: #005b47;
+}
 .tasks-list {
   max-width: 800px;
   margin: 0 auto;
