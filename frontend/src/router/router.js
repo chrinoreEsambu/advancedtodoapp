@@ -21,12 +21,10 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const adminStore = useAdminStore();
 
- 
   if (to.path === "/dashboard") {
     if (!adminStore.role) {
       return next("/adminlogin");
@@ -34,7 +32,6 @@ router.beforeEach((to, from, next) => {
     return next();
   }
 
-  
   if (to.meta.requiresAuth && !userStore.user) {
     return next("/");
   }
