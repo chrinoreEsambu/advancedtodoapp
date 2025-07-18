@@ -127,7 +127,7 @@ const handleLogout = async () => {
 
 <style scoped>
 .main_title {
-  color: #84a98c;
+  color: #84a98c; 
 }
 .dashboard-container {
   display: flex;

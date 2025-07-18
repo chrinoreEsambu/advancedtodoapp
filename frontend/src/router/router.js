@@ -21,7 +21,7 @@ const router = createRouter({
   routes,
 });
 
-// --
+
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const adminStore = useAdminStore();
