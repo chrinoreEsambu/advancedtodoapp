@@ -16,7 +16,7 @@ const logAdminAction = async (adminId, action, details) => {
       },
     });
   } catch (error) {
-    console.error("Erreur logger :", error);
+    console.error("Error logger :", error);
   }
 };
 
