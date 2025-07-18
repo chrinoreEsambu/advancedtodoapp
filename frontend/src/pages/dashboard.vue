@@ -6,7 +6,9 @@
 
     <div :class="['sidebar-fixed', { 'sidebar-hidden': !isSidebarVisible }]">
       <div class="sidebar-header">
-        <h3><span class="main_title">Admin <br></span>todox-Dash</h3>
+        <h3>
+          <span class="main_title">Admin <br /></span>todox-Dash
+        </h3>
       </div>
       <nav class="sidebar-nav">
         <button
@@ -125,9 +127,7 @@ const handleLogout = async () => {
 
 <style scoped>
 .main_title {
-  color: #f4a261;
-  
-  
+  color: #84a98c;
 }
 .dashboard-container {
   display: flex;
