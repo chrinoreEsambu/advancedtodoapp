@@ -31,7 +31,6 @@ const {
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
-const { logAdminAction } = require("../log/logger.controller");
 
 router.post("/api/usercreat", validate, createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
