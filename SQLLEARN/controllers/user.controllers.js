@@ -414,6 +414,8 @@ exports.getusertasksfront = async (req, res) => {
     let tasks;
     if (role === "admin") {
       tasks = await prisma.tasks.findMany({
+        // skip: 1,
+        // take: 5,
         include: {
           creator: true,
           assignedBy: true,
