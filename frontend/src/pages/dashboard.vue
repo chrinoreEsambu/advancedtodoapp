@@ -7,7 +7,9 @@
     <div :class="['sidebar-fixed', { 'sidebar-hidden': !isSidebarVisible }]">
       <div class="sidebar-header">
         <h3>
-          <span class="main_title">Admin <br /></span>todox-Dash
+          <span class="main_title"
+            ><img src="/box.png" class="imgTop" />Admin <br /></span
+          >todox-Dash
         </h3>
       </div>
       <nav class="sidebar-nav">
@@ -127,7 +129,13 @@ const handleLogout = async () => {
 
 <style scoped>
 .main_title {
-  color: #84a98c; 
+  color: #84a98c;
+}
+.imgTop {
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  margin-left: -20px;
 }
 .dashboard-container {
   display: flex;
@@ -173,6 +181,7 @@ const handleLogout = async () => {
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
+  margin-top: -20px;
 }
 
 .sidebar-nav {
