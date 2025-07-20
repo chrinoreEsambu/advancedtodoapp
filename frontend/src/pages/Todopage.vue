@@ -264,8 +264,8 @@ async function submitComment() {
   color: rgb(0, 0, 0);
 }
 
-.modal-actions button:hover  {
-  background-color: #C3EBFC;
+.modal-actions button:hover {
+  background-color: #c3ebfc;
   color: rgb(0, 0, 0);
   transition: 0.2 ease-out;
 }
@@ -279,7 +279,6 @@ async function submitComment() {
   color: #ffff;
 }
 .modal-actions button:last-child:hover {
-  background-color: #DC3545;
-  
+  background-color: #dc3545;
 }
 </style>
