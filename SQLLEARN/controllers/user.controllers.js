@@ -53,7 +53,7 @@ exports.getUser = async (req, res) => {
       await logAdminAction(
         req.session.admin_id,
         "récupération utilisateurs",
-        `a consulté la liste des utilisateurs`
+        `consultion la liste des utilisateurs`
       );
       res.status(200).json({ message: "All user", findalluser });
     } else {
@@ -72,7 +72,7 @@ exports.getUserByid = async (req, res) => {
     const { user_id } = req.params;
     const findbyid = await prisma.users.findUnique({
       where: {
-        user_id,
+        user_id: user_id,
       },
     });
     if (!findbyid) {
