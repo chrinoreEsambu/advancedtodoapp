@@ -135,7 +135,7 @@ exports.userDelete = async (req, res) => {
     finder(user_id);
     if (!user_id) {
       res.status(204).json({
-        message: "User doesn't exit in db",
+        message: "User doesn't exit !",
       });
     }
     const deleted = await prisma.users.delete({
