@@ -32,8 +32,8 @@ export const useUserStore = defineStore("user", {
           Pragma: "no-cache",
         },
       });
-      console.log("Tâches récupérées :", res.data);
-      this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
+      // console.log("Tâches récupérées :", res.data);
+      this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : ["vide oh"];
     },
 
     async addTask(taskData) {
