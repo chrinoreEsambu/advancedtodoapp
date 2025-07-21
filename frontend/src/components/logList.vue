@@ -5,15 +5,24 @@
     <div v-if="loading" class="loading-message">Chargement des logs...</div>
     <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
+
+      <div class="pagination">
+        <button class="pagination-btn">
+          <ChevronLeft />
+        </button>
+        <span class="pagination-text">Page </span>
+        <button class="pagination-btn">
+          <ChevronRight />
+        </button>
+      </div>
     </div>
+
     <div v-else class="logs-list">
       <div v-for="log in logs" :key="log.log_id" class="log-item">
         <p><span class="label">Admin ID:</span> {{ log.adminId }}</p>
         <p><span class="label">Action:</span> {{ log.action }}</p>
         <p><span class="label">Détail:</span> {{ log.details }}</p>
         <p class="log-date">{{ new Date(log.createAt).toLocaleString() }}</p>
-
-        
       </div>
     </div>
   </div>
@@ -22,6 +31,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useAdminStore } from "../store/admin.service";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 
 const adminStore = useAdminStore();
 const loading = ref(true);
@@ -38,6 +48,34 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  background-color: #f1f1f1;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.pagination-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.pagination-text {
+  font-weight: bold;
+  font-size: 15px;
+}
+
 .logs-list {
   display: flex;
   flex-direction: column;
