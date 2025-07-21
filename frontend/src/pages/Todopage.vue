@@ -18,9 +18,9 @@
       <div class="tasks">
         <h3>Mes Tâches :</h3>
         
-        <div v-if="safeTasks.length === 0">Aucune tâche pour le moment !</div>
+        <div v-if="userStore.tasks.length === 0">Aucune tâche pour le moment !</div>
         <ul>
-          <li v-for="task in safeTasks" :key="task.task_id" class="task-item">
+          <li v-for="task in userStore.tasks" :key="task.task_id" class="task-item">
             <div>
               {{ task.task }}
               <button
@@ -69,9 +69,9 @@ const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
 
-const safeTasks = computed(() =>
-  Array.isArray(userStore.tasks) ? userStore.tasks : []
-);
+// const safeTasks = computed(() =>
+//   Array.isArray(userStore.tasks) ? userStore.tasks : []
+// );
 
 onMounted(async () => {
   await userStore.fetchTasks();
