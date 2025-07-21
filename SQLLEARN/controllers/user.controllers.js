@@ -147,7 +147,7 @@ exports.userDelete = async (req, res) => {
     await logAdminAction(
       req.session.admin_id,
       "suppression utilisateur",
-      `a supprimé l'utilisateur ${deleted.user_id} (${deleted.nom})`
+      `suppretion utilisateur ${deleted.user_id} (${deleted.nom})`
     );
 
     res.status(202).json({
@@ -195,7 +195,7 @@ exports.logOut = async (req, res) => {
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).json({
-          message: "logout during logout request",
+          message: "error during logout request",
           error: { message: error.message },
         });
       }
