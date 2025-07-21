@@ -592,9 +592,10 @@ exports.getAdminLogs = async (req, res) => {
         createAt: "desc",
       },
     });
-    // const compter = await prisma.tasks.count();
-    // return res.status(200).json({ message: "nbr tasks", compter });
-    return res.status(200).json({ message: "Logs des actions admin", logs });
+    const compter = await prisma.tasks.count();
+    return res
+      .status(200)
+      .json({ message: "Logs des actions admin", compter, logs });
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la récupération des logs",
