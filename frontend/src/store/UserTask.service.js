@@ -16,6 +16,7 @@ export const useUserStore = defineStore("user", {
     user: null,
     tasks: [],
     usersList: [],
+    loading: false,
   }),
 
   actions: {
@@ -26,14 +27,22 @@ export const useUserStore = defineStore("user", {
     },
 
     async fetchTasks() {
-      const res = await api.get("/getusertasks", {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-      // console.log("Tâches récupérées :", res.data);
-      this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : ["vide oh"];
+      this.loading = true;
+      try {
+        const res = await api.get("/getusertasks", {
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        });
+        // console.log("Tâches récupérées :", res.data);
+        this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
+      } catch (error) {
+        this.error =
+          error.reponse?.data?.messaage || "error lors du chargement";
+      } finally {
+        this.loading = false;
+      }
     },
 
     async addTask(taskData) {
