@@ -35,6 +35,7 @@ const allowOrigin = [
   "https://n95rp9vf-5173.euw.devtunnels.ms",
   "http://localhost:5173",
 ];
+
 app.use(
   cors({
     origin: function (origin, callback) {
