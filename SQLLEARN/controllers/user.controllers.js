@@ -580,7 +580,13 @@ exports.getAdminLogs = async (req, res) => {
       return res.status(403).json({ message: "Accès refusé" });
     }
 
+    const page = parseInt(req.params.page) || 1;
+    const limit = parserInt(req.params.limit) || 3;
+
     const logs = await prisma.logs.findMany({
+      skip,
+      take: 3,
+
       orderBy: {
         createAt: "desc",
       },

@@ -17,19 +17,25 @@
 
       <div class="tasks">
         <h3>Mes Tâches :</h3>
-        
-        <div v-if="userStore.tasks.length === 0">Aucune tâche pour le moment !</div>
+
+        <div v-if="userStore.tasks.length === 0">
+          Aucune tâche pour le moment !
+        </div>
         <ul>
-          <li v-for="task in userStore.tasks" :key="task.task_id" class="task-item">
+          <li
+            v-for="task in userStore.tasks"
+            :key="task.task_id"
+            class="task-item"
+          >
             <div>
               {{ task.task }}
-              <button
-                class="question-btn"
-                @click="openCommentModal(task.task_id)"
-              >
-                ?
-              </button>
             </div>
+            <button
+              class="question-btn"
+              @click="openCommentModal(task.task_id)"
+            >
+              ?
+            </button>
           </li>
         </ul>
       </div>
