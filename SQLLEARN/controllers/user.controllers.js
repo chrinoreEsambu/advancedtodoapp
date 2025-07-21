@@ -580,9 +580,10 @@ exports.getAdminLogs = async (req, res) => {
       return res.status(403).json({ message: "Accès refusé" });
     }
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parserInt(req.query.limit) || 3;
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 3;
     const jump = (page - 1) * limit;
+
     const logs = await prisma.logs.findMany({
       skip: jump,
       take: limit,
@@ -591,7 +592,8 @@ exports.getAdminLogs = async (req, res) => {
         createAt: "desc",
       },
     });
-
+    // const compter = await prisma.tasks.count();
+    // return res.status(200).json({ message: "nbr tasks", compter });
     return res.status(200).json({ message: "Logs des actions admin", logs });
   } catch (error) {
     res.status(500).json({
