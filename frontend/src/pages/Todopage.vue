@@ -17,6 +17,7 @@
 
       <div class="tasks">
         <h3>Mes Tâches :</h3>
+        
         <div v-if="safeTasks.length === 0">Aucune tâche pour le moment !</div>
         <ul>
           <li v-for="task in safeTasks" :key="task.task_id" class="task-item">
