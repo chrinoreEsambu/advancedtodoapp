@@ -582,10 +582,10 @@ exports.getAdminLogs = async (req, res) => {
 
     const page = parseInt(req.params.page) || 1;
     const limit = parserInt(req.params.limit) || 3;
-
+    const jump = (page - 1) * limit;
     const logs = await prisma.logs.findMany({
-      skip,
-      take: 3,
+      skip: jump,
+      take: limit,
 
       orderBy: {
         createAt: "desc",
