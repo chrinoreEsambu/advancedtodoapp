@@ -2,6 +2,16 @@
   <div class="logs-container">
     <h2>Journal Actions admins</h2>
 
+    <div class="pagination">
+      <button class="pagination-btn" @click="prevPage">
+        <ChevronLeft />
+      </button>
+      <span class="pagination-text">Page {{ page }}/{{ compter }}</span>
+      <button class="pagination-btn" @click="nextPage">
+        <ChevronRight />
+      </button>
+    </div>
+
     <div v-if="loading" class="loading-message">Chargement des logs...</div>
     <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
@@ -15,57 +25,44 @@
         <p class="log-date">{{ new Date(log.createAt).toLocaleString() }}</p>
       </div>
     </div>
-    <div class="pagination">
-      <button class="pagination-btn" @click="prevPage">
-        <ChevronLeft />
-      </button>
-      <span class="pagination-text">Page {{ page }}</span>
-      <button class="pagination-btn" @click="nextPage">
-        <ChevronRight />
-      </button>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 
 const adminStore = useAdminStore();
-const loading = ref(true);
 const logs = ref([]);
+const loading = ref(true);
 const page = ref(1);
 
-const nextPage = async () => {
+const loadLogs = async () => {
+  loading.value = true;
+  const res = await adminStore.adminlog(page);
+  if (res.success) {
+    logs.value = adminStore.logs;
+  }
+  loading.value = false;
+};
+
+const prevPage = () => {
+  if (page.value > 1) page.value--;
+};
+
+const nextPage = () => {
   page.value++;
-  await fetchLogs();
 };
 
-const prevPage = async () => {
-  if (page.value > 1) {
-    page.value--;
-    await fetchLogs();
-  }
-};
-
-const fetchLogs = async () => {
-  loading.value = true;
-  const response = await adminStore.adminlog(page.value);
-  if (response.success) {
-    logs.value = adminStore.logs;
-  }
-  loading.value = false;
-};
-onMounted(fetchLogs);
-onMounted(async () => {
-  loading.value = true;
-  const response = await adminStore.adminlog(page);
-  if (response.success) {
-    logs.value = adminStore.logs;
-  }
-  loading.value = false;
+onMounted(() => {
+  loadLogs();
 });
+
+watch(page, () => {
+  loadLogs();
+});
+const compter = computed(() => adminStore.compter);
 </script>
 
 <style scoped>
@@ -78,7 +75,7 @@ onMounted(async () => {
 }
 
 .pagination-btn {
-  background-color: #f1f1f1;
+  background-color: transparent;
   border: none;
   border-radius: 6px;
   padding: 8px 12px;
@@ -89,7 +86,7 @@ onMounted(async () => {
 }
 
 .pagination-btn:hover {
-  background-color: #d0d0d0;
+  background-color: #c3ebfc;
 }
 
 .pagination-text {
@@ -107,15 +104,10 @@ onMounted(async () => {
   padding: 1rem 1.25rem;
   border-left: 6px solid #e14242;
   border-radius: 0.5rem;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  /* transition: transform 0.2s ease, background-color 0.2s ease; */
 }
-
-/* .log-item:hover {
-  background-color: #f1f5f9;
-  transform: scale(1.01); 
-} */
 
 .log-item p {
   font-size: 0.9rem;
