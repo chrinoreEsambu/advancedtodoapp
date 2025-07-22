@@ -5,16 +5,6 @@
     <div v-if="loading" class="loading-message">Chargement des logs...</div>
     <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
-
-      <div class="pagination">
-        <button class="pagination-btn">
-          <ChevronLeft />
-        </button>
-        <span class="pagination-text">Page </span>
-        <button class="pagination-btn">
-          <ChevronRight />
-        </button>
-      </div>
     </div>
 
     <div v-else class="logs-list">
@@ -24,6 +14,15 @@
         <p><span class="label">Détail:</span> {{ log.details }}</p>
         <p class="log-date">{{ new Date(log.createAt).toLocaleString() }}</p>
       </div>
+    </div>
+    <div class="pagination">
+      <button class="pagination-btn" @click="prevPage">
+        <ChevronLeft />
+      </button>
+      <span class="pagination-text">Page {{ page }}</span>
+      <button class="pagination-btn" @click="nextPage">
+        <ChevronRight />
+      </button>
     </div>
   </div>
 </template>
@@ -36,10 +35,32 @@ import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 const adminStore = useAdminStore();
 const loading = ref(true);
 const logs = ref([]);
+const page = ref(1);
 
+const nextPage = async () => {
+  page.value++;
+  await fetchLogs();
+};
+
+const prevPage = async () => {
+  if (page.value > 1) {
+    page.value--;
+    await fetchLogs();
+  }
+};
+
+const fetchLogs = async () => {
+  loading.value = true;
+  const response = await adminStore.adminlog(page.value);
+  if (response.success) {
+    logs.value = adminStore.logs;
+  }
+  loading.value = false;
+};
+onMounted(fetchLogs);
 onMounted(async () => {
   loading.value = true;
-  const response = await adminStore.adminlog();
+  const response = await adminStore.adminlog(page);
   if (response.success) {
     logs.value = adminStore.logs;
   }

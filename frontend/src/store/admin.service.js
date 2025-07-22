@@ -27,7 +27,6 @@ export const useAdminStore = defineStore("adminstore", {
       totaltasks: 0,
     },
     logs: [],
-    compte: 0,
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -174,12 +173,14 @@ export const useAdminStore = defineStore("adminstore", {
         console.error("Logout error:", error);
       }
     },
-    async adminlog() {
+    async adminlog(page) {
       try {
-        const response = await api.get("/logs");
+        const response = await api.get("/logs", {
+          params: {
+            page: page.value,
+          },
+        });
         this.logs = response.data.logs;
-        this.compte = reponse.date.compter;
-        console.log("test compter ", compte);
         return { success: true };
       } catch (error) {
         console.error("Erreur lors de la récupération des logs:", error);
