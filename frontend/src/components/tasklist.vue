@@ -6,7 +6,7 @@
       <button class="pagination-btn" @click="prevPage">
         <ChevronLeft />
       </button>
-      <span class="pagination-text">Page {{ page }}/{{ countTasks }}</span>
+      <span class="pagination-text">Page {{ page }} / {{ countTasks }}</span>
       <button class="pagination-btn" @click="nextPage">
         <ChevronRight />
       </button>
@@ -14,7 +14,7 @@
 
     <div v-if="loading" class="loading-message">Chargement en cours...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
-    <div v-else-if="!tasks.length" class="empty-message">
+    <div v-else-if="tasks.length === 0" class="empty-message">
       Aucune tâche disponible
     </div>
 
@@ -26,9 +26,9 @@
         :class="{ updating: updatingStates[task.taskId] }"
       >
         <div class="task-info">
-          <span class="task-user">{{
-            task.assignee?.nom || "Non assigné"
-          }}</span>
+          <span class="task-user">
+            {{ task.assignee?.nom || "Non assigné" }}
+          </span>
           <span class="task-text">_{{ task.task }}</span>
 
           <span class="task-meta">
@@ -45,20 +45,22 @@
         <div v-if="role === 'admin'" class="task-state">
           <select
             v-model="task.state"
-            @change="handleStateChange(task.task_id, $event.target.value)"
+            @change="onStateChange(task.task_id, task.state)"
             class="state-select"
             :disabled="updatingStates[task.taskId]"
           >
             <option value="pending">En attente</option>
             <option value="delivered">Livré</option>
           </select>
+
           <span v-if="updatingStates[task.taskId]" class="updating-text">
             Mise à jour...
           </span>
         </div>
+
         <div v-else class="task-state">
           <span :class="['state-badge', task.state]">
-            {{ taskStateLabel(task.state) }}
+            {{ getStateLabel(task.state) }}
           </span>
         </div>
       </div>
@@ -71,42 +73,56 @@ import { ref, onMounted, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
-const page = ref(1);
-const adminStore = useAdminStore();
-const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
-const loading = ref(false);
 
-const formatDate = (dateString) =>
-  new Date(dateString).toLocaleDateString("fr-FR");
-const taskStateLabel = (state) =>
+const page = ref(1);
+const loading = ref(false);
+const adminStore = useAdminStore();
+
+const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
+
+const formatDate = (date) => new Date(date).toLocaleDateString("fr-FR");
+const getStateLabel = (state) =>
   state === "delivered" ? "Livré" : "En attente";
 
-const handleStateChange = async (taskId, newState) => {
+const onStateChange = async (taskId, newState) => {
   const success = await adminStore.updateTaskState(taskId, newState);
+
   if (!success) {
     const task = tasks.value.find((t) => t.taskId === taskId);
-    if (task) task.state = task.state === "pending" ? "delivered" : "pending";
+    if (task) {
+      task.state = task.state === "pending" ? "delivered" : "pending";
+    }
   }
 };
 
 const fetchTasks = async () => {
   loading.value = true;
   try {
-    await adminStore.getAllUserTasks();
+    await adminStore.getAllUserTasks(page.value);
   } finally {
     loading.value = false;
   }
 };
-const nextPage = () => {
-  page.value++;
+
+const nextPage = async () => {
+  if (page.value < countTasks.value) {
+    page.value++;
+    await fetchTasks();
+  }
 };
-const prevPage = () => {
-  page.value--;
+
+const prevPage = async () => {
+  if (page.value > 1) {
+    page.value--;
+    await fetchTasks();
+  }
 };
+
 const countTasks = computed(() => adminStore.count);
 
-defineExpose({ fetchTasks });
 onMounted(fetchTasks);
+
+defineExpose({ fetchTasks });
 </script>
 
 <style scoped>
