@@ -100,7 +100,7 @@ const fetchTasks = async () => {
   try {
     await adminStore.getAllUserTasks(page.value);
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 };
 
