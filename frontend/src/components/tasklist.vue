@@ -2,6 +2,16 @@
   <div class="tasks-list">
     <h3>{{ role === "admin" ? "Toutes les tâches" : "Mes tâches" }}</h3>
 
+    <div class="pagination">
+      <button class="pagination-btn" @click="prevPage">
+        <ChevronLeft />
+      </button>
+      <span class="pagination-text">Page {{ page }}/{{ compter }}</span>
+      <button class="pagination-btn" @click="nextPage">
+        <ChevronRight />
+      </button>
+    </div>
+
     <div v-if="loading" class="loading-message">Chargement en cours...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="!tasks.length" class="empty-message">
@@ -20,17 +30,16 @@
             task.assignee?.nom || "Non assigné"
           }}</span>
           <span class="task-text">_{{ task.task }}</span>
-          
+
           <span class="task-meta">
             Créée par {{ task.creator?.nom }} le
             {{ formatDate(task.createdAt) }}
             <span v-if="task.updatedAt !== task.createdAt">
               • Modifiée le {{ formatDate(task.updatedAt) }}
             </span>
-            <br>
+            <br />
             <span class="redo">Commentaire : {{ task.commentaire }}</span>
           </span>
-          
         </div>
 
         <div v-if="role === 'admin'" class="task-state">
@@ -61,6 +70,8 @@
 import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+
 
 const adminStore = useAdminStore();
 const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
@@ -93,6 +104,33 @@ onMounted(fetchTasks);
 </script>
 
 <style scoped>
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.pagination-btn:hover {
+  background-color: #c3ebfc;
+}
+
+.pagination-text {
+  font-weight: bold;
+  font-size: 15px;
+}
 .redo {
   color: #005b47;
 }

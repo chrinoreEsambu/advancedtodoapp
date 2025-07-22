@@ -411,11 +411,15 @@ exports.getusertasksfront = async (req, res) => {
         .json({ message: "Vous devez être connecté à votre compte" });
     }
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const jump = (page - 1) * limit;
+
     let tasks;
     if (role === "admin") {
       tasks = await prisma.tasks.findMany({
-        // skip: 1,
-        // take: 5,
+        skip: jump,
+        take: limit,
         include: {
           creator: true,
           assignedBy: true,
@@ -435,10 +439,12 @@ exports.getusertasksfront = async (req, res) => {
         },
       });
     }
-
+    const nbrTasks = await prisma.tasks.count();
+    const countTasks = Math.ceil(nbrTasks / limit);
     return res.status(200).json({
       message: role === "admin" ? "Toutes les tâches" : "Vos tâches",
       tasks,
+      countTasks,
     });
   } catch (error) {
     return res.status(500).json({
