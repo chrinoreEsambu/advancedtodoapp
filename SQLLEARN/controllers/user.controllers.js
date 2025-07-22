@@ -42,8 +42,6 @@ exports.getUser = async (req, res) => {
       return res.status(401).json({ message: "Aucune session admin ouverte" });
     }
     const findalluser = await prisma.users.findMany({
-      // skip:1,
-      // take:2
       orderBy: {
         createdAt: "desc",
       },
