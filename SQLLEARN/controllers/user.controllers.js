@@ -585,8 +585,8 @@ exports.getAdminLogs = async (req, res) => {
     }
 
     const page = parseInt(req.query.page) || 1;
-    const limit = 3;
-    // const limit = parseInt(req.query.limit) || 3;
+    const limit = 4;
+    // const limit = parseInt(req.query.limit) || 4;
 
     const jump = (page - 1) * limit;
 
