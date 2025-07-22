@@ -594,7 +594,8 @@ exports.getAdminLogs = async (req, res) => {
         createAt: "desc",
       },
     });
-    const countPage = await prisma.logs.count();
+    const countlogs = await prisma.logs.count();
+    const countPage = Math.ceil(countlogs / limit);
     return res
       .status(200)
       .json({ message: "Logs des actions admin", countPage, logs });
