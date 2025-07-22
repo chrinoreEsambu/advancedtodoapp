@@ -89,7 +89,7 @@ export const useAdminStore = defineStore("adminstore", {
       try {
         const response = await api.get("/getusertasksfront", {
           params: {
-            page: page.value,
+            page: page,
           },
         });
 

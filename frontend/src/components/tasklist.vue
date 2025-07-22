@@ -71,7 +71,7 @@ import { ref, onMounted, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
-
+const page = ref(1);
 const adminStore = useAdminStore();
 const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
 const loading = ref(false);
