@@ -55,7 +55,7 @@ const nextPage = () => {
   page.value++;
 
   if (page.value > compter.value) {
-    alert("fin de pagination");
+    // alert("fin de pagination");
     page.value = compter.value;
   }
 };
