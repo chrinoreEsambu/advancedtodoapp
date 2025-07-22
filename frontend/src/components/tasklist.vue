@@ -6,7 +6,7 @@
       <button class="pagination-btn" @click="prevPage">
         <ChevronLeft />
       </button>
-      <span class="pagination-text">Page {{ page }}/{{ compter }}</span>
+      <span class="pagination-text">Page {{ page }}/{{ countTasks }}</span>
       <button class="pagination-btn" @click="nextPage">
         <ChevronRight />
       </button>
@@ -67,11 +67,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
-
 
 const adminStore = useAdminStore();
 const { tasks, error, role, updatingStates } = storeToRefs(adminStore);
@@ -98,6 +97,13 @@ const fetchTasks = async () => {
     loading.value = false;
   }
 };
+const nextPage = () => {
+  page.value++;
+};
+const prevPage = () => {
+  page.value--;
+};
+const countTasks = computed(() => adminStore.count);
 
 defineExpose({ fetchTasks });
 onMounted(fetchTasks);

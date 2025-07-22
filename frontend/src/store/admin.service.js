@@ -28,6 +28,7 @@ export const useAdminStore = defineStore("adminstore", {
     },
     logs: [],
     compter: 0,
+    count: 0,
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -82,12 +83,19 @@ export const useAdminStore = defineStore("adminstore", {
         this.loadingUsers = false;
       }
     },
-    async getAllUserTasks() {
+    async getAllUserTasks(page) {
       this.loadingTasks = true;
       this.error = null;
       try {
-        const response = await api.get("/getusertasksfront");
+        const response = await api.get("/getusertasksfront", {
+          params: {
+            page: page.value,
+          },
+        });
+
         this.tasks = response.data.tasks || [];
+        this.count = response.data.countTasks;
+
         return { success: true };
       } catch (error) {
         this.error = error.response?.data?.message || "Erreur de chargement";
