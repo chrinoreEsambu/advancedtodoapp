@@ -50,7 +50,7 @@ router.get("/api/getusertasksfront", getusertasksfront);
 
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
-router.put("/api/addComments/:task_id", addComments);
+// router.put("/api/addComments/:task_id", addComments);
 router.get("/api/logs", getAdminLogs);
 
 module.exports = router;

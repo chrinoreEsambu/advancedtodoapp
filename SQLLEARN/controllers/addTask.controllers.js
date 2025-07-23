@@ -4,7 +4,7 @@ const { logAdminAction } = require("../log/logger.controller");
 
 exports.addtask = async (req, res) => {
   try {
-    const { task, message, state } = req.body;
+    const { task, message, state, status } = req.body;
     const user_id = req.session.user_id;
 
     if (!user_id) {
@@ -16,6 +16,9 @@ exports.addtask = async (req, res) => {
         task,
         message,
         state: state || "delivered",
+
+        taskState: status,
+
         creatorId: user_id,
         assigneeId: user_id,
         assignedById: user_id,

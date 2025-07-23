@@ -21,16 +21,28 @@ model Users {
 
   logRelation Logs[] @relation("logRelation")
 
+  by Comments[] @relation("by")
+
+  replyBy Comments[] @relation("replyBy")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+enum TaskState {
+  todo
+  inprogress
+  request
+  done
+}
 model Tasks {
   task_id    String   @id @default(uuid())
   task       String
-  commentaire String?
+
   state      String   @default("pending")
-  
+
+  taskState  TaskState @default(todo)
+
   creatorId  String?
   creator    Users?    @relation("createdTasks", fields: [creatorId], references: [user_id])
  
@@ -40,10 +52,11 @@ model Tasks {
   assigneeId String?
   assignee   Users ?   @relation("assignedTasks", fields: [assigneeId], references: [user_id])
 
+  taskfor Comments[] @relation("taskfor")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 model Logs{
   id String @id @default(uuid())
   adminId  String
@@ -52,5 +65,24 @@ model Logs{
   createAt DateTime @default(now())
 
   admin Users @relation("logRelation", fields: [adminId],references: [user_id])
+}
+model Comments {
+id String @id @default(uuid())
 
+content String
+
+taskId String
+task Tasks @relation("taskfor",fields:[taskId], references: [task_id] )
+
+authorId  String
+author Users @relation("by",fields: [authorId], references: [user_id])
+
+replyById String?
+replyBy Users? @relation("replyBy", fields: [replyById], references: [user_id])
+
+replyToId String?
+replyTo Comments? @relation("replyRelation", fields: [replyToId], references: [id])
+replyRelation Comments[] @relation("replyRelation")
+
+createdAt DateTime @default(now())
 }
