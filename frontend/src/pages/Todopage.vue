@@ -79,6 +79,49 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-if="showChat"
+      class="chat-modal-overlay"
+      @click.self="closeChatModal"
+    >
+      <div class="chat-modal">
+        <div class="chat-header">
+          <h3>Discussion</h3>
+          <button @click="closeChatModal" class="close-chat">✕</button>
+        </div>
+        <div class="chat-messages">
+          <div
+            v-for="(msg, index) in chatMessages"
+            :key="index"
+            :class="[
+              'chat-message',
+              msg.from === 'user' ? 'from-user' : 'from-other',
+            ]"
+          >
+            {{ msg.text }}
+          </div>
+          <div v-if="chatMessages.length === 0" class="no-messages">
+            Pas encore de messages...
+          </div>
+        </div>
+        <div class="chat-input">
+          <textarea
+            v-model="chatInput"
+            placeholder="Écrire un message..."
+            rows="2"
+            @keyup.enter="sendChatMessage"
+          ></textarea>
+          <button @click="sendChatMessage" :disabled="!chatInput.trim()">
+            Envoyer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button class="chat-button" @click="openChatModal" aria-label="Ouvrir chat">
+      <MessageCircleIcon size="22" />
+    </button>
   </div>
 </template>
 
@@ -86,6 +129,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
+import { MessageCircleIcon } from "lucide-vue-next";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -95,14 +139,15 @@ const content = ref("");
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
-const selectValue = ref("");
+
+const showChat = ref(false);
+const chatInput = ref("");
+const chatMessages = ref([]);
 
 const taskValueSender = async (task) => {
-  await userStore.submitTasksState({
-    task_id: task.task_id,
-    taskState: task.taskState,
-  });
+  await userStore.submitTasksState(task.task_id, task.taskState);
 };
+
 onMounted(async () => {
   await userStore.fetchTasks();
 });
@@ -148,6 +193,31 @@ async function submitComment() {
   } finally {
     sending.value = false;
   }
+}
+
+function openChatModal() {
+  showChat.value = true;
+}
+
+function closeChatModal() {
+  showChat.value = false;
+  chatInput.value = "";
+}
+
+function sendChatMessage() {
+  const message = chatInput.value.trim();
+  if (!message) return;
+
+  chatMessages.value.push({ from: "user", text: message });
+
+  setTimeout(() => {
+    chatMessages.value.push({
+      from: "other",
+      text: "Merci pour votre message, nous reviendrons vers vous bientôt.",
+    });
+  }, 1000);
+
+  chatInput.value = "";
 }
 </script>
 
@@ -369,6 +439,146 @@ select {
 
 .modal-actions button:last-child:hover {
   background-color: #dc3545;
+}
+
+.chat-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1010;
+}
+
+.chat-modal {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  height: 70vh;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chat-header h3 {
+  margin: 0;
+}
+
+.close-chat {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f8f8f8;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-message {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+.from-user {
+  background-color: #fae04d;
+  align-self: flex-end;
+  color: #000;
+  border-bottom-right-radius: 0;
+}
+
+.from-other {
+  background-color: #c3ebfc;
+  align-self: flex-start;
+  color: #000;
+  border-bottom-left-radius: 0;
+}
+
+.no-messages {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input textarea {
+  flex: 1;
+  resize: none;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.chat-input button {
+  padding: 10px 16px;
+  background-color: #fae04d;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.chat-input button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.chat-input button:hover:not(:disabled) {
+  background-color: #c3ebfc;
+}
+
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fae04d;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-button:hover {
+  background-color: #c3ebfc;
 }
 
 @media (max-width: 768px) {

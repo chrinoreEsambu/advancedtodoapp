@@ -220,6 +220,10 @@ exports.getusertasks = async (req, res) => {
     }
 
     const tasks = await prisma.tasks.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+
       where: {
         assigneeId: user_id,
         state: "delivered",
