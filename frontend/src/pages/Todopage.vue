@@ -46,9 +46,19 @@
                   <option value="request">Requested</option>
                 </optgroup>
               </select>
-              <label :class="{ todo: task.taskState === 'todo' }">{{
-                task.taskState
-              }}</label>
+
+              <label
+                :class="{
+                  todo: task.taskState === 'todo',
+                  inprogress: task.taskState === 'inprogress',
+                  request: task.taskState === 'request',
+                  denied: task.taskState === 'denied',
+                  accepted: task.taskState === 'accepted',
+                  done: task.taskState === 'done',
+                }"
+              >
+                {{ task.taskState }}
+              </label>
             </div>
           </li>
         </ul>
@@ -85,10 +95,6 @@ const content = ref("");
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
-
-// const state = async () => {
-//   const res = await userStore.fetchTasks(tasks);
-// };
 
 onMounted(async () => {
   await userStore.fetchTasks();
@@ -141,12 +147,38 @@ async function submitComment() {
 <style scoped>
 .todo {
   background-color: #7bf1a8;
-  width: 40px;
-  padding: 1px;
-  border-radius: 5px;
-  align-items: center;
-  text-align: center;
 }
+.inprogress {
+  background-color: #ffd166;
+}
+.request {
+  background-color: #73c2fb;
+}
+.denied {
+  background-color: #ff6b6b;
+}
+.accepted {
+  background-color: #c3ebfc;
+}
+.done {
+  background-color: #314158;
+  color: #fff;
+}
+
+.todo,
+.inprogress,
+.request,
+.denied,
+.accepted,
+.done {
+  padding: 4px 8px;
+  border-radius: 5px;
+  text-align: center;
+  min-width: 90px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
 .todo-container {
   max-width: 900px;
   margin: auto;
@@ -207,7 +239,7 @@ async function submitComment() {
 }
 
 .tasks {
-  flex: 1;
+  flex: 2;
 }
 
 .tasks ul {
@@ -220,15 +252,24 @@ async function submitComment() {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
+
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.task-info {
+  flex: 1;
+  word-wrap: break-word;
 }
 
 .task-actions {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .question-btn {
