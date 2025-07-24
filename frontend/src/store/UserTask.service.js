@@ -17,7 +17,6 @@ export const useUserStore = defineStore("user", {
     tasks: [],
     usersList: [],
     loading: false,
-    
   }),
 
   actions: {
@@ -83,9 +82,14 @@ export const useUserStore = defineStore("user", {
     async addComment(taskId, content) {
       await api.post(`/addComments/${taskId}`, {
         content,
-
         // replyToId: null,
         // replyById: null,
+      });
+    },
+
+    async submitTasksState(task_id, taskState) {
+      await api.post(`/updateTasksState/${task_id}`, {
+        taskState,
       });
     },
   },
