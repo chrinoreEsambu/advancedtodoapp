@@ -245,10 +245,10 @@ exports.getusertasks = async (req, res) => {
 
 exports.updateTasksState = async (req, res) => {
   try {
-    const task_id = req.params;
+    const { task_id } = req.params;
     const { taskState } = req.body;
 
-    const findTasks = await prisma.tasks.findMany({
+    const findTasks = await prisma.tasks.findUnique({
       where: { task_id: task_id },
     });
     if (!findTasks) {
@@ -258,7 +258,7 @@ exports.updateTasksState = async (req, res) => {
       where: { task_id: task_id },
       data: { taskState },
     });
-    res.status(201).jsson({ message: "modification reusie", updateState });
+    res.status(201).json({ message: "modification reusie", updateState });
   } catch (error) {
     res
       .status(500)

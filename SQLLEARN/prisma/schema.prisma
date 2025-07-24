@@ -37,11 +37,11 @@ enum TaskState {
 }
 model Tasks {
   task_id    String   @id @default(uuid())
-  task       String
+  task       String?
 
-  state      String   @default("pending")
+  state      String?   @default("pending")
 
-  taskState  TaskState @default(todo)
+  taskState  TaskState? @default(todo)
 
   creatorId  String?
   creator    Users?    @relation("createdTasks", fields: [creatorId], references: [user_id])
