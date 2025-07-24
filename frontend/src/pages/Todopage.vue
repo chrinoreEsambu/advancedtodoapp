@@ -136,26 +136,25 @@ const userStore = useUserStore();
 
 const taskText = ref("");
 const content = ref("");
+const chatInput = ref("");
+const chatMessages = ref([]);
+
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
 
 const showChat = ref(false);
-const chatInput = ref("");
-const chatMessages = ref([]);
-
-const taskValueSender = async (task) => {
-  await userStore.submitTasksState(task.task_id, task.taskState);
-};
 
 onMounted(async () => {
   await userStore.fetchTasks();
 });
 
 const handleAddTask = async () => {
-  if (!taskText.value.trim()) return;
+  if (taskText.value.trim() === "") return;
+
   await userStore.addTask({ task: taskText.value });
   taskText.value = "";
+  await userStore.fetchTasks();
 };
 
 const handleLogout = async () => {
@@ -163,62 +162,76 @@ const handleLogout = async () => {
   router.push("/");
 };
 
-function openCommentModal(taskId) {
+const openCommentModal = (taskId) => {
   currentTaskId.value = taskId;
   content.value = "";
   showModal.value = true;
-}
+};
 
-function closeModal() {
+const closeModal = () => {
   if (sending.value) return;
   showModal.value = false;
   currentTaskId.value = null;
   content.value = "";
-}
+};
 
-async function submitComment() {
-  if (!content.value.trim()) {
+const submitComment = async () => {
+  if (content.value.trim() === "") {
     alert("Le commentaire ne peut pas être vide.");
     return;
   }
+
   sending.value = true;
+
   try {
     await userStore.addComment(currentTaskId.value, content.value);
-    alert("Question envoyée avec succès.");
-    showModal.value = false;
+    alert("Question envoyée !");
+    closeModal();
     await userStore.fetchTasks();
-  } catch (error) {
-    alert("Erreur lors de l'envoi de la question.");
-    console.error(error);
+  } catch (err) {
+    alert("Erreur lors de l'envoi.");
+    console.error(err);
   } finally {
     sending.value = false;
   }
-}
+};
 
-function openChatModal() {
+// Modifier l'état d'une tâche (dropdown)
+const taskValueSender = async (task) => {
+  await userStore.submitTasksState(task.task_id, task.taskState);
+};
+
+// Ouvrir / fermer la fenêtre de chat
+const openChatModal = () => {
   showChat.value = true;
-}
+};
 
-function closeChatModal() {
+const closeChatModal = () => {
   showChat.value = false;
   chatInput.value = "";
-}
+};
 
-function sendChatMessage() {
+// Simuler un envoi de message dans le chat
+const sendChatMessage = () => {
   const message = chatInput.value.trim();
-  if (!message) return;
+  if (message === "") return;
 
-  chatMessages.value.push({ from: "user", text: message });
+  // Message de l'utilisateur
+  chatMessages.value.push({
+    from: "user",
+    text: message,
+  });
 
+  chatInput.value = "";
+
+  // Simuler une réponse automatique
   setTimeout(() => {
     chatMessages.value.push({
       from: "other",
-      text: "Merci pour votre message, nous reviendrons vers vous bientôt.",
+      text: "Merci pour votre message. Nous reviendrons vers vous bientôt.",
     });
   }, 1000);
-
-  chatInput.value = "";
-}
+};
 </script>
 
 <style scoped>
