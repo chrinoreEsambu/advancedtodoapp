@@ -40,7 +40,7 @@
                 ?
               </button>
 
-              <select v-model="task.taskState">
+              <select v-model="task.taskState" @change="taskValueSender(task)">
                 <optgroup label="Mark task status">
                   <option value="inprogress">In Progress</option>
                   <option value="request">Requested</option>

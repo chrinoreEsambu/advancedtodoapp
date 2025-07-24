@@ -89,7 +89,7 @@ export const useUserStore = defineStore("user", {
 
     async submitTasksState(task_id, taskState) {
       try {
-        await api.post(`/updateTasksState/${task_id}`, {
+        await api.put(`/updateTasksState/${task_id}`, {
           taskState,
         });
       } catch (error) {
