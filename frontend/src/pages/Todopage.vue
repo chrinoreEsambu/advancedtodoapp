@@ -45,9 +45,10 @@
                   <option value="inprogress">In Progress</option>
                   <option value="request">Requested</option>
                 </optgroup>
-                
               </select>
-              <label for="">states</label>
+              <label :class="{ todo: task.taskState === 'todo' }">{{
+                task.taskState
+              }}</label>
             </div>
           </li>
         </ul>
@@ -84,6 +85,10 @@ const content = ref("");
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
+
+// const state = async () => {
+//   const res = await userStore.fetchTasks(tasks);
+// };
 
 onMounted(async () => {
   await userStore.fetchTasks();
@@ -134,6 +139,14 @@ async function submitComment() {
 </script>
 
 <style scoped>
+.todo {
+  background-color: #7bf1a8;
+  width: 40px;
+  padding: 1px;
+  border-radius: 5px;
+  align-items: center;
+  text-align: center;
+}
 .todo-container {
   max-width: 900px;
   margin: auto;

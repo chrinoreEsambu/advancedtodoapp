@@ -17,6 +17,7 @@ export const useUserStore = defineStore("user", {
     tasks: [],
     usersList: [],
     loading: false,
+    
   }),
 
   actions: {
@@ -37,6 +38,7 @@ export const useUserStore = defineStore("user", {
         });
         // console.log("Tâches récupérées :", res.data);
         this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
+        this.taskState = res.date.tasks;
       } catch (error) {
         this.error =
           error.reponse?.data?.messaage || "error lors du chargement";
