@@ -33,6 +33,7 @@ enum TaskState {
   todo
   inprogress
   request
+  denied
   accepted
   done
 }
