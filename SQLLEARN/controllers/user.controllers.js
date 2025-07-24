@@ -213,7 +213,6 @@ exports.logOut = async (req, res) => {
 exports.getusertasks = async (req, res) => {
   try {
     const user_id = req.session.user_id;
-
     if (!user_id) {
       return res
         .status(401)
@@ -244,6 +243,28 @@ exports.getusertasks = async (req, res) => {
   }
 };
 
+exports.updateTasksState = async (req, res) => {
+  try {
+    const task_id = req.params;
+    const { taskState } = req.body;
+
+    const findTasks = await prisma.tasks.findMany({
+      where: { task_id: task_id },
+    });
+    if (!findTasks) {
+      res.status(404).jsson({ message: "Aucune tache avec cette iD trouver" });
+    }
+    const updateState = await prisma.tasks.update({
+      where: { task_id: task_id },
+      data: { taskState },
+    });
+    res.status(201).jsson({ message: "modification reusie", updateState });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "server error", error: { message: error.message } });
+  }
+};
 // ADMIN PARTS
 exports.adminCreateUser = async (req, res) => {
   try {
@@ -418,6 +439,7 @@ exports.getusertasksfront = async (req, res) => {
       tasks = await prisma.tasks.findMany({
         skip: jump,
         take: limit,
+
         include: {
           creator: true,
           assignedBy: true,
