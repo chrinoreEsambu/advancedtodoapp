@@ -252,6 +252,7 @@ async function submitComment() {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -375,17 +376,18 @@ select {
     text-align: center;
   }
 
+  .add-task {
+    flex-direction: column;
+  }
+
   .add-task button,
   .input-task {
     width: 100%;
+    box-sizing: border-box;
   }
 
   .task-item {
     flex-direction: column;
-  }
+  }}
 
-  .task-actions {
-    justify-content: flex-start;
-  }
-}
 </style>
