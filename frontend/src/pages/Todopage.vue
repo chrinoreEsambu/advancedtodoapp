@@ -21,33 +21,36 @@
         <div v-if="userStore.tasks.length === 0">
           Aucune tâche pour le moment !
         </div>
+
         <ul>
           <li
             v-for="task in userStore.tasks"
             :key="task.task_id"
             class="task-item"
           >
-            <div>
+            <div class="task-info">
               {{ task.task }}
             </div>
-            <button
-              class="question-btn"
-              @click="openCommentModal(task.task_id)"
-            >
-              ?
-            </button>
-            
-            <select>
-              <optgroup label="Mark state status">
-                <option value="">inprogress</option>
-                <option value="">request</option>
-              </optgroup>
-            </select>
+
+            <div class="task-actions">
+              <button
+                class="question-btn"
+                @click="openCommentModal(task.task_id)"
+              >
+                ?
+              </button>
+
+              <select>
+                <optgroup label="Mark task status">
+                  <option value="inprogress">In Progress</option>
+                  <option value="request">Requested</option>
+                </optgroup>
+                
+              </select>
+              <label for="">states</label>
+            </div>
           </li>
         </ul>
-      </div>
-      <div>
-        <li></li>
       </div>
     </div>
 
@@ -69,7 +72,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
 
@@ -82,17 +85,12 @@ const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
 
-// const safeTasks = computed(() =>
-//   Array.isArray(userStore.tasks) ? userStore.tasks : []
-// );
-
 onMounted(async () => {
   await userStore.fetchTasks();
 });
 
 const handleAddTask = async () => {
   if (!taskText.value.trim()) return;
-
   await userStore.addTask({ task: taskText.value });
   taskText.value = "";
 };
@@ -204,7 +202,7 @@ async function submitComment() {
   padding-left: 0;
 }
 
-.tasks li {
+.task-item {
   background-color: #f5f5f5;
   margin-bottom: 10px;
   padding: 10px;
@@ -214,18 +212,29 @@ async function submitComment() {
   align-items: center;
 }
 
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .question-btn {
   background-color: #fae04d;
-  color: rgb(0, 0, 0);
+  color: #000;
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-left: 50px;
 }
 
 .question-btn:hover {
   background-color: #c3ebfc;
+}
+
+select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .modal-overlay {
@@ -278,23 +287,25 @@ async function submitComment() {
 
 .modal-actions button:first-child {
   background-color: #fae04d;
-  color: rgb(0, 0, 0);
+  color: #000;
 }
 
 .modal-actions button:hover {
   background-color: #c3ebfc;
-  color: rgb(0, 0, 0);
-  transition: 0.2 ease-out;
+  color: #000;
+  transition: 0.2s ease-out;
 }
+
 .modal-actions button:first-child:disabled {
   background-color: #c3ebfc;
   cursor: not-allowed;
 }
 
 .modal-actions button:last-child {
-  background-color: rgb(255, 0, 0);
-  color: #ffff;
+  background-color: red;
+  color: #fff;
 }
+
 .modal-actions button:last-child:hover {
   background-color: #dc3545;
 }
