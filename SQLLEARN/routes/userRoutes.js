@@ -51,7 +51,7 @@ router.get("/api/getusertasksfront", getusertasksfront);
 
 router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
-// router.put("/api/addComments/:task_id", addComments);
+router.post("/api/addComments/:task_id", addComments);
 router.get("/api/logs", getAdminLogs);
 
 router.put("/api/updateTasksState/:task_id", updateTasksState);

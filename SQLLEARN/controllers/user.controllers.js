@@ -560,44 +560,50 @@ exports.adminUpdateTaskState = async (req, res) => {
   }
 };
 
-// exports.addComments = async (req, res) => {
-//   try {
-//     const { task_id } = req.params;
-//     const { commentaire } = req.body;
-//     const userId = req.session.user_id;
+exports.addComments = async (req, res) => {
+  try {
+    const { task_id } = req.params;
+    const { content, replyToId, replyById } = req.body;
 
-//     if (!userId) {
-//       return res.status(401).json({ message: "Utilisateur non authentifié." });
-//     }
+    const userId = req.session.user_id;
 
-//     const task = await prisma.tasks.findUnique({
-//       where: { task_id },
-//     });
+    if (!userId) {
+      return res.status(401).json({ message: "Utilisateur non authentifié." });
+    }
 
-//     if (!task) {
-//       return res.status(404).json({ message: "Tâche non trouvée." });
-//     }
+    const task = await prisma.tasks.findUnique({
+      where: { task_id },
+    });
 
-//     if (task.assigneeId !== userId) {
-//       return res
-//         .status(403)
-//         .json({ message: "Tâche non autorisée pour cet utilisateur." });
-//     }
+    if (!task) {
+      return res.status(404).json({ message: "Tâche non trouvée." });
+    }
 
-//     await prisma.tasks.update({
-//       where: { task_id },
-//       data: { commentaire },
-//     });
+    if (task.assigneeId !== userId) {
+      return res.status(403).json({
+        message: "Tâche non autorisée pour cet utilisateur.",
+      });
+    }
 
-//     res.status(200).json({ message: "Commentaire enregistré avec succès." });
-//   } catch (error) {
-//     console.error("Erreur dans addComments :", error);
-//     res.status(500).json({
-//       message: "Erreur lors de la requête.",
-//       error: error.message,
-//     });
-//   }
-// };
+    await prisma.comments.create({
+      data: {
+        content,
+        taskId: task_id, // ✅ bon champ
+        authorId: userId, // ✅ bon champ
+        replyToId: replyToId || null, // optionnel
+        replyById: replyById || null, // optionnel
+      },
+    });
+
+    res.status(200).json({ message: "Commentaire enregistré avec succès." });
+  } catch (error) {
+    console.error("Erreur dans addComments :", error);
+    res.status(500).json({
+      message: "Erreur lors de la requête.",
+      error: error.message,
+    });
+  }
+};
 
 exports.getAdminLogs = async (req, res) => {
   try {
