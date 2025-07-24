@@ -17,6 +17,7 @@ export const useUserStore = defineStore("user", {
     tasks: [],
     usersList: [],
     loading: false,
+    comments: [],
   }),
 
   actions: {
@@ -98,6 +99,11 @@ export const useUserStore = defineStore("user", {
           error
         );
       }
+    },
+
+    async fetchComments(userId) {
+      const res = await api.get(`/getComments/${userId}`);
+      this.comments = res.data.comments;
     },
   },
 });

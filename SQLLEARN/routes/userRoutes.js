@@ -29,6 +29,8 @@ const {
   addComments,
   getAdminLogs,
   updateTasksState,
+  getMyComments,
+  
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -55,5 +57,5 @@ router.post("/api/addComments/:task_id", addComments);
 router.get("/api/logs", getAdminLogs);
 
 router.put("/api/updateTasksState/:task_id", updateTasksState);
-
+router.get("/api/getComments/",getMyComments);
 module.exports = router;

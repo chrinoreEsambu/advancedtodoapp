@@ -610,6 +610,36 @@ exports.addComments = async (req, res) => {
   }
 };
 
+exports.getMyComments = async (req, res) => {
+  try {
+    const userId = req.params.userid;
+
+    const comments = await prisma.comments.findMany({
+      where: {
+        authorId: userId,
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        task: {
+          select: { task: true, task_id: true },
+        },
+        replyBy: {
+          select: { nom: true, user_id: true },
+        },
+      },
+    });
+
+    return res.status(200).json({ comments });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la récupération des commentaires.",
+      error: error.message,
+    });
+  }
+};
+
+
+
 exports.getAdminLogs = async (req, res) => {
   try {
     const role = req.session?.role;
