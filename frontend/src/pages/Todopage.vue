@@ -152,7 +152,7 @@ async function submitComment() {
   background-color: #ffd166;
 }
 .request {
-  background-color: #73c2fb;
+  background-color: #f4a8ff;
 }
 .denied {
   background-color: #ff6b6b;
@@ -388,6 +388,6 @@ select {
 
   .task-item {
     flex-direction: column;
-  }}
-
+  }
+}
 </style>
