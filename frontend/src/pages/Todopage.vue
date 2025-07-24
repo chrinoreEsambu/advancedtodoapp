@@ -252,7 +252,6 @@ async function submitComment() {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -362,5 +361,31 @@ select {
 
 .modal-actions button:last-child:hover {
   background-color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .add-task button,
+  .input-task {
+    width: 100%;
+  }
+
+  .task-item {
+    flex-direction: column;
+  }
+
+  .task-actions {
+    justify-content: flex-start;
+  }
 }
 </style>
