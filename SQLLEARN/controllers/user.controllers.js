@@ -588,10 +588,10 @@ exports.addComments = async (req, res) => {
     await prisma.comments.create({
       data: {
         content,
-        taskId: task_id, // ✅ bon champ
-        authorId: userId, // ✅ bon champ
-        replyToId: replyToId || null, // optionnel
-        replyById: replyById || null, // optionnel
+        taskId: task_id,
+        authorId: userId,
+        replyToId: replyToId || null,
+        replyById: replyById || null,
       },
     });
 

@@ -36,6 +36,13 @@
             >
               ?
             </button>
+            
+            <select>
+              <optgroup label="Mark state status">
+                <option value="">inprogress</option>
+                <option value="">request</option>
+              </optgroup>
+            </select>
           </li>
         </ul>
       </div>
@@ -48,7 +55,7 @@
       <div class="modal-content">
         <h4>Poser ta question</h4>
         <textarea
-          v-model="comment"
+          v-model="content"
           placeholder="Votre question ici..."
           rows="4"
         ></textarea>
@@ -70,7 +77,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const taskText = ref("");
-const comment = ref("");
+const content = ref("");
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
@@ -97,7 +104,7 @@ const handleLogout = async () => {
 
 function openCommentModal(taskId) {
   currentTaskId.value = taskId;
-  comment.value = "";
+  content.value = "";
   showModal.value = true;
 }
 
@@ -105,17 +112,17 @@ function closeModal() {
   if (sending.value) return;
   showModal.value = false;
   currentTaskId.value = null;
-  comment.value = "";
+  content.value = "";
 }
 
 async function submitComment() {
-  if (!comment.value.trim()) {
+  if (!content.value.trim()) {
     alert("Le commentaire ne peut pas être vide.");
     return;
   }
   sending.value = true;
   try {
-    await userStore.addComment(currentTaskId.value, comment.value);
+    await userStore.addComment(currentTaskId.value, content.value);
     alert("Question envoyée avec succès.");
     showModal.value = false;
     await userStore.fetchTasks();
