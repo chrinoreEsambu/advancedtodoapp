@@ -88,9 +88,16 @@ export const useUserStore = defineStore("user", {
     },
 
     async submitTasksState(task_id, taskState) {
-      await api.post(`/updateTasksState/${task_id}`, {
-        taskState,
-      });
+      try {
+        await api.post(`/updateTasksState/${task_id}`, {
+          taskState,
+        });
+      } catch (error) {
+        console.error(
+          "Erreur lors de la mise à jour de l'état de la tâche :",
+          error
+        );
+      }
     },
   },
 });
