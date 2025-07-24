@@ -57,6 +57,7 @@ import {
   LogOut,
   Menu,
   FileClock,
+  CircleDotDashed,
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
@@ -67,6 +68,7 @@ import creatUser from "../components/creatUser.vue";
 import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
 import logList from "../components/logList.vue";
+import admStateTasks from "../components/admStateTasks.vue";
 
 const router = useRouter();
 const adminstore = useAdminStore();
@@ -74,6 +76,12 @@ const adminstore = useAdminStore();
 const tabs = [
   {
     id: "home",
+    icon: CircleDotDashed,
+    label: "Task states",
+    component: admStateTasks,
+  },
+  {
+    id: "hom",
     icon: UserRoundPlus,
     label: "User creation",
     component: dashelement,

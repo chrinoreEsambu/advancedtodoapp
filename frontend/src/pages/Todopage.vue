@@ -196,12 +196,12 @@ const submitComment = async () => {
   }
 };
 
-// Modifier l'état d'une tâche (dropdown)
+
 const taskValueSender = async (task) => {
   await userStore.submitTasksState(task.task_id, task.taskState);
 };
 
-// Ouvrir / fermer la fenêtre de chat
+
 const openChatModal = () => {
   showChat.value = true;
 };
@@ -211,12 +211,12 @@ const closeChatModal = () => {
   chatInput.value = "";
 };
 
-// Simuler un envoi de message dans le chat
+
 const sendChatMessage = () => {
   const message = chatInput.value.trim();
   if (message === "") return;
 
-  // Message de l'utilisateur
+  
   chatMessages.value.push({
     from: "user",
     text: message,
@@ -224,7 +224,7 @@ const sendChatMessage = () => {
 
   chatInput.value = "";
 
-  // Simuler une réponse automatique
+  
   setTimeout(() => {
     chatMessages.value.push({
       from: "other",
