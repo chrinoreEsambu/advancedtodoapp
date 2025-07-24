@@ -40,7 +40,7 @@
                 ?
               </button>
 
-              <select>
+              <select v-model="task.taskState">
                 <optgroup label="Mark task status">
                   <option value="inprogress">In Progress</option>
                   <option value="request">Requested</option>
@@ -95,7 +95,14 @@ const content = ref("");
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
+const selectValue = ref("");
 
+const taskValueSender = async (task) => {
+  await userStore.submitTasksState({
+    task_id: task.task_id,
+    taskState: task.taskState,
+  });
+};
 onMounted(async () => {
   await userStore.fetchTasks();
 });
