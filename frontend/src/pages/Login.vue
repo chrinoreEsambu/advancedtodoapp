@@ -7,7 +7,7 @@
       <div class="login-form">
         <h2>Connexion</h2>
 
-        <input v-model="user_id" placeholder="User ID" />
+        <input v-model="user_id" placeholder="email@exemple.com" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
