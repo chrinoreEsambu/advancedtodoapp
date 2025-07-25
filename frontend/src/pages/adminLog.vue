@@ -5,9 +5,9 @@
     </div>
     <div class="login-form-wrapper">
       <div class="login-form">
-        <h2>Admin-space</h2>
+        <h2>Admin-area</h2>
 
-        <input v-model="mail" type="email" placeholder="User ID" />
+        <input v-model="mail" type="email" placeholder="email@exemple.com" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
