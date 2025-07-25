@@ -638,32 +638,44 @@ exports.getMyComments = async (req, res) => {
   }
 };
 
-exports.admstatefinder = async (req, res) => {
+exports.admStateFinder = async (req, res) => {
   try {
     const resTd = await prisma.tasks.findMany({
       where: { taskState: "todo" },
-    });
-    const resInp = await prisma.tasks.findMany({
-      where: { taskState: "inprogress" },
+      orderBy: { createdAt: "desc" },
     });
 
-    const resDenied = await prisma.tasks.findMany({
+    const resInp = await prisma.tasks.findMany({
+      where: { taskState: "inprogress" },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const resDnd = await prisma.tasks.findMany({
       where: { taskState: "denied" },
+      orderBy: { createdAt: "desc" },
     });
 
     const reAcc = await prisma.tasks.findMany({
       where: { taskState: "accepted" },
+      orderBy: { createdAt: "desc" },
     });
 
     const resDone = await prisma.tasks.findMany({
       where: { taskState: "done" },
+      orderBy: { createdAt: "desc" },
     });
-    res
-      .status(200)
-      .json({ message: "trouver", resTd, resInp, resDnd, reAcc, resDone });
+
+    res.status(200).json({
+      message: "Tâches trouvées avec succès",
+      resTd,
+      resInp,
+      resDnd,
+      reAcc,
+      resDone,
+    });
   } catch (error) {
     res.status(500).json({
-      message: "Erreur lors de la recuperation des tache",
+      message: "Erreur lors de la récupération des tâches",
       error: { message: error.message },
     });
   }
