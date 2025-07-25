@@ -51,7 +51,7 @@ exports.getUser = async (req, res) => {
       await logAdminAction(
         req.session.admin_id,
         "récupération utilisateurs",
-        `consultion la liste des utilisateurs`
+        `consultation la liste des utilisateurs`
       );
       res.status(200).json({ message: "All user", findalluser });
     } else {
@@ -145,7 +145,7 @@ exports.userDelete = async (req, res) => {
     await logAdminAction(
       req.session.admin_id,
       "suppression utilisateur",
-      `suppretion utilisateur ${deleted.user_id} (${deleted.nom})`
+      `suppression utilisateur ${deleted.user_id} (${deleted.nom})`
     );
 
     res.status(202).json({
@@ -164,16 +164,20 @@ exports.connexion = async (req, res) => {
   try {
     const { user_id, password } = req.body;
     const userfinder = await prisma.users.findUnique({
-      where: { user_id },
+      where: { mail: user_id },
     });
+
     if (!userfinder) {
       return res.status(401).json({ message: "User not found" });
     }
+
     const compare = await argon2.verify(userfinder.password, password);
 
     if (compare) {
-      req.session.user_id = user_id;
-      return res.status(200).json({ message: "bienvenue", user: user_id });
+      req.session.user_id = userfinder.user_id;
+      return res
+        .status(200)
+        .json({ message: "bienvenue", user: userfinder.user_id });
     } else {
       return res
         .status(401)
@@ -223,7 +227,6 @@ exports.getusertasks = async (req, res) => {
       orderBy: {
         createdAt: "desc",
       },
-
       where: {
         assigneeId: user_id,
         state: "delivered",
@@ -247,6 +250,7 @@ exports.getusertasks = async (req, res) => {
   }
 };
 
+// ADMIN PARTS
 exports.updateTasksState = async (req, res) => {
   try {
     const { task_id } = req.params;
@@ -269,8 +273,6 @@ exports.updateTasksState = async (req, res) => {
       .json({ message: "server error", error: { message: error.message } });
   }
 };
-
-// ADMIN PARTS
 exports.adminCreateUser = async (req, res) => {
   try {
     const { nom, mail, password, role } = req.body;
@@ -444,6 +446,10 @@ exports.getusertasksfront = async (req, res) => {
     let tasks;
     if (role === "admin") {
       tasks = await prisma.tasks.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+
         skip: jump,
         take: limit,
 
