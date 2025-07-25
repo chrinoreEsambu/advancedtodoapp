@@ -666,8 +666,12 @@ exports.admStateFinder = async (req, res) => {
     });
 
     const resReq = await prisma.tasks.findMany({
-      // where: { taskState: "request" },
       orderBy: { createdAt: "desc" },
+    });
+    const orderedTasks = resReq.sort((a, b) => {
+      if (a.taskState === "request" && b.taskState !== "request") return -1;
+      if (a.taskState !== "request" && b.taskState === "request") return 1;
+      return 0;
     });
 
     res.status(200).json({
