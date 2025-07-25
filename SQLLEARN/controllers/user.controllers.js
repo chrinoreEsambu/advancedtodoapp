@@ -640,14 +640,14 @@ exports.getMyComments = async (req, res) => {
 
 exports.admstatefinder = async (req, res) => {
   try {
-    const restodo = await prisma.tasks.findMany({
+    const resTd = await prisma.tasks.findMany({
       where: { taskState: "todo" },
     });
-    const resinp = await prisma.tasks.findMany({
+    const resInp = await prisma.tasks.findMany({
       where: { taskState: "inprogress" },
     });
 
-    const resdenied = await prisma.tasks.findMany({
+    const resDenied = await prisma.tasks.findMany({
       where: { taskState: "denied" },
     });
 
@@ -660,7 +660,7 @@ exports.admstatefinder = async (req, res) => {
     });
     res
       .status(200)
-      .json({ message: "trouver", restodo, resinp, resdenied, reAcc, resDone });
+      .json({ message: "trouver", resTd, resInp, resDnd, reAcc, resDone });
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la recuperation des tache",
