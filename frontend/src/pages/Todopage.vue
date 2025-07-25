@@ -2,7 +2,9 @@
   <div class="todo-container">
     <header class="header">
       <h2>Bonjour, {{ userStore.user }}</h2>
-      <button @click="handleLogout" class="logout-btn">Déconnexion</button>
+      <button @click="handleLogout" class="logout-btn">
+        <LogOut size="18" class="bttoff" /> Déconnexion
+      </button>
     </header>
 
     <div class="content">
@@ -129,7 +131,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
-import { MessageCircleIcon } from "lucide-vue-next";
+import { MessageCircleIcon, LogOut } from "lucide-vue-next";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -196,11 +198,9 @@ const submitComment = async () => {
   }
 };
 
-
 const taskValueSender = async (task) => {
   await userStore.submitTasksState(task.task_id, task.taskState);
 };
-
 
 const openChatModal = () => {
   showChat.value = true;
@@ -211,12 +211,10 @@ const closeChatModal = () => {
   chatInput.value = "";
 };
 
-
 const sendChatMessage = () => {
   const message = chatInput.value.trim();
   if (message === "") return;
 
-  
   chatMessages.value.push({
     from: "user",
     text: message,
@@ -224,7 +222,6 @@ const sendChatMessage = () => {
 
   chatInput.value = "";
 
-  
   setTimeout(() => {
     chatMessages.value.push({
       from: "other",
@@ -282,8 +279,14 @@ const sendChatMessage = () => {
   align-items: center;
   margin-bottom: 20px;
 }
-
+.bttoff {
+  margin-right: 5px;
+}
 .logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background-color: #000;
   color: #fff;
   padding: 10px 15px;
