@@ -375,9 +375,9 @@ optgroup {
 }
 
 .for {
-  background-color: #f2fedc;
+  background-color: #E9FDFA;
   border-radius: 10px;
-  padding: 2px 5px;
+  padding: 2px 10px;
   font-size: 14px;
   white-space: nowrap;
 }
