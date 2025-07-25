@@ -5,18 +5,21 @@
     </div>
     <div class="login-form-wrapper">
       <div class="login-form">
-        <!-- <label class="alert">{{ alert }}</label> -->
         <h2>Connexion</h2>
 
         <input v-model="user_id" placeholder="User ID" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
-        <!-- <p>{{ password }}</p> -->
+
         <button @click="handleLogin">Se connecter</button>
         <p class="login-link">
           Pas de compte ? <a @click="goToregistration">S'inscrire</a>
         </p>
-        <label class="space" @click="admin">Admin-space</label>
       </div>
+
+      <!-- Icône admin en bas à droite -->
+      <button class="admin-button" @click="admin">
+        <ShieldCheck class="admin-icon" />
+      </button>
     </div>
   </div>
 </template>
@@ -25,17 +28,17 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
+import { ShieldCheck } from "lucide-vue-next"; // icône admin
 
 const user_id = ref("");
 const password = ref("");
 const router = useRouter();
 const userStore = useUserStore();
-// const alert = ref("");
 
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
     alert("champs vide");
-    // alert.value = "champs vide";
+    return;
   }
   try {
     await userStore.login(user_id.value, password.value);
@@ -44,9 +47,11 @@ const handleLogin = async () => {
     alert("Erreur de connexion");
   }
 };
+
 const goToregistration = () => {
   router.push("/register");
 };
+
 const admin = () => {
   router.push("/adminlogin");
 };
@@ -56,45 +61,13 @@ const admin = () => {
 * {
   box-sizing: border-box;
 }
-.space {
-  display: flex;
-  text-align: center;
-  width: 100px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  font-weight: 500;
-}
-.space:hover {
-  text-decoration: underline;
-}
-.alert {
-  color: red;
-  text-align: center;
-  display: flex;
-}
+
 .login-container {
   display: flex;
   height: 100vh;
-
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
-.login-link {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #666;
-}
 
-.login-link a {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
 .login-image {
   flex: 0 0 60%;
   background-color: #f5f5f5;
@@ -117,20 +90,19 @@ const admin = () => {
 .login-form-wrapper {
   flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  position: relative;
   padding: 2rem;
 }
 
 .login-form {
   width: 100%;
-  /* max-width: 350px; */
 }
 
 .login-form h2 {
   margin-bottom: 1.5rem;
   color: #333;
-  /* font-size: 1.8rem; */
   font-weight: 700;
 }
 
@@ -164,6 +136,48 @@ const admin = () => {
 
 .login-form button:hover {
   background-color: #222;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.login-link a {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Bouton admin en bas à droite */
+.admin-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ffd700; /* Jaune personnalisé */
+  border: none;
+  border-radius: 50%;
+  padding: 0.6rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.admin-button:hover {
+  transform: scale(1.1);
+}
+
+.admin-icon {
+  width: 24px;
+  height: 24px;
+  color: #000;
 }
 
 @media (max-width: 768px) {
