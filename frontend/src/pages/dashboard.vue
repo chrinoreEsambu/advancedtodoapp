@@ -58,6 +58,7 @@ import {
   Menu,
   FileClock,
   CircleDotDashed,
+  MessageCircleMore
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
@@ -69,6 +70,7 @@ import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
 import logList from "../components/logList.vue";
 import admStateTasks from "../components/admStateTasks.vue";
+import chat from "../components/chat.vue"
 
 const router = useRouter();
 const adminstore = useAdminStore();
@@ -95,6 +97,8 @@ const tabs = [
   },
   { id: "Tasklist", icon: ListTodo, label: "Tasklist", component: tasklist },
   { id: "logList", icon: FileClock, label: "Log list", component: logList },
+
+  { id: "chat", icon: MessageCircleMore, label: "Chat", component: chat },
 ];
 
 const activeTab = ref("home");

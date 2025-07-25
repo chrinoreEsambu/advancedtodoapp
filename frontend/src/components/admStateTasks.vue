@@ -5,9 +5,9 @@
       <ul>
         <li v-for="task in tachesInProgress" :key="task.task_id">
           {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
+          <span :class="['badge', task.taskState.toLowerCase()]">{{
+            task.taskState
+          }}</span>
         </li>
       </ul>
     </div>
@@ -17,9 +17,9 @@
       <ul>
         <li v-for="task in tachesTodo" :key="task.task_id">
           {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
+          <span :class="['badge', task.taskState.toLowerCase()]">{{
+            task.taskState
+          }}</span>
         </li>
       </ul>
     </div>
@@ -27,22 +27,27 @@
     <div class="item item-logo">
       <h1>Request</h1>
       <ul>
-        <li v-for="task in tachesRequest" :key="task.task_id">
-          {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
-          <select v-model="task.taskState" @change="adminChangeState(task)">
-            <optgroup label="States">
-              <option value="inprogress">inprogress</option>
-              <option value="todo">todo</option>
-              <option value="inprogress">inprogress</option>
-              <option value="request">request</option>
-              <option value="accepted">accepted</option>
-              <option value="done">done</option>
-              <option value="denied" style="color: red">denied</option>
-            </optgroup>
-          </select>
+        <li
+          v-for="task in tachesRequest"
+          :key="task.task_id"
+          class="request-item"
+        >
+          <span>{{ task.task }}</span>
+          <div class="request-controls">
+            <span :class="['badge', task.taskState.toLowerCase()]">{{
+              task.taskState
+            }}</span>
+            <select v-model="task.taskState" @change="adminChangeState(task)">
+              <optgroup label="States">
+                <option value="inprogress">inprogress</option>
+                <option value="todo">todo</option>
+                <option value="request">request</option>
+                <option value="accepted">accepted</option>
+                <option value="done" style="color: #314158">done</option>
+                <option value="denied" style="color: red">denied</option>
+              </optgroup>
+            </select>
+          </div>
         </li>
       </ul>
     </div>
@@ -52,9 +57,9 @@
       <ul>
         <li v-for="task in tachesAccepted" :key="task.task_id">
           {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
+          <span :class="['badge', task.taskState.toLowerCase()]">{{
+            task.taskState
+          }}</span>
         </li>
       </ul>
     </div>
@@ -64,9 +69,9 @@
       <ul>
         <li v-for="task in tachesDone" :key="task.task_id">
           {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
+          <span :class="['badge', task.taskState.toLowerCase()]">{{
+            task.taskState
+          }}</span>
         </li>
       </ul>
     </div>
@@ -76,9 +81,9 @@
       <ul>
         <li v-for="task in tachesDenied" :key="task.task_id">
           {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">
-            {{ task.taskState }}
-          </span>
+          <span :class="['badge', task.taskState.toLowerCase()]">{{
+            task.taskState
+          }}</span>
         </li>
       </ul>
     </div>
@@ -127,14 +132,19 @@ const adminChangeState = async (task) => {
   list-style: none;
 }
 
+optgroup {
+  font-weight: bold;
+}
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 2rem;
   height: 100vh;
   padding: 1rem;
   background-color: #e6f4f1;
+  height: 810px;
 }
 
 .item {
@@ -149,16 +159,17 @@ const adminChangeState = async (task) => {
 
 .item-billboard {
   grid-column: span 2;
-  background-color: #1f7c6e;
+  background-color: #c3ebfc;
 }
 
 .item-tote {
-  background-color: #064c45;
+  background-color: #f2fedc;
 }
 
 .item-logo {
   grid-column: span 3;
-  background-color: #043f3b;
+  background-color: #fb8d75;
+ 
 }
 
 .item-badge {
@@ -179,6 +190,7 @@ const adminChangeState = async (task) => {
 h1 {
   font-size: 20px;
   margin-bottom: 0.5rem;
+  color: #000;
 }
 
 ul {
@@ -195,6 +207,23 @@ li {
   padding: 0.5rem;
   border-radius: 8px;
   color: #222;
+}
+
+.request-item {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.request-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+select {
+  padding: 0.25rem;
+  border-radius: 4px;
 }
 
 .badge {
