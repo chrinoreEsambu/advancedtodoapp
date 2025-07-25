@@ -14,7 +14,7 @@
           placeholder="Nouvelle tâche..."
           class="input-task"
         />
-        <button @click="handleAddTask">Ajouter</button>
+        <button @click="handleAddTask">Ajouter <Plus class="addplus" size="17"/></button>
       </div>
 
       <div class="tasks">
@@ -131,7 +131,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
-import { MessageCircleIcon, LogOut } from "lucide-vue-next";
+import { MessageCircleIcon, LogOut, Plus } from "lucide-vue-next";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -303,6 +303,7 @@ const sendChatMessage = () => {
   display: flex;
   flex-direction: row;
   gap: 40px;
+  
 }
 
 .add-task {
@@ -310,6 +311,7 @@ const sendChatMessage = () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  
 }
 
 .input-task {
@@ -319,12 +321,16 @@ const sendChatMessage = () => {
 }
 
 .add-task button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #000;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  
 }
 
 .add-task button:hover {
