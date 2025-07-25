@@ -665,15 +665,15 @@ exports.admStateFinder = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    res.status(200).json({
-      message: "Tâches trouvées avec succès",
-      elements:[resTd,
-      resInp,
-      resDnd,
-      reAcc,
-      resDone,]
+    const resReq = await prisma.tasks.findMany({
+      where: { taskState: "request" },
+      orderBy: { createdAt: "desc" },
     });
 
+    res.status(200).json({
+      message: "Tâches trouvées avec succès",
+      elements: [resTd, resInp, resDnd, reAcc, resDone, resReq],
+    });
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la récupération des tâches",

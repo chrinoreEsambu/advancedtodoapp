@@ -26,7 +26,25 @@
 
     <div class="item item-logo">
       <h1>Request</h1>
-      <p>Aucune donnée affichée ici pour l’instant.</p>
+      <ul>
+        <li v-for="task in tachesRequest" :key="task.task_id">
+          {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
+          <select v-model="task.taskState" @change="adminChangeState(task)">
+            <optgroup label="States">
+              <option value="inprogress">inprogress</option>
+              <option value="todo">todo</option>
+              <option value="inprogress">inprogress</option>
+              <option value="request">request</option>
+              <option value="accepted">accepted</option>
+              <option value="done">done</option>
+              <option value="denied" style="color: red">denied</option>
+            </optgroup>
+          </select>
+        </li>
+      </ul>
     </div>
 
     <div class="item item-badge">
@@ -78,6 +96,7 @@ const tachesInProgress = ref([]);
 const tachesAccepted = ref([]);
 const tachesDenied = ref([]);
 const tachesDone = ref([]);
+const tachesRequest = ref([]);
 
 const fetchtaches = async () => {
   try {
@@ -88,6 +107,7 @@ const fetchtaches = async () => {
     tachesDenied.value = adminStore.tache[2] || [];
     tachesAccepted.value = adminStore.tache[3] || [];
     tachesDone.value = adminStore.tache[4] || [];
+    tachesRequest.value = adminStore.tache[5] || [];
   } catch (error) {
     console.error("Erreur de chargement des tâches :", error);
   }
@@ -96,6 +116,10 @@ const fetchtaches = async () => {
 onMounted(() => {
   fetchtaches();
 });
+
+const adminChangeState = async (task) => {
+  await adminStore.submitTasksState(task.task_id, task.taskState);
+};
 </script>
 
 <style scoped>

@@ -211,5 +211,18 @@ export const useAdminStore = defineStore("adminstore", {
         console.error("Erreur lors de la récupération des tache:", error);
       }
     },
+
+    async submitTasksState(task_id, taskState) {
+      try {
+        await api.put(`/updateTasksState/${task_id}`, {
+          taskState,
+        });
+      } catch (error) {
+        console.error(
+          "Erreur lors de la mise à jour de l'état de la tâche :",
+          error
+        );
+      }
+    },
   },
 });
