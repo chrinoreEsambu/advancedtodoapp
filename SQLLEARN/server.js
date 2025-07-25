@@ -37,7 +37,7 @@ const port = process.env.PORT || 5000;
 (async () => {
   try {
     app.listen(port, "0.0.0.0", () => {
-      console.log(`Server runnig on port http://localhost:${port}`);
+      console.log(`Server runnig on http://localhost:${port}`);
     });
   } catch (error) {
     console.log("error starting the server", error);
