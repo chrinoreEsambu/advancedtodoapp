@@ -638,7 +638,18 @@ exports.getMyComments = async (req, res) => {
   }
 };
 
-
+exports.admstatefinder = async (req, res) => {
+  try {
+    const 
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erreur lors de la recuperation des tache",
+        error: { message: error.message },
+      });
+  }
+};
 
 exports.getAdminLogs = async (req, res) => {
   try {
