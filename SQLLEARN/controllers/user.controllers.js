@@ -667,13 +667,13 @@ exports.admStateFinder = async (req, res) => {
 
     res.status(200).json({
       message: "Tâches trouvées avec succès",
-      resTd,
+      elements:[resTd,
       resInp,
       resDnd,
       reAcc,
-      resDone,
+      resDone,]
     });
-    
+
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la récupération des tâches",

@@ -29,6 +29,7 @@ export const useAdminStore = defineStore("adminstore", {
     logs: [],
     compter: 0,
     count: 0,
+    tache: null,
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -205,7 +206,7 @@ export const useAdminStore = defineStore("adminstore", {
     async fetchStateTask() {
       try {
         const res = await api.get("/admStateFinder");
-        // this.tache = res.data.
+        this.tache = res.data.elements;
       } catch (error) {
         console.error("Erreur lors de la récupération des tache:", error);
       }
