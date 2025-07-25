@@ -226,7 +226,7 @@ const currentPages = ref({
 });
 
 const pageSizes = {
-  todo: 4,
+  todo: 8,
   inprogress: 4,
   request: 4,
   accepted: 3,
@@ -491,5 +491,40 @@ select {
 .done {
   background-color: #314158;
   color: #fff;
+}
+@media (max-width: 1024px) {
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    height: auto;
+  }
+
+  .bento-grid > .item {
+    grid-column: unset !important;
+    grid-row: unset !important;
+    width: 100%;
+  }
+
+  .bento-header,
+  .pagination-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-filter select {
+    width: 100%;
+  }
+
+  .request-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>
