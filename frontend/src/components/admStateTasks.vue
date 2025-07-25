@@ -1,29 +1,29 @@
 <template>
   <div class="bento-grid">
     <div class="item item-billboard">
-      <h2>Grow<br />customer retention</h2>
-      <p>Transform one-time buyers into lifelong customers.</p>
+      <h1>Inprogress</h1>
     </div>
 
     <div class="item item-tote">
-      <p>Tote bag design<br />with slogan</p>
+      <h1>Todo</h1>
     </div>
 
     <div class="item item-logo">
-      <h1>upzelo</h1>
+      <h1>Request</h1>
+
+      <p></p>
     </div>
 
     <div class="item item-badge">
-      <p>Badge / Pin<br />Design</p>
+      <h1>Accepted</h1>
     </div>
 
     <div class="item item-shirt">
-      <p>T-shirt<br />Branding</p>
+      <h1>Done</h1>
     </div>
 
     <div class="item item-mobile">
-      <p>Upzelo:<br />Loyalty & Rewards</p>
-      <small>Mobile app icon</small>
+      <h1>Denied</h1>
     </div>
   </div>
 </template>
@@ -43,9 +43,9 @@
 
 .item {
   display: flex;
-
+  flex-direction: column;
   border-radius: 1rem;
-  text-align: center;
+  /* text-align: center; */
   color: white;
   padding: 1rem;
   font-family: sans-serif;
@@ -80,5 +80,8 @@
   background-color: #b0ebe0;
   color: #0a3d36;
   flex-direction: column;
+}
+h1 {
+  font-size: 20px;
 }
 </style>
