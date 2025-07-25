@@ -320,7 +320,9 @@ exports.adminconnexion = async (req, res) => {
     });
 
     if (!userfinder) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "Sorry, you are not allowed to log in to the admin section.",
+      });
     }
     const compare = await argon2.verify(userfinder.password, password);
     if (!compare) {
