@@ -173,7 +173,6 @@ li {
   color: #222;
 }
 
-/* Badges */
 .badge {
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
@@ -182,7 +181,6 @@ li {
   text-transform: uppercase;
 }
 
-/* Couleurs pour chaque état */
 .todo {
   background-color: #7bf1a8;
 }
