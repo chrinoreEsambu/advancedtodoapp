@@ -1,9 +1,26 @@
 <template>
   <div class="bento-grid">
     <div class="item item-billboard">
-      <h1>Inprogress</h1>
+      <div class="bento-header">
+        <h1>Inprogress</h1>
+        <div class="pagination-controls">
+          <button
+            @click="prevPage('inprogress')"
+            :disabled="currentPages.inprogress === 1"
+          >
+            ←
+          </button>
+          <span>Page {{ currentPages.inprogress }}</span>
+          <button
+            @click="nextPage('inprogress')"
+            :disabled="currentPages.inprogress * 4 >= filteredInProgress.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
-        <li v-for="task in tachesInProgress" :key="task.task_id">
+        <li v-for="task in paginatedInProgress" :key="task.task_id">
           {{ task.task }}
           <span :class="['badge', task.taskState.toLowerCase()]">{{
             task.taskState
@@ -13,9 +30,23 @@
     </div>
 
     <div class="item item-tote">
-      <h1>Todo</h1>
+      <div class="bento-header">
+        <h1>Todo</h1>
+        <div class="pagination-controls">
+          <button @click="prevPage('todo')" :disabled="currentPages.todo === 1">
+            ←
+          </button>
+          <span>Page {{ currentPages.todo }}</span>
+          <button
+            @click="nextPage('todo')"
+            :disabled="currentPages.todo * 4 >= filteredTodo.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
-        <li v-for="task in tachesTodo" :key="task.task_id">
+        <li v-for="task in paginatedTodo" :key="task.task_id">
           {{ task.task }}
           <span :class="['badge', task.taskState.toLowerCase()]">{{
             task.taskState
@@ -25,10 +56,41 @@
     </div>
 
     <div class="item item-logo">
-      <h1>Request</h1>
+      <div class="bento-header">
+        <div class="request-header">
+          <h1>Request</h1>
+          <div class="user-filter">
+            <select v-model="selectedUser" @change="resetRequestPage()">
+              <option value="">Tous les utilisateurs</option>
+              <option
+                v-for="user in allUsers"
+                :key="user.user_id"
+                :value="user.user_id"
+              >
+                {{ user.user_id }} - {{ user.nom }} ({{ user.mail }})
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="pagination-controls">
+          <button
+            @click="prevPage('request')"
+            :disabled="currentPages.request === 1"
+          >
+            ←
+          </button>
+          <span>Page {{ currentPages.request }}</span>
+          <button
+            @click="nextPage('request')"
+            :disabled="currentPages.request * 4 >= filteredRequest.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
         <li
-          v-for="task in tachesRequest"
+          v-for="task in paginatedRequest"
           :key="task.task_id"
           class="request-item"
         >
@@ -37,7 +99,7 @@
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState
             }}</span>
-            <span class="for">for: {{ task.assigneeId }}</span>
+            <span class="for">for: {{ getUserInfo(task.assigneeId) }}</span>
             <select v-model="task.taskState" @change="adminChangeState(task)">
               <optgroup label="States">
                 <option value="inprogress">inprogress</option>
@@ -54,9 +116,26 @@
     </div>
 
     <div class="item item-badge">
-      <h1>Accepted</h1>
+      <div class="bento-header">
+        <h1>Accepted</h1>
+        <div class="pagination-controls">
+          <button
+            @click="prevPage('accepted')"
+            :disabled="currentPages.accepted === 1"
+          >
+            ←
+          </button>
+          <span>Page {{ currentPages.accepted }}</span>
+          <button
+            @click="nextPage('accepted')"
+            :disabled="currentPages.accepted * 3 >= filteredAccepted.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
-        <li v-for="task in tachesAccepted" :key="task.task_id">
+        <li v-for="task in paginatedAccepted" :key="task.task_id">
           {{ task.task }}
           <span :class="['badge', task.taskState.toLowerCase()]">{{
             task.taskState
@@ -66,9 +145,23 @@
     </div>
 
     <div class="item item-shirt">
-      <h1>Done</h1>
+      <div class="bento-header">
+        <h1>Done</h1>
+        <div class="pagination-controls">
+          <button @click="prevPage('done')" :disabled="currentPages.done === 1">
+            ←
+          </button>
+          <span>Page {{ currentPages.done }}</span>
+          <button
+            @click="nextPage('done')"
+            :disabled="currentPages.done * 3 >= filteredDone.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
-        <li v-for="task in tachesDone" :key="task.task_id">
+        <li v-for="task in paginatedDone" :key="task.task_id">
           {{ task.task }}
           <span :class="['badge', task.taskState.toLowerCase()]">{{
             task.taskState
@@ -78,9 +171,26 @@
     </div>
 
     <div class="item item-mobile">
-      <h1>Denied</h1>
+      <div class="bento-header">
+        <h1>Denied</h1>
+        <div class="pagination-controls">
+          <button
+            @click="prevPage('denied')"
+            :disabled="currentPages.denied === 1"
+          >
+            ←
+          </button>
+          <span>Page {{ currentPages.denied }}</span>
+          <button
+            @click="nextPage('denied')"
+            :disabled="currentPages.denied * 3 >= filteredDenied.length"
+          >
+            →
+          </button>
+        </div>
+      </div>
       <ul>
-        <li v-for="task in tachesDenied" :key="task.task_id">
+        <li v-for="task in paginatedDenied" :key="task.task_id">
           {{ task.task }}
           <span :class="['badge', task.taskState.toLowerCase()]">{{
             task.taskState
@@ -92,7 +202,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
 
 const adminStore = useAdminStore();
@@ -103,9 +213,84 @@ const tachesAccepted = ref([]);
 const tachesDenied = ref([]);
 const tachesDone = ref([]);
 const tachesRequest = ref([]);
+const allUsers = ref([]);
+const selectedUser = ref("");
+
+const currentPages = ref({
+  todo: 1,
+  inprogress: 1,
+  request: 1,
+  accepted: 1,
+  done: 1,
+  denied: 1,
+});
+
+const pageSizes = {
+  todo: 4,
+  inprogress: 4,
+  request: 4,
+  accepted: 3,
+  done: 3,
+  denied: 3,
+};
+
+const getUserInfo = (userId) => {
+  const user = allUsers.value.find((u) => u.user_id === userId);
+  return user ? `${user.user_id} - ${user.nom} (${user.mail})` : userId;
+};
+
+const nextPage = (type) => {
+  currentPages.value[type]++;
+};
+
+const prevPage = (type) => {
+  if (currentPages.value[type] > 1) {
+    currentPages.value[type]--;
+  }
+};
+
+const resetRequestPage = () => {
+  currentPages.value.request = 1;
+};
+
+const paginate = (data, type) => {
+  const pageSize = pageSizes[type];
+  const startIndex = (currentPages.value[type] - 1) * pageSize;
+  return data.slice(startIndex, startIndex + pageSize);
+};
+
+const filteredTodo = computed(() => tachesTodo.value);
+const filteredInProgress = computed(() => tachesInProgress.value);
+const filteredRequest = computed(() => {
+  if (!selectedUser.value) return tachesRequest.value;
+  return tachesRequest.value.filter(
+    (task) => task.assigneeId === selectedUser.value
+  );
+});
+const filteredAccepted = computed(() => tachesAccepted.value);
+const filteredDone = computed(() => tachesDone.value);
+const filteredDenied = computed(() => tachesDenied.value);
+
+const paginatedTodo = computed(() => paginate(filteredTodo.value, "todo"));
+const paginatedInProgress = computed(() =>
+  paginate(filteredInProgress.value, "inprogress")
+);
+const paginatedRequest = computed(() =>
+  paginate(filteredRequest.value, "request")
+);
+const paginatedAccepted = computed(() =>
+  paginate(filteredAccepted.value, "accepted")
+);
+const paginatedDone = computed(() => paginate(filteredDone.value, "done"));
+const paginatedDenied = computed(() =>
+  paginate(filteredDenied.value, "denied")
+);
 
 const fetchtaches = async () => {
   try {
+    const usersResponse = await adminStore.fetchUsers();
+    allUsers.value = adminStore.users || [];
+
     await adminStore.fetchStateTask();
 
     tachesTodo.value = adminStore.tache[0] || [];
@@ -125,12 +310,14 @@ onMounted(() => {
 
 const adminChangeState = async (task) => {
   await adminStore.submitTasksState(task.task_id, task.taskState);
+  fetchtaches();
 };
 </script>
 
 <style scoped>
 * {
   list-style: none;
+  box-sizing: border-box;
 }
 
 optgroup {
@@ -145,24 +332,61 @@ optgroup {
   height: 100vh;
   padding: 1rem;
   background-color: #e6f4f1;
-  height: 810px;
+  height: 890px;
 }
+
+.bento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.request-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-filter select {
+  min-width: 250px;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #000;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .for {
   background-color: #f2fedc;
   border-radius: 10px;
-  padding: 2px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  width: 140px;
-
-  font-size: 15px;
+  padding: 2px 5px;
+  font-size: 14px;
+  white-space: nowrap;
 }
+
 .item {
   display: flex;
   flex-direction: column;
   border-radius: 1rem;
-  color: white;
+  color: #000;
   padding: 1rem;
   font-family: sans-serif;
   overflow-y: auto;
@@ -179,7 +403,7 @@ optgroup {
 
 .item-logo {
   grid-column: span 3;
-  background-color: #d0ceff;
+  background-color: #fae37d38;
 }
 
 .item-badge {
@@ -199,7 +423,7 @@ optgroup {
 
 h1 {
   font-size: 20px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   color: #000;
 }
 

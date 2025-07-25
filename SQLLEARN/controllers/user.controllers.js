@@ -48,11 +48,11 @@ exports.getUser = async (req, res) => {
     });
 
     if (findalluser.length > 0) {
-      await logAdminAction(
-        req.session.admin_id,
-        "récupération utilisateurs",
-        `consultation la liste des utilisateurs`
-      );
+      // await logAdminAction(
+      //   req.session.admin_id,
+      //   "récupération utilisateurs",
+      //   `consultation la liste des utilisateurs`
+      // );
       res.status(200).json({ message: "All user", findalluser });
     } else {
       res.status(204).json({ message: "nothing find", findalluser });
@@ -266,6 +266,13 @@ exports.updateTasksState = async (req, res) => {
       where: { task_id: task_id },
       data: { taskState },
     });
+
+    await logAdminAction(
+      req.session.admin_id,
+      "modification état tâche",
+      `a modifié l'état de la tâche ${task_id} à ${taskState}`
+    );
+
     res.status(201).json({ message: "modification reusie", updateState });
   } catch (error) {
     res
@@ -273,6 +280,7 @@ exports.updateTasksState = async (req, res) => {
       .json({ message: "server error", error: { message: error.message } });
   }
 };
+
 exports.adminCreateUser = async (req, res) => {
   try {
     const { nom, mail, password, role } = req.body;
@@ -343,7 +351,7 @@ exports.adminconnexion = async (req, res) => {
 
     await logAdminAction(
       req.session.admin_id,
-      "connexion admi",
+      "connexion admin",
       `admin ${userfinder.mail}`
     );
 
@@ -495,6 +503,13 @@ exports.userTasksCount = async (req, res) => {
       where: { role: "users" },
     });
     const totaltasks = await prisma.tasks.count();
+
+    // await logAdminAction(
+    //   req.session.admin_id,
+    //   "consultation statistiques",
+    //   "a consulté les statistiques du système"
+    // );
+
     return res.status(200).json({
       success: true,
       message: "totalCouns",
@@ -560,6 +575,12 @@ exports.adminUpdateTaskState = async (req, res) => {
         state: newState,
       },
     });
+
+    await logAdminAction(
+      req.session.admin_id,
+      "modification état tâche",
+      `a changé l'état de la tâche ${taskId} à ${newState}`
+    );
 
     return res.status(200).json({
       message: `État de la tâche mis à jour : ${newState}`,
@@ -717,6 +738,7 @@ exports.getAdminLogs = async (req, res) => {
     });
     const countlogs = await prisma.logs.count();
     const countPage = Math.ceil(countlogs / limit);
+
     return res
       .status(200)
       .json({ message: "Logs des actions admin", countPage, logs });
