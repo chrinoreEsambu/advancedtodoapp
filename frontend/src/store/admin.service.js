@@ -201,5 +201,14 @@ export const useAdminStore = defineStore("adminstore", {
         };
       }
     },
+
+    async fetchStateTask() {
+      try {
+        const res = await api.get("/admStateFinder");
+        // this.tache = res.data.
+      } catch (error) {
+        console.error("Erreur lors de la récupération des tache:", error);
+      }
+    },
   },
 });

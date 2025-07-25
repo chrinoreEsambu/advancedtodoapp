@@ -673,6 +673,7 @@ exports.admStateFinder = async (req, res) => {
       reAcc,
       resDone,
     });
+    
   } catch (error) {
     res.status(500).json({
       message: "Erreur lors de la récupération des tâches",

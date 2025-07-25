@@ -28,7 +28,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { storeToRefs } from "pinia";
+import { useAdminStore } from "../store/admin.service";
+import { ref, onMounted, computed } from "vue";
+const adminStore = useAdminStore();
+
+
+</script>
 
 <style scoped>
 .bento-grid {
