@@ -37,6 +37,7 @@
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState
             }}</span>
+            <span>for: {{ task.assigneeId }}</span>
             <select v-model="task.taskState" @change="adminChangeState(task)">
               <optgroup label="States">
                 <option value="inprogress">inprogress</option>
@@ -169,7 +170,6 @@ optgroup {
 .item-logo {
   grid-column: span 3;
   background-color: #fb8d75;
- 
 }
 
 .item-badge {
