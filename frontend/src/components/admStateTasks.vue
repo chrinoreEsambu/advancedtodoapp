@@ -2,56 +2,99 @@
   <div class="bento-grid">
     <div class="item item-billboard">
       <h1>Inprogress</h1>
+      <ul>
+        <li v-for="task in tachesInProgress" :key="task.task_id">
+          {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
+        </li>
+      </ul>
     </div>
 
     <div class="item item-tote">
       <h1>Todo</h1>
       <ul>
-        <li v-for="task in resTd" :key="task.task_id">
+        <li v-for="task in tachesTodo" :key="task.task_id">
           {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
         </li>
       </ul>
     </div>
 
     <div class="item item-logo">
       <h1>Request</h1>
-
-      <p></p>
+      <p>Aucune donnée affichée ici pour l’instant.</p>
     </div>
 
     <div class="item item-badge">
       <h1>Accepted</h1>
+      <ul>
+        <li v-for="task in tachesAccepted" :key="task.task_id">
+          {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
+        </li>
+      </ul>
     </div>
 
     <div class="item item-shirt">
       <h1>Done</h1>
+      <ul>
+        <li v-for="task in tachesDone" :key="task.task_id">
+          {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
+        </li>
+      </ul>
     </div>
 
     <div class="item item-mobile">
       <h1>Denied</h1>
+      <ul>
+        <li v-for="task in tachesDenied" :key="task.task_id">
+          {{ task.task }}
+          <span :class="['badge', task.taskState.toLowerCase()]">
+            {{ task.taskState }}
+          </span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
+import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
-import { ref, onMounted, computed } from "vue";
 
-const resTd = ref([]);
 const adminStore = useAdminStore();
 
-const fetchtodo = async () => {
+const tachesTodo = ref([]);
+const tachesInProgress = ref([]);
+const tachesAccepted = ref([]);
+const tachesDenied = ref([]);
+const tachesDone = ref([]);
+
+const fetchtaches = async () => {
   try {
     await adminStore.fetchStateTask();
-    resTd.value = adminStore.tache[0];
-    console.log("Les tâches TODO :", resTd.value);
+
+    tachesTodo.value = adminStore.tache[0] || [];
+    tachesInProgress.value = adminStore.tache[1] || [];
+    tachesDenied.value = adminStore.tache[2] || [];
+    tachesAccepted.value = adminStore.tache[3] || [];
+    tachesDone.value = adminStore.tache[4] || [];
   } catch (error) {
-    console.log(error);
+    console.error("Erreur de chargement des tâches :", error);
   }
 };
+
 onMounted(() => {
-  fetchtodo();
+  fetchtaches();
 });
 </script>
 
@@ -59,6 +102,7 @@ onMounted(() => {
 * {
   list-style: none;
 }
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -73,16 +117,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   border-radius: 1rem;
-  /* text-align: center; */
   color: white;
   padding: 1rem;
   font-family: sans-serif;
+  overflow-y: auto;
 }
 
 .item-billboard {
   grid-column: span 2;
   background-color: #1f7c6e;
-  flex-direction: column;
 }
 
 .item-tote {
@@ -107,9 +150,61 @@ onMounted(() => {
 .item-mobile {
   background-color: #b0ebe0;
   color: #0a3d36;
-  flex-direction: column;
 }
+
 h1 {
   font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+ul {
+  padding-left: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: #222;
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Couleurs pour chaque état */
+.todo {
+  background-color: #7bf1a8;
+}
+
+.inprogress {
+  background-color: #ffd166;
+}
+
+.request {
+  background-color: #f4a8ff;
+}
+
+.denied {
+  background-color: #ff6b6b;
+}
+
+.accepted {
+  background-color: #c3ebfc;
+}
+
+.done {
+  background-color: #314158;
+  color: #fff;
 }
 </style>
