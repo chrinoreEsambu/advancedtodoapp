@@ -29,7 +29,7 @@ export const useAdminStore = defineStore("adminstore", {
     logs: [],
     compter: 0,
     count: 0,
-    tache: null,
+    tache: [],
   }),
   actions: {
     async adminlogin(mail, password) {

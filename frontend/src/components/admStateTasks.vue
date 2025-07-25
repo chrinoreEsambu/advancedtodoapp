@@ -6,6 +6,11 @@
 
     <div class="item item-tote">
       <h1>Todo</h1>
+      <ul>
+        <li v-for="task in resTd" :key="task.task_id">
+          {{ task.task }}
+        </li>
+      </ul>
     </div>
 
     <div class="item item-logo">
@@ -32,12 +37,28 @@
 import { storeToRefs } from "pinia";
 import { useAdminStore } from "../store/admin.service";
 import { ref, onMounted, computed } from "vue";
+
+const resTd = ref([]);
 const adminStore = useAdminStore();
 
-
+const fetchtodo = async () => {
+  try {
+    await adminStore.fetchStateTask();
+    resTd.value = adminStore.tache[0];
+    console.log("Les tâches TODO :", resTd.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+onMounted(() => {
+  fetchtodo();
+});
 </script>
 
 <style scoped>
+* {
+  list-style: none;
+}
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
