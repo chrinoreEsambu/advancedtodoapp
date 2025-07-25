@@ -14,7 +14,9 @@
           placeholder="Nouvelle tâche..."
           class="input-task"
         />
-        <button @click="handleAddTask">Ajouter <Plus class="addplus" size="17"/></button>
+        <button @click="handleAddTask">
+          Ajouter <Plus class="addplus" size="17" />
+        </button>
       </div>
 
       <div class="tasks">
@@ -303,7 +305,6 @@ const sendChatMessage = () => {
   display: flex;
   flex-direction: row;
   gap: 40px;
-  
 }
 
 .add-task {
@@ -311,7 +312,6 @@ const sendChatMessage = () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
 }
 
 .input-task {
@@ -319,7 +319,9 @@ const sendChatMessage = () => {
   border: 1px solid #000;
   border-radius: 5px;
 }
-
+.addplus {
+  margin-left: 2px;
+}
 .add-task button {
   display: flex;
   align-items: center;
@@ -330,7 +332,6 @@ const sendChatMessage = () => {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
 }
 
 .add-task button:hover {
