@@ -37,7 +37,7 @@
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState
             }}</span>
-            <span>for: {{ task.assigneeId }}</span>
+            <span class="for">for: {{ task.assigneeId }}</span>
             <select v-model="task.taskState" @change="adminChangeState(task)">
               <optgroup label="States">
                 <option value="inprogress">inprogress</option>
@@ -147,7 +147,17 @@ optgroup {
   background-color: #e6f4f1;
   height: 810px;
 }
+.for {
+  background-color: #f2fedc;
+  border-radius: 10px;
+  padding: 2px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
 
+  font-size: 15px;
+}
 .item {
   display: flex;
   flex-direction: column;
@@ -169,7 +179,7 @@ optgroup {
 
 .item-logo {
   grid-column: span 3;
-  background-color: #fb8d75;
+  background-color: #d0ceff;
 }
 
 .item-badge {
