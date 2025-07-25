@@ -16,7 +16,6 @@
         </p>
       </div>
 
-      <!-- Icône admin en bas à droite -->
       <button class="admin-button" @click="admin">
         <ShieldCheck class="admin-icon" />
       </button>
@@ -28,7 +27,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
-import { ShieldCheck } from "lucide-vue-next"; // icône admin
+import { ShieldCheck } from "lucide-vue-next";
 
 const user_id = ref("");
 const password = ref("");
@@ -156,12 +155,11 @@ const admin = () => {
   text-decoration: underline;
 }
 
-/* Bouton admin en bas à droite */
 .admin-button {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background-color: #ffd700; /* Jaune personnalisé */
+  background-color: #ffd700;
   border: none;
   border-radius: 50%;
   padding: 0.6rem;
