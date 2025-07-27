@@ -318,8 +318,15 @@ const adminChangeState = async (task) => {
 * {
   list-style: none;
   box-sizing: border-box;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none;
+}
 optgroup {
   font-weight: bold;
 }
