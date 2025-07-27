@@ -58,7 +58,7 @@ import {
   Menu,
   FileClock,
   CircleDotDashed,
-  MessageCircleMore
+  MessageCircleMore,
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
@@ -70,7 +70,7 @@ import assign from "../components/assign.vue";
 import tasklist from "../components/tasklist.vue";
 import logList from "../components/logList.vue";
 import admStateTasks from "../components/admStateTasks.vue";
-import chat from "../components/chat.vue"
+import chat from "../components/chat.vue";
 
 const router = useRouter();
 const adminstore = useAdminStore();
@@ -110,8 +110,8 @@ const activeComponent = computed(() => {
 const stats = ref([
   { title: "Total users", value: 0, icon: UsersRound },
   { title: "Total admins", value: 0, icon: ListTodo },
-  { title: "Normal users", value: 0, icon: ClipboardCheck },
-  { title: "Total tasks", value: 0, icon: UserRoundPlus },
+  { title: "Normal users", value: 0, icon: UserRoundPlus},
+  { title: "Total tasks", value: 0, icon:ClipboardCheck   },
 ]);
 
 onMounted(async () => {
