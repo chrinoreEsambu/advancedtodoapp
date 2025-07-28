@@ -53,7 +53,7 @@ import {
   UserRoundPlus,
   UsersRound,
   ClipboardCheck,
-  Shield  ,
+  Shield,
   LogOut,
   Menu,
   FileClock,
@@ -95,7 +95,7 @@ const tabs = [
     label: "Assign task",
     component: assign,
   },
-  { id: "Tasklist", icon: Shield  , label: "Tasklist", component: tasklist },
+  { id: "Tasklist", icon: Shield, label: "Tasklist", component: tasklist },
   { id: "logList", icon: FileClock, label: "Log list", component: logList },
 
   { id: "chat", icon: MessageCircleMore, label: "Chat", component: chat },
@@ -109,9 +109,9 @@ const activeComponent = computed(() => {
 
 const stats = ref([
   { title: "Total users", value: 0, icon: UsersRound },
-  { title: "Total admins", value: 0, icon: Shield   },
-  { title: "Normal users", value: 0, icon: UserRoundPlus},
-  { title: "Total tasks", value: 0, icon:ClipboardCheck   },
+  { title: "Total admins", value: 0, icon: Shield },
+  { title: "Normal users", value: 0, icon: UserRoundPlus },
+  { title: "Total tasks", value: 0, icon: ClipboardCheck },
 ]);
 
 onMounted(async () => {

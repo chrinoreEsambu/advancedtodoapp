@@ -7,14 +7,14 @@
       </button>
     </header>
 
-    <div class="content">
+    <div class="centered-zone">
       <div class="add-task">
         <input
           v-model="taskText"
           placeholder="Nouvelle tâche..."
-          class="input-task"
+          class="input-task wide-input"
         />
-        <button @click="handleAddTask">
+        <button @click="handleAddTask" class="wide-button">
           Ajouter <Plus class="addplus" size="17" />
         </button>
       </div>
@@ -146,7 +146,6 @@ const chatMessages = ref([]);
 const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
-
 const showChat = ref(false);
 
 onMounted(async () => {
@@ -281,14 +280,15 @@ const sendChatMessage = () => {
   align-items: center;
   margin-bottom: 20px;
 }
+
 .bttoff {
   margin-right: 5px;
 }
+
 .logout-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: #000;
   color: #fff;
   padding: 10px 15px;
@@ -301,17 +301,20 @@ const sendChatMessage = () => {
   background-color: #222;
 }
 
-.content {
+/* NOUVEAU WRAPPER CENTRÉ */
+.centered-zone {
   display: flex;
-  flex-direction: row;
-  gap: 40px;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 40px;
 }
 
 .add-task {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 }
 
 .input-task {
@@ -319,9 +322,11 @@ const sendChatMessage = () => {
   border: 1px solid #000;
   border-radius: 5px;
 }
+
 .addplus {
   margin-left: 2px;
 }
+
 .add-task button {
   display: flex;
   align-items: center;
@@ -338,8 +343,18 @@ const sendChatMessage = () => {
   background-color: #222;
 }
 
+.wide-input {
+  width: 400px;
+  max-width: 90%;
+}
+
+.wide-button {
+  width: 400px;
+  max-width: 90%;
+}
+
 .tasks {
-  flex: 2;
+  width: 100%;
 }
 
 .tasks ul {
@@ -352,7 +367,6 @@ const sendChatMessage = () => {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -391,6 +405,7 @@ select {
   border: 1px solid #ccc;
 }
 
+/* MODAL, CHAT, RESPONSIVE ... inchangé */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -605,29 +620,19 @@ select {
 }
 
 @media (max-width: 768px) {
-  .content {
-    flex-direction: column;
-    gap: 20px;
-  }
-
   .header {
     flex-direction: column;
     gap: 10px;
     text-align: center;
   }
 
-  .add-task {
-    flex-direction: column;
-  }
-
-  .add-task button,
-  .input-task {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
   .task-item {
     flex-direction: column;
+  }
+
+  .wide-input,
+  .wide-button {
+    width: 100%;
   }
 }
 </style>
