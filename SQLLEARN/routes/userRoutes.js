@@ -34,6 +34,7 @@ const {
   adminGetUserMessages,
   adminReplyToComment,
   getMyMessages,
+  sendMessage,
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -63,5 +64,6 @@ router.put("/api/updateTasksState/:task_id", updateTasksState);
 router.get("/api/admStateFinder", admStateFinder);
 
 router.get("/api/getMyMessages", getMyMessages);
+router.post("/api/sendMessage",sendMessage);
 
 module.exports = router;
