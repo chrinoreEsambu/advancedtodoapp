@@ -639,34 +639,6 @@ exports.addComments = async (req, res) => {
   }
 };
 
-exports.getMyComments = async (req, res) => {
-  try {
-    const userId = req.params.userid;
-
-    const comments = await prisma.comments.findMany({
-      where: {
-        authorId: userId,
-      },
-      orderBy: { createdAt: "asc" },
-      include: {
-        task: {
-          select: { task: true, task_id: true },
-        },
-        replyBy: {
-          select: { nom: true, user_id: true },
-        },
-      },
-    });
-
-    return res.status(200).json({ comments });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Erreur lors de la récupération des commentaires.",
-      error: error.message,
-    });
-  }
-};
-
 exports.admStateFinder = async (req, res) => {
   try {
     const resTd = await prisma.tasks.findMany({
@@ -750,4 +722,31 @@ exports.getAdminLogs = async (req, res) => {
   }
 };
 
+exports.getMyMessages = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
 
+    if (!userId) {
+      return res.status(401).json({ message: "Utilisateur non authentifié." });
+    }
+
+    const messages = await prisma.comments.findMany({
+      where: {
+        OR: [{ authorId: userId }, { replyById: userId }],
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        author: { select: { nom: true, user_id: true } },
+        replyBy: { select: { nom: true, user_id: true } },
+        task: { select: { task: true, task_id: true } },
+      },
+    });
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la récupération des messages.",
+      error: error.message,
+    });
+  }
+};

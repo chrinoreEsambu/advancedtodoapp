@@ -29,10 +29,11 @@ const {
   addComments,
   getAdminLogs,
   updateTasksState,
-  getMyComments,
+
   admStateFinder,
   adminGetUserMessages,
   adminReplyToComment,
+  getMyMessages,
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -61,7 +62,6 @@ router.get("/api/logs", getAdminLogs);
 router.put("/api/updateTasksState/:task_id", updateTasksState);
 router.get("/api/admStateFinder", admStateFinder);
 
-router.get("/api/getComments", getMyComments);
-
+router.get("/api/getMyMessages", getMyMessages);
 
 module.exports = router;
