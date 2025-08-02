@@ -73,8 +73,8 @@ id String @id @default(uuid())
 
 content String
 
-taskId String
-task Tasks @relation("taskfor",fields:[taskId], references: [task_id] )
+taskId String?
+task Tasks? @relation("taskfor",fields:[taskId], references: [task_id] )
 
 authorId  String
 author Users @relation("by",fields: [authorId], references: [user_id])

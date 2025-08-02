@@ -753,9 +753,9 @@ exports.getMyMessages = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
   try {
-    const { content, replyToId, replyById } = req.body;
+    const { content, replyToId, replyById, taskId } = req.body;
     const userId = req.session.user_id;
-
+    
     if (!userId) {
       return res.status(401).json({ message: "Utilisateur non authentifié." });
     }
@@ -766,7 +766,7 @@ exports.sendMessage = async (req, res) => {
         authorId: userId,
         replyToId: replyToId || null,
         replyById: replyById || null,
-        taskId: null,
+        taskId: taskId || null,
       },
       include: {
         author: { select: { nom: true } },
