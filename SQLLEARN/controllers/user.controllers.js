@@ -750,3 +750,36 @@ exports.getMyMessages = async (req, res) => {
     });
   }
 };
+
+exports.sendMessage = async (req, res) => {
+  try {
+    const { content, replyToId, replyById } = req.body;
+    const userId = req.session.user_id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Utilisateur non authentifié." });
+    }
+
+    const newMessage = await prisma.comments.create({
+      data: {
+        content,
+        authorId: userId,
+        replyToId: replyToId || null,
+        replyById: replyById || null,
+        taskId: null,
+      },
+      include: {
+        author: { select: { nom: true } },
+      },
+    });
+
+    return res
+      .status(201)
+      .json({ message: "Message envoyé.", data: newMessage });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de l'envoi du message.",
+      error: error.message,
+    });
+  }
+};
