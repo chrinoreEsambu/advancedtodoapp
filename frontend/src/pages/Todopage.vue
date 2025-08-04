@@ -149,6 +149,10 @@ const currentTaskId = ref(null);
 const showChat = ref(false);
 
 onMounted(async () => {
+  await userStore.getComments();
+}),
+
+onMounted(async () => {
   await userStore.fetchTasks();
 });
 
@@ -301,7 +305,7 @@ const sendChatMessage = () => {
   background-color: #222;
 }
 
-/* NOUVEAU WRAPPER CENTRÉ */
+
 .centered-zone {
   display: flex;
   flex-direction: column;
@@ -405,7 +409,7 @@ select {
   border: 1px solid #ccc;
 }
 
-/* MODAL, CHAT, RESPONSIVE ... inchangé */
+
 .modal-overlay {
   position: fixed;
   top: 0;

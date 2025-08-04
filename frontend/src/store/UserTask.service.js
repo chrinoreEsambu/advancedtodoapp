@@ -101,9 +101,9 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    async fetchComments(userId) {
-      const res = await api.get(`/getComments/${userId}`);
-      this.comments = res.data.comments;
+    async getComments(task_id) {
+      const fetcher = await api.get(`/getCommentsByTask/${task_id}`);
+      this.comments = fetcher.data.comments;
     },
   },
 });
