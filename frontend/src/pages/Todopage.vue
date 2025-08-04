@@ -69,7 +69,6 @@
       </div>
     </div>
 
-    <!-- MODAL COMMENTAIRE -->
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h4>Commentaires existants</h4>
@@ -86,7 +85,11 @@
             <hr />
           </li>
         </ul>
-        <p v-else>Aucun commentaire encore.</p>
+
+        <div v-else class="nothingTxt">
+          <Ghost class="ghost" />
+          <p class="txt">Aucun commentaire !</p>
+        </div>
 
         <textarea
           v-model="content"
@@ -151,7 +154,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
-import { MessageCircleIcon, LogOut, Plus } from "lucide-vue-next";
+import { MessageCircleIcon, LogOut, Plus, Ghost } from "lucide-vue-next";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -256,6 +259,9 @@ const sendChatMessage = () => {
 </script>
 
 <style scoped>
+* {
+  list-style: none;
+}
 .todo {
   background-color: #7bf1a8;
 }
@@ -475,9 +481,27 @@ select {
   font-size: 0.95rem;
   position: relative;
 }
+.nothingTxt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 3rem; */
+  text-align: left;
+}
 
+.txt {
+  /* font-size: 1.5rem; */
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.ghost {
+  width: 150px;
+  height: 150px;
+}
 .modal-content li::before {
-  content: "💬";
+  content: "";
   position: absolute;
   top: 10px;
   left: -25px;
@@ -510,8 +534,6 @@ select {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-
-  font-size: 1rem;
 }
 
 .modal-actions button:first-child {
@@ -529,7 +551,7 @@ select {
 }
 
 .modal-actions button:last-child {
-  background-color: #dc3545;
+  background-color: #ff4444;
   color: #fff;
 }
 
