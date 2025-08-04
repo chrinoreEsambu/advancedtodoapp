@@ -75,8 +75,13 @@
         <h4>Commentaires existants</h4>
         <ul v-if="userStore.comments.length > 0">
           <li v-for="(comment, index) in userStore.comments" :key="index">
-            <p><strong>Auteur :</strong> {{ comment.author?.nom ?? 'Anonyme' }}</p>
-            <p><strong>Réponse par :</strong> {{ comment.replyBy?.nom ?? 'Aucune' }}</p>
+            <p>
+              <strong>Auteur :</strong> {{ comment.author?.nom ?? "Anonyme" }}
+            </p>
+            <p>
+              <strong>Réponse par :</strong>
+              {{ comment.replyBy?.nom ?? "Aucune" }}
+            </p>
             <p><strong>Contenu :</strong> {{ comment.content }}</p>
             <hr />
           </li>
@@ -97,7 +102,11 @@
     </div>
 
     <!-- CHAT -->
-    <div v-if="showChat" class="chat-modal-overlay" @click.self="closeChatModal">
+    <div
+      v-if="showChat"
+      class="chat-modal-overlay"
+      @click.self="closeChatModal"
+    >
       <div class="chat-modal">
         <div class="chat-header">
           <h3>Discussion</h3>
@@ -492,16 +501,16 @@ select {
 
 .modal-actions {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: right;
+  gap: 20px;
 }
 
 .modal-actions button {
-  padding: 10px 16px;
+  padding: 10px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  
+
   font-size: 1rem;
 }
 
@@ -511,7 +520,7 @@ select {
 }
 
 .modal-actions button:first-child:hover {
-  background-color: #ffe773;
+  background-color: #c3ebfc;
 }
 
 .modal-actions button:first-child:disabled {
