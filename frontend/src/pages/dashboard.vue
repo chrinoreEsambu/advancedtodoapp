@@ -31,6 +31,7 @@
     </div>
 
     <div class="content-area">
+      <label class="admconnect">Welcome {{ adminstore.admin }}</label>
       <div class="dashboard-stats">
         <div class="stat-card" v-for="stat in stats" :key="stat.title">
           <component :is="stat.icon" class="stat-icon" />
@@ -140,6 +141,12 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+.admconnect {
+  position: absolute;
+  justify-content: right;
+  top: 1px;
+  right: 37px;
+}
 .main_title {
   color: #84a98c;
 }
