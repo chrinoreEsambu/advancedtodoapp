@@ -93,6 +93,7 @@ export const useUserStore = defineStore("user", {
         await api.put(`/updateTasksState/${task_id}`, {
           taskState,
         });
+        alert(response.data.message);
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'état de la tâche :",

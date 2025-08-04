@@ -256,15 +256,28 @@ exports.updateTasksState = async (req, res) => {
     const { task_id } = req.params;
     const { taskState } = req.body;
 
-    const findTasks = await prisma.tasks.findUnique({
-      where: { task_id: task_id },
+    const existingTask = await prisma.tasks.findUnique({
+      where: { task_id },
+      select: {
+        taskState: true,
+      },
     });
-    if (!findTasks) {
-      res.status(404).json({ message: "Aucune tache avec cette iD trouver" });
+
+    if (!existingTask) {
+      return res
+        .status(404)
+        .json({ message: "Aucune tâche avec cet ID trouvée." });
     }
 
-    const updateState = await prisma.tasks.update({
-      where: { task_id: task_id },
+    if (existingTask.taskState === "done") {
+      return res.status(403).json({
+        message:
+          "Les tâches déjà terminées (done) ne peuvent plus être modifiées.",
+      });
+    }
+
+    const updatedTask = await prisma.tasks.update({
+      where: { task_id },
       data: { taskState },
     });
 
@@ -274,11 +287,14 @@ exports.updateTasksState = async (req, res) => {
       `a modifié l'état de la tâche ${task_id} à ${taskState}`
     );
 
-    res.status(201).json({ message: "modification reusie", updateState });
+    return res
+      .status(200)
+      .json({ message: "Modification réussie", updatedTask });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "server error", error: { message: error.message } });
+    return res.status(500).json({
+      message: "Erreur serveur",
+      error: { message: error.message },
+    });
   }
 };
 
