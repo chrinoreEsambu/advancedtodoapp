@@ -755,7 +755,7 @@ exports.sendMessage = async (req, res) => {
   try {
     const { content, replyToId, replyById, taskId } = req.body;
     const userId = req.session.user_id;
-    
+
     if (!userId) {
       return res.status(401).json({ message: "Utilisateur non authentifié." });
     }
@@ -790,13 +790,19 @@ exports.getCommentsByTask = async (req, res) => {
     if (!task_id) {
       return res.status(400).json({ message: "task_id requis" });
     }
+
     const comments = await prisma.comments.findMany({
       where: { taskId: task_id },
       orderBy: { createdAt: "asc" },
-      include: {
-        author: { select: { nom: true, user_id: true } },
-        replyBy: { select: { nom: true, user_id: true } },
-        replyTo: { select: { id: true, content: true } },
+      select: {
+        content: true,
+        createdAt: true,
+        author: {
+          select: { nom: true },
+        },
+        replyBy: {
+          select: { nom: true },
+        },
       },
     });
 
