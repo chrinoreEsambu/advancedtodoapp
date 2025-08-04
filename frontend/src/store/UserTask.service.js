@@ -102,8 +102,15 @@ export const useUserStore = defineStore("user", {
     },
 
     async getComments(task_id) {
-      const fetcher = await api.get(`/getCommentsByTask/${task_id}`);
-      this.comments = fetcher.data.comments;
+      try {
+        const fetcher = await api.get(`/getCommentsByTask/${task_id}`);
+        this.comments = fetcher.data.comments;
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des commentaires :",
+          error
+        );
+      }
     },
   },
 });
