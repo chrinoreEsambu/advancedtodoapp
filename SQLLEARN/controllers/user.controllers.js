@@ -787,13 +787,9 @@ exports.sendMessage = async (req, res) => {
 exports.getCommentsByTask = async (req, res) => {
   try {
     const { task_id } = req.params;
-
-    // Vérifie que l'id est fourni
     if (!task_id) {
       return res.status(400).json({ message: "task_id requis" });
     }
-
-    // Récupère tous les commentaires liés à la tâche
     const comments = await prisma.comments.findMany({
       where: { taskId: task_id },
       orderBy: { createdAt: "asc" },
