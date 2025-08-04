@@ -169,12 +169,10 @@ const sending = ref(false);
 const currentTaskId = ref(null);
 const showChat = ref(false);
 
-// Charger les tâches à l'ouverture
 onMounted(async () => {
   await userStore.fetchTasks();
 });
 
-// Ajouter une tâche
 const handleAddTask = async () => {
   if (taskText.value.trim() === "") return;
   await userStore.addTask({ task: taskText.value });
@@ -182,22 +180,19 @@ const handleAddTask = async () => {
   await userStore.fetchTasks();
 };
 
-// Déconnexion
 const handleLogout = async () => {
   await userStore.logout();
   router.push("/");
 };
 
-// Ouvrir le modal pour commenter une tâche
 const openCommentModal = async (taskId) => {
   currentTaskId.value = taskId;
   content.value = "";
   showModal.value = true;
 
-  await userStore.getComments(taskId); // Récupère les commentaires
+  await userStore.getComments(taskId);
 };
 
-// Fermer le modal
 const closeModal = () => {
   if (sending.value) return;
   showModal.value = false;
@@ -205,7 +200,6 @@ const closeModal = () => {
   content.value = "";
 };
 
-// Soumettre un commentaire
 const submitComment = async () => {
   if (content.value.trim() === "") {
     alert("Le commentaire ne peut pas être vide.");
@@ -227,12 +221,10 @@ const submitComment = async () => {
   }
 };
 
-// Changer l'état de la tâche
 const taskValueSender = async (task) => {
   await userStore.submitTasksState(task.task_id, task.taskState);
 };
 
-// Chat
 const openChatModal = () => {
   showChat.value = true;
 };
@@ -252,7 +244,7 @@ const sendChatMessage = () => {
   setTimeout(() => {
     chatMessages.value.push({
       from: "other",
-      text: "Merci pour votre message. Nous reviendrons vers vous bientôt.",
+      text: "feature not available refer to the comments area ' ? ' to ask your questions ! Thank you.",
     });
   }, 1000);
 };
@@ -486,7 +478,6 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: left;
 }
 
