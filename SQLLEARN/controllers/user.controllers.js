@@ -783,3 +783,32 @@ exports.sendMessage = async (req, res) => {
     });
   }
 };
+
+exports.getCommentsByTask = async (req, res) => {
+  try {
+    const { task_id } = req.params;
+
+    // Vérifie que l'id est fourni
+    if (!task_id) {
+      return res.status(400).json({ message: "task_id requis" });
+    }
+
+    // Récupère tous les commentaires liés à la tâche
+    const comments = await prisma.comments.findMany({
+      where: { taskId: task_id },
+      orderBy: { createdAt: "asc" },
+      include: {
+        author: { select: { nom: true, user_id: true } },
+        replyBy: { select: { nom: true, user_id: true } },
+        replyTo: { select: { id: true, content: true } },
+      },
+    });
+
+    return res.status(200).json({ comments });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la récupération des commentaires.",
+      error: error.message,
+    });
+  }
+};
