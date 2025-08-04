@@ -69,15 +69,26 @@
       </div>
     </div>
 
+    <!-- MODAL COMMENTAIRE -->
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
-        <h4>Poser ta question</h4>
+        <h4>Commentaires existants</h4>
+        <ul v-if="userStore.comments.length > 0">
+          <li v-for="(comment, index) in userStore.comments" :key="index">
+            <p><strong>Auteur :</strong> {{ comment.author?.nom ?? 'Anonyme' }}</p>
+            <p><strong>Réponse par :</strong> {{ comment.replyBy?.nom ?? 'Aucune' }}</p>
+            <p><strong>Contenu :</strong> {{ comment.content }}</p>
+            <hr />
+          </li>
+        </ul>
+        <p v-else>Aucun commentaire encore.</p>
 
         <textarea
           v-model="content"
           placeholder="Votre question ici..."
           rows="4"
         ></textarea>
+
         <div class="modal-actions">
           <button @click="submitComment" :disabled="sending">Envoyer</button>
           <button @click="closeModal" :disabled="sending">Annuler</button>
@@ -85,11 +96,8 @@
       </div>
     </div>
 
-    <div
-      v-if="showChat"
-      class="chat-modal-overlay"
-      @click.self="closeChatModal"
-    >
+    <!-- CHAT -->
+    <div v-if="showChat" class="chat-modal-overlay" @click.self="closeChatModal">
       <div class="chat-modal">
         <div class="chat-header">
           <h3>Discussion</h3>
@@ -149,32 +157,35 @@ const sending = ref(false);
 const currentTaskId = ref(null);
 const showChat = ref(false);
 
+// Charger les tâches à l'ouverture
 onMounted(async () => {
-  await userStore.getComments();
-}),
-  onMounted(async () => {
-    await userStore.fetchTasks();
-  });
+  await userStore.fetchTasks();
+});
 
+// Ajouter une tâche
 const handleAddTask = async () => {
   if (taskText.value.trim() === "") return;
-
   await userStore.addTask({ task: taskText.value });
   taskText.value = "";
   await userStore.fetchTasks();
 };
 
+// Déconnexion
 const handleLogout = async () => {
   await userStore.logout();
   router.push("/");
 };
 
-const openCommentModal = (taskId) => {
+// Ouvrir le modal pour commenter une tâche
+const openCommentModal = async (taskId) => {
   currentTaskId.value = taskId;
   content.value = "";
   showModal.value = true;
+
+  await userStore.getComments(taskId); // Récupère les commentaires
 };
 
+// Fermer le modal
 const closeModal = () => {
   if (sending.value) return;
   showModal.value = false;
@@ -182,6 +193,7 @@ const closeModal = () => {
   content.value = "";
 };
 
+// Soumettre un commentaire
 const submitComment = async () => {
   if (content.value.trim() === "") {
     alert("Le commentaire ne peut pas être vide.");
@@ -203,10 +215,12 @@ const submitComment = async () => {
   }
 };
 
+// Changer l'état de la tâche
 const taskValueSender = async (task) => {
   await userStore.submitTasksState(task.task_id, task.taskState);
 };
 
+// Chat
 const openChatModal = () => {
   showChat.value = true;
 };
@@ -220,11 +234,7 @@ const sendChatMessage = () => {
   const message = chatInput.value.trim();
   if (message === "") return;
 
-  chatMessages.value.push({
-    from: "user",
-    text: message,
-  });
-
+  chatMessages.value.push({ from: "user", text: message });
   chatInput.value = "";
 
   setTimeout(() => {
@@ -422,38 +432,77 @@ select {
 }
 
 .modal-content {
-  background: white;
+  background: #ffffff;
   padding: 20px;
-  border-radius: 6px;
-  max-width: 400px;
+  border-radius: 10px;
+  max-width: 600px;
   width: 90%;
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h4 {
   margin-bottom: 10px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.modal-content ul {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content li {
+  background: #f1f1f1;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  position: relative;
+}
+
+.modal-content li::before {
+  content: "💬";
+  position: absolute;
+  top: 10px;
+  left: -25px;
+}
+
+.modal-content p {
+  margin: 2px 0;
+  line-height: 1.3;
 }
 
 .modal-content textarea {
-  width: 100%;
-  resize: vertical;
-  padding: 8px;
-  border-radius: 4px;
+  width: 97%;
+  resize: none;
+  padding: 10px;
+  border-radius: 6px;
   border: 1px solid #ccc;
   font-family: inherit;
+  font-size: 1rem;
   margin-bottom: 10px;
 }
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 
 .modal-actions button {
-  padding: 8px 14px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  
+  font-size: 1rem;
 }
 
 .modal-actions button:first-child {
@@ -461,24 +510,22 @@ select {
   color: #000;
 }
 
-.modal-actions button:hover {
-  background-color: #c3ebfc;
-  color: #000;
-  transition: 0.2s ease-out;
+.modal-actions button:first-child:hover {
+  background-color: #ffe773;
 }
 
 .modal-actions button:first-child:disabled {
-  background-color: #c3ebfc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
 .modal-actions button:last-child {
-  background-color: red;
+  background-color: #dc3545;
   color: #fff;
 }
 
 .modal-actions button:last-child:hover {
-  background-color: #dc3545;
+  background-color: #c82333;
 }
 
 .chat-modal-overlay {
