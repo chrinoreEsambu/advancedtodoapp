@@ -486,12 +486,11 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* margin-top: 3rem; */
+
   text-align: left;
 }
 
 .txt {
-  /* font-size: 1.5rem; */
   margin-bottom: 1rem;
   text-align: left;
 }
