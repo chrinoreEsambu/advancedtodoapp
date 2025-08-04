@@ -88,24 +88,24 @@ export const useUserStore = defineStore("user", {
       });
     },
 
- async submitTasksState(task_id, taskState) {
-  try {
-    const response = await api.put(`/updateTasksState/${task_id}`, {
-      taskState,
-    });
-    // Affiche le bon message selon la réponse
-    alert(response.data.messageT || response.data.message);
-  } catch (error) {
-    console.error(
-      "Erreur lors de la mise à jour de l'état de la tâche :",
-      error
-    );
-    // Affiche le message d'erreur du backend si présent
-    if (error.response?.data?.messageT || error.response?.data?.message) {
-      alert(error.response.data.messageT || error.response.data.message);
-    }
-  }
-},
+    async submitTasksState(task_id, taskState) {
+      try {
+        const response = await api.put(`/updateTasksState/${task_id}`, {
+          taskState,
+        });
+
+        alert(response.data.messageT || response.data.message);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la mise à jour de l'état de la tâche :",
+          error
+        );
+
+        if (error.response?.data?.messageT || error.response?.data?.message) {
+          alert(error.response.data.messageT || error.response.data.message);
+        }
+      }
+    },
 
     async getComments(task_id) {
       try {
