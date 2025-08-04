@@ -72,6 +72,7 @@
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h4>Poser ta question</h4>
+
         <textarea
           v-model="content"
           placeholder="Votre question ici..."
@@ -151,10 +152,9 @@ const showChat = ref(false);
 onMounted(async () => {
   await userStore.getComments();
 }),
-
-onMounted(async () => {
-  await userStore.fetchTasks();
-});
+  onMounted(async () => {
+    await userStore.fetchTasks();
+  });
 
 const handleAddTask = async () => {
   if (taskText.value.trim() === "") return;
@@ -305,7 +305,6 @@ const sendChatMessage = () => {
   background-color: #222;
 }
 
-
 .centered-zone {
   display: flex;
   flex-direction: column;
@@ -408,7 +407,6 @@ select {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
-
 
 .modal-overlay {
   position: fixed;
