@@ -30,6 +30,7 @@ export const useAdminStore = defineStore("adminstore", {
     compter: 0,
     count: 0,
     tache: [],
+    messages: [],
   }),
   actions: {
     async adminlogin(mail, password) {
@@ -234,6 +235,19 @@ export const useAdminStore = defineStore("adminstore", {
         } else {
           alert("Une erreur s’est produite !");
         }
+      }
+    },
+
+    async fetchMyMessages(user_id) {
+      this.loading = true;
+      this.error = null;
+      try {
+        const res = await axios.get(`/api/getMyMessages?user_id=${user_id}`);
+        this.messages = res.data.getAllMessage;
+      } catch (err) {
+        this.error = err.message || "Erreur lors du chargement";
+      } finally {
+        this.loading = false;
       }
     },
   },
