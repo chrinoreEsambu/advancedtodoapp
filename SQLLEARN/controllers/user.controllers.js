@@ -764,7 +764,7 @@ exports.getAllMessages = async (req, res) => {
 
 exports.replyToMessage = async (req, res) => {
   try {
-    const { content, replyToId, replyById, taskId } = req.body;
+    const { content, replyToId, taskId } = req.body;
     const userId = req.session.user_id;
 
     if (!userId) {
@@ -774,10 +774,10 @@ exports.replyToMessage = async (req, res) => {
     const newMessage = await prisma.comments.create({
       data: {
         content,
-        authorId: userId,
-        replyToId: replyToId || null,
-        replyById: replyById || null,
         taskId: taskId || null,
+        authorId: userId,
+        replyById: userId || null,
+        replyToId: replyToId || null,
       },
       include: {
         author: { select: { nom: true } },
