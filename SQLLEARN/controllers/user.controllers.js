@@ -287,9 +287,7 @@ exports.updateTasksState = async (req, res) => {
       `a modifié l'état de la tâche ${task_id} à ${taskState}`
     );
 
-    return res
-      .status(200)
-      .json({ message: "Modification réussie", updatedTask });
+    return res.status(200).json({ updatedTask });
   } catch (error) {
     return res.status(500).json({
       message: "Erreur serveur",

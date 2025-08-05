@@ -94,19 +94,24 @@ export const useUserStore = defineStore("user", {
           taskState,
         });
 
-        alert(response.data.messageT || response.data.message);
+        if (response.data.messageT) {
+          alert(response.data.messageT);
+        } else {
+          console.log(response.data.message); 
+        }
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'état de la tâche :",
           error
         );
 
-        if (error.response?.data?.messageT || error.response?.data?.message) {
-          alert(error.response.data.messageT || error.response.data.message);
+        if (error.response?.data?.messageT) {
+          alert(error.response.data.messageT);
+        } else {
+          alert("Une erreur s’est produite !");
         }
       }
     },
-
     async getComments(task_id) {
       try {
         const fetcher = await api.get(`/getCommentsByTask/${task_id}`);
