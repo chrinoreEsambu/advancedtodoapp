@@ -44,7 +44,7 @@
                 ?
               </button>
 
-              <select v-model="task.taskState" @change="taskValueSender(task)">
+              <select v-model="task.taskState" @change="taskValueSender(task)" :disabled="task.taskState==='done'">
                 <optgroup label="Mark task status">
                   <option value="inprogress">In Progress</option>
                   <option value="request">Requested</option>

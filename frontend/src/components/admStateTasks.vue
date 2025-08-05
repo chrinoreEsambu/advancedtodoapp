@@ -100,7 +100,11 @@
               task.taskState
             }}</span>
             <span class="for">for: {{ getUserInfo(task.assigneeId) }}</span>
-            <select v-model="task.taskState" @change="adminChangeState(task)">
+            <select
+              v-model="task.taskState"
+              @change="adminChangeState(task)"
+              :disabled="task.taskState === 'done'"
+            >
               <optgroup label="States">
                 <option value="inprogress">inprogress</option>
                 <option value="todo">todo</option>
