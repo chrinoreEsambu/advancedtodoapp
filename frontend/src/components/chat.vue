@@ -2,6 +2,16 @@
   <div class="messages-list">
     <h3>Mes messages</h3>
 
+    <div class="filter-container">
+      <label for="userFilter">Filtrer par utilisateur :</label>
+      <select v-model="selectedUserId" @change="onUserChange">
+        <option value="">-- Choisir un utilisateur --</option>
+        <option v-for="user in users" :key="user.user_id" :value="user.user_id">
+          {{ user.nom }} ({{ user.user_id.slice(0, 5) }})
+        </option>
+      </select>
+    </div>
+
     <div v-if="loading" class="loading-message">Chargement des messages...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="!messages || messages.length === 0" class="empty-message">
@@ -26,19 +36,24 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 
 const store = useAdminStore();
-const { messages, loading, error } = storeToRefs(store);
+const { users, messages, loading, error } = storeToRefs(store);
 
-// Tu peux rendre `user_id` dynamique plus tard
+const selectedUserId = ref("");
 
-
-onMounted(() => {
-  store.fetchMessages();
+onMounted(async () => {
+  await store.fetchAllUsers();
 });
+
+const onUserChange = () => {
+  if (selectedUserId.value) {
+    store.fetchMessages(selectedUserId.value);
+  }
+};
 </script>
 
 <style scoped>
@@ -47,6 +62,19 @@ onMounted(() => {
   margin: 0 auto;
   padding: 20px;
   font-family: sans-serif;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-container select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .messages-container {

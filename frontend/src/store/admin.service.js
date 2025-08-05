@@ -238,13 +238,13 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
-    async fetchMessages(user_id) {
+    async fetchMessages(user_id = null) {
       this.loading = true;
       this.error = null;
       try {
         // Pas besoin de /api car baseURL déjà réglée
         const res = await api.get("/getMyMessages", {
-          params: { user_id },
+          params: user_id ? { user_id } : {},
         });
         this.messages = res.data.getAllMessage;
       } catch (err) {
