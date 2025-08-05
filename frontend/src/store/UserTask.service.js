@@ -97,7 +97,7 @@ export const useUserStore = defineStore("user", {
         if (response.data.messageT) {
           alert(response.data.messageT);
         } else {
-          console.log(response.data.message); 
+          console.log(response.data.message);
         }
       } catch (error) {
         console.error(
@@ -112,6 +112,7 @@ export const useUserStore = defineStore("user", {
         }
       }
     },
+
     async getComments(task_id) {
       try {
         const fetcher = await api.get(`/getCommentsByTask/${task_id}`);

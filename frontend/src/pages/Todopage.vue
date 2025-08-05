@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <!-- CHAT -->
+    
     <div
       v-if="showChat"
       class="chat-modal-overlay"
