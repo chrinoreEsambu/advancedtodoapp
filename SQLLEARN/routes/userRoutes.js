@@ -64,7 +64,7 @@ router.get("/api/logs", getAdminLogs);
 router.put("/api/updateTasksState/:task_id", updateTasksState);
 router.get("/api/admStateFinder", admStateFinder);
 
-router.get("/api/getMyMessages", getAllMessages);
+
 router.post("/api/sendMessage", replyToMessage);
 
 router.get("/api/getCommentsByTask/:task_id", getCommentsByTask);
