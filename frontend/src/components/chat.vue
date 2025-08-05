@@ -1,49 +1,65 @@
 <template>
-  <div class="message-container">
-    <h2>Mes messages</h2>
-
-    <div v-if="loading">Chargement...</div>
-    <div v-else-if="error">{{ error }}</div>
-    <div v-else>
-      <div v-if="messages.length === 0">Aucun message trouvé.</div>
-      <ul>
-        <li v-for="(msg, index) in messages" :key="index" class="message-item">
-          <p><strong>Auteur :</strong> {{ msg.author.nom }}</p>
-          <p><strong>Contenu :</strong> {{ msg.content }}</p>
-          <p><strong>Assigné à la tâche :</strong> {{ msg.taskId }}</p>
-          <p v-if="msg.replyBy"><strong>Réponse de :</strong> {{ msg.replyBy.nom }}</p>
-        </li>
-      </ul>
-    </div>
+  <div class="coming-soon-container">
+    <div class="bubble">💬</div>
+    <h2>Chat feature under development... <br />Thanks</h2>
+    <p class="soon">Coming Soon</p>
   </div>
 </template>
 
-<script setup>
-import { onMounted } from 'vue'
-import { useAdminStore } from "../store/admin.service";
-
-const store = useAdminStore()
-
-onMounted(() => {
-  store.fetchMyMessages()
-})
-
-const { messages, loading, error } = store
-</script>
+<script setup></script>
 
 <style scoped>
-.message-container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+.coming-soon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
   font-family: sans-serif;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.message-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 12px;
-  background-color: #f9f9f9;
+.bubble {
+  font-size: 3rem;
+  animation: pulse 1.5s infinite;
+}
+
+h2 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.soon {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #555;
+  animation: blink 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 </style>
