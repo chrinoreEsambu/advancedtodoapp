@@ -33,9 +33,9 @@ const {
   admStateFinder,
   adminGetUserMessages,
   adminReplyToComment,
-  getMyMessages,
-  sendMessage,
+  getAllMessages,
   getCommentsByTask,
+  replyToMessage,
 } = require("../controllers/user.controllers");
 
 const { addtask } = require("../controllers/addTask.controllers");
@@ -64,8 +64,8 @@ router.get("/api/logs", getAdminLogs);
 router.put("/api/updateTasksState/:task_id", updateTasksState);
 router.get("/api/admStateFinder", admStateFinder);
 
-router.get("/api/getMyMessages", getMyMessages);
-router.post("/api/sendMessage", sendMessage);
+router.get("/api/getMyMessages", getAllMessages);
+router.post("/api/sendMessage", replyToMessage);
 
 router.get("/api/getCommentsByTask/:task_id", getCommentsByTask);
 

@@ -737,7 +737,7 @@ exports.getAdminLogs = async (req, res) => {
   }
 };
 
-exports.getMyMessages = async (req, res) => {
+exports.getAllMessages = async (req, res) => {
   try {
     const userId = req.session.user_id;
 
@@ -766,7 +766,7 @@ exports.getMyMessages = async (req, res) => {
   }
 };
 
-exports.sendMessage = async (req, res) => {
+exports.replyToMessage = async (req, res) => {
   try {
     const { content, replyToId, replyById, taskId } = req.body;
     const userId = req.session.user_id;
