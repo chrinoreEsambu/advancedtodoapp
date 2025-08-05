@@ -742,7 +742,7 @@ exports.getAllMessages = async (req, res) => {
   try {
     const getAllMessage = await prisma.comments.findMany({
       where: {
-        authorId: { user_id },
+        authorId: user_id,
       },
       select: {
         content: true,
