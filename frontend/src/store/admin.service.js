@@ -238,14 +238,17 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
-    async fetchMyMessages(user_id) {
+    async fetchMessages(user_id) {
       this.loading = true;
       this.error = null;
       try {
-        const res = await axios.get(`/api/getMyMessages?user_id=${user_id}`);
+        // Pas besoin de /api car baseURL déjà réglée
+        const res = await api.get("/getMyMessages", {
+          params: { user_id },
+        });
         this.messages = res.data.getAllMessage;
       } catch (err) {
-        this.error = err.message || "Erreur lors du chargement";
+        this.error = err.message || "Erreur lors du chargement des messages";
       } finally {
         this.loading = false;
       }

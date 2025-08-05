@@ -1,65 +1,94 @@
 <template>
-  <div class="coming-soon-container">
-    <div class="bubble">💬</div>
-    <h2>Chat feature under development... <br />Thanks</h2>
-    <p class="soon">Coming Soon</p>
+  <div class="messages-list">
+    <h3>Mes messages</h3>
+
+    <div v-if="loading" class="loading-message">Chargement des messages...</div>
+    <div v-else-if="error" class="error-message">{{ error }}</div>
+    <div v-else-if="!messages || messages.length === 0" class="empty-message">
+      Aucun message trouvé
+    </div>
+
+    <div v-else class="messages-container">
+      <div
+        v-for="(msg, index) in messages"
+        :key="index"
+        class="message-item"
+      >
+        <p><strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}</p>
+        <p><strong>Contenu :</strong> {{ msg.content }}</p>
+        <p><strong>Tâche liée :</strong> {{ msg.taskId }}</p>
+        <p v-if="msg.replyBy">
+          <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+import { useAdminStore } from "../store/admin.service";
+import { storeToRefs } from "pinia";
+
+const store = useAdminStore();
+const { messages, loading, error } = storeToRefs(store);
+
+// Tu peux rendre `user_id` dynamique plus tard
+
+
+onMounted(() => {
+  store.fetchMessages();
+});
+</script>
 
 <style scoped>
-.coming-soon-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 70vh;
-  text-align: center;
+.messages-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
   font-family: sans-serif;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.bubble {
-  font-size: 3rem;
-  animation: pulse 1.5s infinite;
+.messages-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
 }
 
-h2 {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-  color: #333;
+.message-item {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: background-color 0.3s;
+  font-size: 0.85rem;
 }
 
-.soon {
-  margin-top: 0.5rem;
+.message-item:hover {
+  background-color: #f8f9fa;
+}
+
+.error-message {
+  color: #dc3545;
+  padding: 10px;
+  text-align: center;
+}
+
+.empty-message {
+  color: #6c757d;
+  padding: 10px;
+  text-align: center;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 10px;
+  font-weight: 500;
+}
+
+.redo {
+  color: #005b47;
   font-weight: bold;
-  color: #555;
-  animation: blink 1.8s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
 }
 </style>

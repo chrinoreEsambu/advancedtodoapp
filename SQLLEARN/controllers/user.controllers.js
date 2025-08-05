@@ -753,7 +753,7 @@ exports.getAllMessages = async (req, res) => {
         replyBy: { select: { nom: true } },
       },
     });
-    res.status(200).json({ getAllMessage });
+    res.status(200).json({message:"okey", getAllMessage });
   } catch (error) {
     return res.status(500).json({
       message: "Erreur lors de la récupération des messages.",
