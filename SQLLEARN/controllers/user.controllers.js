@@ -767,32 +767,40 @@ exports.getAllMessages = async (req, res) => {
 };
 
 exports.replyToMessage = async (req, res) => {
-  // console.log("SESSION:", req.session);
   try {
-    const { content, replyToId, taskId } = req.body;
+    const { content, taskId } = req.body;
     const userId = req.session.user_id || req.session.admin_id;
 
     if (!userId) {
       return res.status(401).json({ message: "Utilisateur non authentifié." });
+    }
+    let task = null;
+    if (taskId) {
+      task = await prisma.tasks.findUnique({
+        where: { task_id: taskId },
+        select: { task: true },
+      });
     }
 
     const newMessage = await prisma.comments.create({
       data: {
         content,
         taskId: taskId || null,
-        authorId: userId || null,
-        replyById: userId || null,
-        replyToId: replyToId || null,
+        authorId: userId,
+        replyById: userId,
       },
       include: {
         author: { select: { nom: true } },
       },
     });
+
+    // Log simple avec l'id de la tâche et le contenu du commentaire
     await logAdminAction(
       req.session.admin_id,
-      "a repondu au commentaire ",
-      `de ${authorId} ${content}`
+      "Commentaire sur tâche",
+      `a commenté la tâche ${task ? task.task : taskId} : "${content}"`
     );
+
     return res
       .status(201)
       .json({ message: "Message envoyé.", data: newMessage });
