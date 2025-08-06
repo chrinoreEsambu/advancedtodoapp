@@ -6,7 +6,7 @@
         <LogOut size="18" class="bttoff" /> Déconnexion
       </button>
     </header>
-
+    <!-- before cld -->
     <div class="centered-zone">
       <div class="add-task">
         <input
@@ -44,7 +44,11 @@
                 ?
               </button>
 
-              <select v-model="task.taskState" @change="taskValueSender(task)" :disabled="task.taskState==='done'">
+              <select
+                v-model="task.taskState"
+                @change="taskValueSender(task)"
+                :disabled="task.taskState === 'done'"
+              >
                 <optgroup label="Mark task status">
                   <option value="inprogress">In Progress</option>
                   <option value="request">Requested</option>
@@ -104,7 +108,6 @@
       </div>
     </div>
 
-    
     <div
       v-if="showChat"
       class="chat-modal-overlay"
