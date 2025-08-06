@@ -19,16 +19,16 @@
         </button>
       </div>
 
-      <!-- Bento Grid Layout -->
       <div class="bento-grid">
-        <!-- Bento 1: TODO Tasks -->
         <div class="bento-card todo-bento">
           <div class="bento-header">
             <h3>À Faire</h3>
           </div>
           <div class="bento-content">
             <div v-if="todoTasks.length === 0" class="empty-state">
-              <div class="empty-icon">📋</div>
+              <div class="empty-icon">
+                <ListTodo style="height: 60px; width: 60px" />
+              </div>
               <p>Aucune tâche à faire</p>
             </div>
             <div v-else class="task-list">
@@ -51,8 +51,8 @@
                     v-model="task.taskState"
                     @change="taskValueSender(task)"
                   >
-                    <optgroup label="Mark task status">
-                      <option value="inprogress">In Progress</option>
+                    <optgroup label="Changer l'état">
+                      <option value="inprogress">Inprogress</option>
                       <option value="request">Requested</option>
                     </optgroup>
                   </select>
@@ -94,8 +94,8 @@
                     v-model="task.taskState"
                     @change="taskValueSender(task)"
                   >
-                    <optgroup label="Mark task status">
-                      <option value="todo">Todo</option>
+                    <optgroup label="Changer l'état">
+                      <option value="inprogress">Inprogress</option>
                       <option value="request">Requested</option>
                     </optgroup>
                   </select>
@@ -110,11 +110,13 @@
 
         <div class="bento-card request-bento">
           <div class="bento-header">
-            <h3>Demandées</h3>
+            <h3>Demande</h3>
           </div>
           <div class="bento-content">
             <div v-if="requestTasks.length === 0" class="empty-state">
-              <div class="empty-icon">🤔</div>
+              <div class="empty-icon">
+                <PackageCheck style="height: 60px; width: 60px" />
+              </div>
               <p>Aucune demande en attente</p>
             </div>
             <div v-else class="task-list">
@@ -137,9 +139,9 @@
                     v-model="task.taskState"
                     @change="taskValueSender(task)"
                   >
-                    <optgroup label="Mark task status">
-                      <option value="todo">Todo</option>
-                      <option value="inprogress">In Progress</option>
+                    <optgroup label="Changer l'état">
+                      <option value="inprogress">Inprogress</option>
+                      <option value="request">Requested</option>
                     </optgroup>
                   </select>
                   <label class="request">
@@ -181,8 +183,8 @@
                     @change="taskValueSender(task)"
                     disabled
                   >
-                    <optgroup label="Mark task status">
-                      <option value="done">Done</option>
+                    <optgroup label="État">
+                      <option value="done">Terminé</option>
                     </optgroup>
                   </select>
                   <label class="done">
@@ -219,10 +221,9 @@
                     v-model="task.taskState"
                     @change="taskValueSender(task)"
                   >
-                    <optgroup label="Mark task status">
-                      <option value="todo">Todo</option>
-                      <option value="inprogress">In Progress</option>
-                      <option value="request">Requested</option>
+                    <optgroup label="Changer l'état">
+                      <option value="inprogress">En Cours</option>
+                      <option value="request">Demandé</option>
                     </optgroup>
                   </select>
                   <label
@@ -325,7 +326,14 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
-import { MessageCircleIcon, LogOut, Plus, Ghost } from "lucide-vue-next";
+import {
+  MessageCircleIcon,
+  LogOut,
+  Plus,
+  Ghost,
+  PackageCheck,
+  ListTodo,
+} from "lucide-vue-next";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -661,6 +669,7 @@ const sendChatMessage = () => {
 
 .empty-icon {
   font-size: 3rem;
+  width: 50px;
   margin-bottom: 15px;
   opacity: 0.6;
 }
