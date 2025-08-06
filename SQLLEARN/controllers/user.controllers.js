@@ -788,7 +788,11 @@ exports.replyToMessage = async (req, res) => {
         author: { select: { nom: true } },
       },
     });
-
+    await logAdminAction(
+      req.session.admin_id,
+      "a repondu au commentaire ",
+      `dun utilsateur`
+    );
     return res
       .status(201)
       .json({ message: "Message envoyé.", data: newMessage });
