@@ -794,11 +794,11 @@ exports.replyToMessage = async (req, res) => {
       },
     });
 
-    // Log simple avec l'id de la tâche et le contenu du commentaire
+    
     await logAdminAction(
       req.session.admin_id,
       "Commentaire sur tâche",
-      `a commenté la tâche ${task ? task.task : taskId} : "${content}"`
+      `a commenté la tâche "${task ? task.task : taskId}" Par : "${content}"`
     );
 
     return res
