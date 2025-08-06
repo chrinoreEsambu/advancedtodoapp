@@ -48,7 +48,7 @@
 
             <div v-if="showReplyOptionFor === msg.id" class="reply-option">
               <button @click="openReplyModal(msg)" class="reply-option-button">
-                Tu veux répondre ?
+                Répondre ?
               </button>
             </div>
           </div>
@@ -57,7 +57,8 @@
         <p><strong>Contenu :</strong> {{ msg.content }}</p>
         <p>
           <strong>Tâche liée :</strong> {{ msg.task?.task }}<br />
-          <strong style="margin-left: 2px; color: #005b47">ID : {{ msg.taskId }}</strong
+          <strong style="margin-left: 2px; color: #005b47"
+            >ID : {{ msg.taskId }}</strong
           >
         </p>
         <p v-if="msg.replyBy">
@@ -68,7 +69,7 @@
 
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
-        <h4>Répondre à ce message</h4>
+        <h4>Répondre à ce commentaire</h4>
         <textarea
           v-model="replyContent"
           rows="4"
@@ -260,7 +261,8 @@ const sendReply = async () => {
 }
 
 .modal-content textarea {
-  width: 100%;
+  width: 96%;
+  height: 100px;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -277,9 +279,15 @@ const sendReply = async () => {
 .cancel-btn {
   padding: 6px 12px;
   border: none;
-  background: #ccc;
+  background: #FF4444;
+  color: rgb(255, 255, 255);
   border-radius: 6px;
   cursor: pointer;
+}
+.cancel-btn:hover {
+  background: #CC0000;
+  color: rgb(255, 255, 255);
+  transition: 0.1s ease-in;
 }
 
 .send-btn {
@@ -289,5 +297,10 @@ const sendReply = async () => {
   color: white;
   border-radius: 6px;
   cursor: pointer;
+}
+.send-btn:hover {
+  background: #fae04d;
+  color: rgb(0, 0, 0);
+  transition: 0.1s ease-in;
 }
 </style>

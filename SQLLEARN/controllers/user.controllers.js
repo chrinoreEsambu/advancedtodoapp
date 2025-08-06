@@ -791,7 +791,7 @@ exports.replyToMessage = async (req, res) => {
     await logAdminAction(
       req.session.admin_id,
       "a repondu au commentaire ",
-      `dun utilsateur`
+      `de ${authorId} ${content}`
     );
     return res
       .status(201)
