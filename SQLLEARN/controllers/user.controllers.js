@@ -766,9 +766,10 @@ exports.getAllMessages = async (req, res) => {
 };
 
 exports.replyToMessage = async (req, res) => {
+  console.log("SESSION:", req.session);
   try {
     const { content, replyToId, taskId } = req.body;
-    const userId = req.session.user_id;
+    const userId = req.session.user_id || req.session.admin_id;
 
     if (!userId) {
       return res.status(401).json({ message: "Utilisateur non authentifié." });

@@ -243,7 +243,7 @@ export const useAdminStore = defineStore("adminstore", {
       this.error = null;
       try {
         const res = await api.get("/getMyMessages", {
-          params: user_id ? { user_id } : {}, 
+          params: user_id ? { user_id } : {},
         });
         this.messages = res.data.getAllMessage;
       } catch (err) {
