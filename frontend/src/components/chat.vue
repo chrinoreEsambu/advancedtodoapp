@@ -7,7 +7,7 @@
       <select v-model="selectedUserId" @change="onUserChange">
         <option value="">-- Choisir un utilisateur --</option>
         <option v-for="user in users" :key="user.user_id" :value="user.user_id">
-          {{ user.nom }} ({{ user.user_id.slice(0, 5) }})
+          {{ user.nom }} ({{ user.user_id }})
         </option>
       </select>
     </div>
@@ -46,13 +46,14 @@ const { users, messages, loading, error } = storeToRefs(store);
 const selectedUserId = ref("");
 
 onMounted(async () => {
-  await store.fetchAllUsers();
+  
+  await store.fetchMessages(); 
 });
+
 
 const onUserChange = () => {
   if (selectedUserId.value) {
-    store.fetchMessages(selectedUserId.value);
-  }
+store.fetchMessages(selectedUserId.value || null);  }
 };
 </script>
 

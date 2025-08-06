@@ -739,21 +739,24 @@ exports.getAdminLogs = async (req, res) => {
 
 exports.getAllMessages = async (req, res) => {
   const { user_id } = req.query;
+
   try {
     const getAllMessage = await prisma.comments.findMany({
-      where: {
-        authorId: user_id,
-      },
+      orderBy: { createdAt: "asc" },
+      where: user_id ? { authorId: user_id } : {},
       select: {
         content: true,
         taskId: true,
         author: {
           select: { nom: true },
         },
-        replyBy: { select: { nom: true } },
+        replyBy: {
+          select: { nom: true },
+        },
       },
     });
-    res.status(200).json({message:"okey", getAllMessage });
+
+    res.status(200).json({ message: "okey", getAllMessage });
   } catch (error) {
     return res.status(500).json({
       message: "Erreur lors de la récupération des messages.",

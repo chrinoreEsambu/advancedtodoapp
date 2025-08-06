@@ -242,9 +242,8 @@ export const useAdminStore = defineStore("adminstore", {
       this.loading = true;
       this.error = null;
       try {
-        // Pas besoin de /api car baseURL déjà réglée
         const res = await api.get("/getMyMessages", {
-          params: user_id ? { user_id } : {},
+          params: user_id ? { user_id } : {}, // 👈 pas de user_id = tous les messages
         });
         this.messages = res.data.getAllMessage;
       } catch (err) {
