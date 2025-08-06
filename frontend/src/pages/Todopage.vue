@@ -71,7 +71,9 @@
           </div>
           <div class="bento-content">
             <div v-if="inprogressTasks.length === 0" class="empty-state">
-              <div class="empty-icon">⏳</div>
+              <div class="empty-icon">
+                <Hourglass style="height: 60px; width: 60px" />
+              </div>
               <p>Aucune tâche en cours</p>
             </div>
             <div v-else class="task-list">
@@ -159,7 +161,9 @@
           </div>
           <div class="bento-content">
             <div v-if="doneTasks.length === 0" class="empty-state">
-              <div class="empty-icon">✅</div>
+              <div class="empty-icon">
+                <CloudCheck style="height: 60px; width: 60px" />
+              </div>
               <p>Aucune tâche terminée</p>
             </div>
             <div v-else class="task-list">
@@ -222,8 +226,8 @@
                     @change="taskValueSender(task)"
                   >
                     <optgroup label="Changer l'état">
-                      <option value="inprogress">En Cours</option>
-                      <option value="request">Demandé</option>
+                      <option value="inprogress">Inprogress</option>
+                      <option value="request">Request</option>
                     </optgroup>
                   </select>
                   <label
@@ -333,6 +337,7 @@ import {
   Ghost,
   PackageCheck,
   ListTodo,
+  Hourglass,
 } from "lucide-vue-next";
 
 const router = useRouter();
