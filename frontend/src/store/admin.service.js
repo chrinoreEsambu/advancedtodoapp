@@ -243,13 +243,34 @@ export const useAdminStore = defineStore("adminstore", {
       this.error = null;
       try {
         const res = await api.get("/getMyMessages", {
-          params: user_id ? { user_id } : {}, // 👈 pas de user_id = tous les messages
+          params: user_id ? { user_id } : {}, 
         });
         this.messages = res.data.getAllMessage;
       } catch (err) {
         this.error = err.message || "Erreur lors du chargement des messages";
       } finally {
         this.loading = false;
+      }
+    },
+
+    async sendReply({ content, replyToId, taskId }) {
+      try {
+        const response = await api.post(
+          "/sendMessage",
+          {
+            content,
+            replyToId,
+            taskId,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
+        return response.data.data;
+      } catch (err) {
+        console.error("Erreur lors de l'envoi de la réponse :", err);
+        throw new Error("Échec de l'envoi du message.");
       }
     },
   },

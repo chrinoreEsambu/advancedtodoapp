@@ -778,7 +778,7 @@ exports.replyToMessage = async (req, res) => {
       data: {
         content,
         taskId: taskId || null,
-        authorId: userId,
+        authorId: userId || null,
         replyById: userId || null,
         replyToId: replyToId || null,
       },

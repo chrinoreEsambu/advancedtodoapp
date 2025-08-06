@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="messages-list">
     <h3>Mes messages</h3>
 
@@ -19,32 +19,27 @@
     </div>
 
     <div v-else class="messages-container">
-      <div v-for="(msg, index) in messages" :key="index" class="message-item">
+      <div v-for="msg in messages" :key="msg.id" class="message-item">
         <div style="display: flex; justify-content: space-between">
-          <div>
-            <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
-          </div>
-          <button
-            @click="toggleReply(msg)"
-            style="background: none; border: none; cursor: pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="lucide lucide-ellipsis-vertical"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          <div><strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}</div>
+          <div style="position: relative;">
+            <button
+              @click="toggleReplyOption(msg.id)"
+              style="background: none; border: none; cursor: pointer"
             >
-              <circle cx="12" cy="5" r="1" />
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="12" cy="19" r="1" />
-            </svg>
-          </button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="1" />
+                <circle cx="12" cy="12" r="1" />
+                <circle cx="12" cy="19" r="1" />
+              </svg>
+            </button>
+
+            <div v-if="showReplyOptionFor === msg.id" class="reply-option">
+              <button @click="openReplyModal(msg)" class="reply-option-button">
+                Tu veux répondre ?
+              </button>
+            </div>
+          </div>
         </div>
 
         <p><strong>Contenu :</strong> {{ msg.content }}</p>
@@ -52,36 +47,17 @@
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
         </p>
+      </div>
+    </div>
 
-        <div
-          v-if="activeReply && activeReply.id === msg.id"
-          style="margin-top: 10px"
-        >
-          <textarea
-            v-model="replyContent"
-            rows="2"
-            style="
-              width: 100%;
-              border-radius: 6px;
-              padding: 6px;
-              border: 1px solid #ccc;
-            "
-            placeholder="Écrire une réponse..."
-          ></textarea>
-          <button
-            @click="sendReply(msg)"
-            style="
-              margin-top: 5px;
-              padding: 6px 12px;
-              border: none;
-              border-radius: 6px;
-              background-color: #005b47;
-              color: white;
-              cursor: pointer;
-            "
-          >
-            Envoyer
-          </button>
+    <!-- MODAL DE RÉPONSE -->
+    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <h4>Répondre à ce message</h4>
+        <textarea v-model="replyContent" rows="4" placeholder="Écrire votre réponse..."></textarea>
+        <div class="modal-actions">
+          <button class="cancel-btn" @click="closeModal">Annuler</button>
+          <button class="send-btn" @click="sendReply">Envoyer</button>
         </div>
       </div>
     </div>
@@ -92,57 +68,61 @@
 import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
-import axios from "axios";
 
 const store = useAdminStore();
 const { users, messages, loading, error } = storeToRefs(store);
 
 const selectedUserId = ref("");
 const replyContent = ref("");
-const activeReply = ref(null);
+const showReplyOptionFor = ref(null);
+const showModal = ref(false);
+const replyToMessage = ref(null);
+
+onMounted(async () => {
+  await store.fetchMessages();
+});
 
 const onUserChange = () => {
   store.fetchMessages(selectedUserId.value || null);
 };
 
-onMounted(async () => {
-  // await store.fetchAllUsers();
-  await store.fetchMessages();
-});
-
-const toggleReply = (msg) => {
-  if (activeReply.value?.id === msg.id) {
-    activeReply.value = null;
-  } else {
-    activeReply.value = msg;
-    replyContent.value = "";
-  }
+const toggleReplyOption = (id) => {
+  showReplyOptionFor.value = showReplyOptionFor.value === id ? null : id;
 };
 
-const sendReply = async (msg) => {
+const openReplyModal = (msg) => {
+  replyToMessage.value = msg;
+  replyContent.value = "";
+  showReplyOptionFor.value = null;
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  showModal.value = false;
+  replyToMessage.value = null;
+  replyContent.value = "";
+};
+
+const sendReply = async () => {
   if (!replyContent.value.trim()) return;
 
   try {
-    await axios.post(
-      "/api/sendMessage",
-      {
-        content: replyContent.value,
-        replyToId: msg.id,
-        taskId: msg.taskId || null,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+    await store.sendReply({
+      content: replyContent.value,
+      replyToId: replyToMessage.value.id,
+      taskId: replyToMessage.value.taskId || null,
+    });
 
     replyContent.value = "";
-    activeReply.value = null;
+    showModal.value = false;
+    replyToMessage.value = null;
     await store.fetchMessages(selectedUserId.value || null);
   } catch (err) {
     console.error("Erreur lors de l'envoi de la réponse :", err);
   }
 };
 </script>
+
 
 <style scoped>
 .messages-list {
@@ -179,6 +159,7 @@ const sendReply = async (msg) => {
   background-color: #fff;
   transition: background-color 0.3s;
   font-size: 0.85rem;
+  position: relative;
 }
 
 .message-item:hover {
@@ -206,5 +187,90 @@ const sendReply = async (msg) => {
 .redo {
   color: #005b47;
   font-weight: bold;
+}
+
+.reply-option {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.reply-option-button {
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.reply-option-button:hover {
+  background-color: #f5f5f5;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.modal-content h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.modal-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.send-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #005b47;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>
