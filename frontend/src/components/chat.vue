@@ -50,6 +50,9 @@
               <button @click="openReplyModal(msg)" class="reply-option-button">
                 Répondre ?
               </button>
+              <button @click="tired()" class="reply-option-button">
+                Supprimer
+              </button>
             </div>
           </div>
         </div>
@@ -97,7 +100,9 @@ const replyContent = ref("");
 const showReplyOptionFor = ref(null);
 const showModal = ref(false);
 const replyToMessage = ref(null);
-
+const tired = async () => {
+  alert("la suppression n'est pas disponible !");
+};
 onMounted(async () => {
   await store.fetchMessages();
 });
@@ -279,13 +284,13 @@ const sendReply = async () => {
 .cancel-btn {
   padding: 6px 12px;
   border: none;
-  background: #FF4444;
+  background: #ff4444;
   color: rgb(255, 255, 255);
   border-radius: 6px;
   cursor: pointer;
 }
 .cancel-btn:hover {
-  background: #CC0000;
+  background: #cc0000;
   color: rgb(255, 255, 255);
   transition: 0.1s ease-in;
 }
