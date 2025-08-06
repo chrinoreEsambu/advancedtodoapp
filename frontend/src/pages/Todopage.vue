@@ -6,7 +6,7 @@
         <LogOut size="18" class="bttoff" /> Déconnexion
       </button>
     </header>
-    <!-- before cld -->
+
     <div class="centered-zone">
       <div class="add-task">
         <input
@@ -19,57 +19,225 @@
         </button>
       </div>
 
-      <div class="tasks">
-        <h3>Mes Tâches :</h3>
-
-        <div v-if="userStore.tasks.length === 0">
-          Aucune tâche pour le moment !
+      <!-- Bento Grid Layout -->
+      <div class="bento-grid">
+        <!-- Bento 1: TODO Tasks -->
+        <div class="bento-card todo-bento">
+          <div class="bento-header">
+            <h3>À Faire</h3>
+          </div>
+          <div class="bento-content">
+            <div v-if="todoTasks.length === 0" class="empty-state">
+              <div class="empty-icon">📋</div>
+              <p>Aucune tâche à faire</p>
+            </div>
+            <div v-else class="task-list">
+              <div
+                v-for="task in todoTasks"
+                :key="task.task_id"
+                class="task-item"
+              >
+                <div class="task-info">
+                  {{ task.task }}
+                </div>
+                <div class="task-actions">
+                  <button
+                    class="question-btn"
+                    @click="openCommentModal(task.task_id)"
+                  >
+                    ?
+                  </button>
+                  <select
+                    v-model="task.taskState"
+                    @change="taskValueSender(task)"
+                  >
+                    <optgroup label="Mark task status">
+                      <option value="inprogress">In Progress</option>
+                      <option value="request">Requested</option>
+                    </optgroup>
+                  </select>
+                  <label class="todo">
+                    {{ task.taskState }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <ul>
-          <li
-            v-for="task in userStore.tasks"
-            :key="task.task_id"
-            class="task-item"
-          >
-            <div class="task-info">
-              {{ task.task }}
+        <div class="bento-card inprogress-bento">
+          <div class="bento-header">
+            <h3>En Cours</h3>
+          </div>
+          <div class="bento-content">
+            <div v-if="inprogressTasks.length === 0" class="empty-state">
+              <div class="empty-icon">⏳</div>
+              <p>Aucune tâche en cours</p>
             </div>
-
-            <div class="task-actions">
-              <button
-                class="question-btn"
-                @click="openCommentModal(task.task_id)"
+            <div v-else class="task-list">
+              <div
+                v-for="task in inprogressTasks"
+                :key="task.task_id"
+                class="task-item"
               >
-                ?
-              </button>
-
-              <select
-                v-model="task.taskState"
-                @change="taskValueSender(task)"
-                :disabled="task.taskState === 'done'"
-              >
-                <optgroup label="Mark task status">
-                  <option value="inprogress">In Progress</option>
-                  <option value="request">Requested</option>
-                </optgroup>
-              </select>
-
-              <label
-                :class="{
-                  todo: task.taskState === 'todo',
-                  inprogress: task.taskState === 'inprogress',
-                  request: task.taskState === 'request',
-                  denied: task.taskState === 'denied',
-                  accepted: task.taskState === 'accepted',
-                  done: task.taskState === 'done',
-                }"
-              >
-                {{ task.taskState }}
-              </label>
+                <div class="task-info">
+                  {{ task.task }}
+                </div>
+                <div class="task-actions">
+                  <button
+                    class="question-btn"
+                    @click="openCommentModal(task.task_id)"
+                  >
+                    ?
+                  </button>
+                  <select
+                    v-model="task.taskState"
+                    @change="taskValueSender(task)"
+                  >
+                    <optgroup label="Mark task status">
+                      <option value="todo">Todo</option>
+                      <option value="request">Requested</option>
+                    </optgroup>
+                  </select>
+                  <label class="inprogress">
+                    {{ task.taskState }}
+                  </label>
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
+
+        <div class="bento-card request-bento">
+          <div class="bento-header">
+            <h3>Demandées</h3>
+          </div>
+          <div class="bento-content">
+            <div v-if="requestTasks.length === 0" class="empty-state">
+              <div class="empty-icon">🤔</div>
+              <p>Aucune demande en attente</p>
+            </div>
+            <div v-else class="task-list">
+              <div
+                v-for="task in requestTasks"
+                :key="task.task_id"
+                class="task-item"
+              >
+                <div class="task-info">
+                  {{ task.task }}
+                </div>
+                <div class="task-actions">
+                  <button
+                    class="question-btn"
+                    @click="openCommentModal(task.task_id)"
+                  >
+                    ?
+                  </button>
+                  <select
+                    v-model="task.taskState"
+                    @change="taskValueSender(task)"
+                  >
+                    <optgroup label="Mark task status">
+                      <option value="todo">Todo</option>
+                      <option value="inprogress">In Progress</option>
+                    </optgroup>
+                  </select>
+                  <label class="request">
+                    {{ task.taskState }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento-card done-bento">
+          <div class="bento-header">
+            <h3>Terminées</h3>
+          </div>
+          <div class="bento-content">
+            <div v-if="doneTasks.length === 0" class="empty-state">
+              <div class="empty-icon">✅</div>
+              <p>Aucune tâche terminée</p>
+            </div>
+            <div v-else class="task-list">
+              <div
+                v-for="task in doneTasks"
+                :key="task.task_id"
+                class="task-item"
+              >
+                <div class="task-info">
+                  {{ task.task }}
+                </div>
+                <div class="task-actions">
+                  <button
+                    class="question-btn"
+                    @click="openCommentModal(task.task_id)"
+                  >
+                    ?
+                  </button>
+                  <select
+                    v-model="task.taskState"
+                    @change="taskValueSender(task)"
+                    disabled
+                  >
+                    <optgroup label="Mark task status">
+                      <option value="done">Done</option>
+                    </optgroup>
+                  </select>
+                  <label class="done">
+                    {{ task.taskState }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="otherTasks.length > 0" class="bento-card other-bento">
+          <div class="bento-header">
+            <h3>Autres États</h3>
+          </div>
+          <div class="bento-content">
+            <div class="task-list">
+              <div
+                v-for="task in otherTasks"
+                :key="task.task_id"
+                class="task-item"
+              >
+                <div class="task-info">
+                  {{ task.task }}
+                </div>
+                <div class="task-actions">
+                  <button
+                    class="question-btn"
+                    @click="openCommentModal(task.task_id)"
+                  >
+                    ?
+                  </button>
+                  <select
+                    v-model="task.taskState"
+                    @change="taskValueSender(task)"
+                  >
+                    <optgroup label="Mark task status">
+                      <option value="todo">Todo</option>
+                      <option value="inprogress">In Progress</option>
+                      <option value="request">Requested</option>
+                    </optgroup>
+                  </select>
+                  <label
+                    :class="{
+                      denied: task.taskState === 'denied',
+                      accepted: task.taskState === 'accepted',
+                    }"
+                  >
+                    {{ task.taskState }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -154,7 +322,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
 import { MessageCircleIcon, LogOut, Plus, Ghost } from "lucide-vue-next";
@@ -171,6 +339,29 @@ const showModal = ref(false);
 const sending = ref(false);
 const currentTaskId = ref(null);
 const showChat = ref(false);
+
+const todoTasks = computed(() =>
+  userStore.tasks.filter((task) => task.taskState === "todo")
+);
+
+const inprogressTasks = computed(() =>
+  userStore.tasks.filter((task) => task.taskState === "inprogress")
+);
+
+const requestTasks = computed(() =>
+  userStore.tasks.filter((task) => task.taskState === "request")
+);
+
+const doneTasks = computed(() =>
+  userStore.tasks.filter((task) => task.taskState === "done")
+);
+
+const otherTasks = computed(() =>
+  userStore.tasks.filter(
+    (task) =>
+      !["todo", "inprogress", "request", "done"].includes(task.taskState)
+  )
+);
 
 onMounted(async () => {
   await userStore.fetchTasks();
@@ -257,6 +448,7 @@ const sendChatMessage = () => {
 * {
   list-style: none;
 }
+
 .todo {
   background-color: #7bf1a8;
 }
@@ -292,7 +484,7 @@ const sendChatMessage = () => {
 }
 
 .todo-container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: auto;
   padding: 20px;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -329,7 +521,7 @@ const sendChatMessage = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 40px;
   margin-top: 40px;
 }
 
@@ -376,56 +568,186 @@ const sendChatMessage = () => {
   max-width: 90%;
 }
 
-.tasks {
+/* Bento Grid Styles */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
   width: 100%;
+  max-width: 1400px;
 }
 
-.tasks ul {
-  list-style: none;
-  padding-left: 0;
+.bento-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bento-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+}
+
+.todo-bento {
+  border-left: 5px solid #7bf1a8;
+}
+
+.inprogress-bento {
+  border-left: 5px solid #ffd166;
+}
+
+.request-bento {
+  border-left: 5px solid #f4a8ff;
+}
+
+.done-bento {
+  border-left: 5px solid #314158;
+}
+
+.other-bento {
+  border-left: 5px solid #6366f1;
+}
+
+.bento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bento-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.task-count {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 30px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.bento-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.6;
+}
+
+.empty-state p {
+  margin: 0;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
 }
 
 .task-item {
-  background-color: #f5f5f5;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 15px;
   flex-wrap: wrap;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .task-info {
   flex: 1;
   word-wrap: break-word;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #334155;
 }
 
 .task-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .question-btn {
-  background-color: #fae04d;
-  color: #000;
+  background: linear-gradient(135deg, #fef08a 0%, #fef3c7 100%);
+  color: #92400e;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
+  border-radius: 8px;
+  padding: 8px 12px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(254, 240, 138, 0.3);
 }
 
 .question-btn:hover {
-  background-color: #c3ebfc;
+  background: linear-gradient(135deg, #c3ebfc 0%, #bae6fd 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(195, 235, 252, 0.4);
 }
 
 select {
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select:hover {
+  border-color: #6366f1;
+}
+
+select:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
 }
 
 .modal-overlay {
@@ -476,6 +798,7 @@ select {
   font-size: 0.95rem;
   position: relative;
 }
+
 .nothingTxt {
   display: flex;
   flex-direction: column;
@@ -493,6 +816,7 @@ select {
   width: 150px;
   height: 150px;
 }
+
 .modal-content li::before {
   content: "";
   position: absolute;
@@ -699,8 +1023,51 @@ select {
     text-align: center;
   }
 
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
   .task-item {
     flex-direction: column;
+  }
+
+  .wide-input,
+  .wide-button {
+    width: 100%;
+  }
+
+  .bento-card {
+    min-height: 250px;
+    padding: 20px;
+  }
+
+  .bento-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .task-item {
+    padding: 15px;
+  }
+
+  .task-actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .todo-container {
+    padding: 15px;
+  }
+
+  .bento-grid {
+    gap: 15px;
+  }
+
+  .bento-card {
+    padding: 15px;
+    min-height: 200px;
   }
 
   .wide-input,
