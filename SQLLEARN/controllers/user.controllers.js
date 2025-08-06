@@ -747,6 +747,7 @@ exports.getAllMessages = async (req, res) => {
       select: {
         content: true,
         taskId: true,
+        task: true,
         author: {
           select: { nom: true },
         },

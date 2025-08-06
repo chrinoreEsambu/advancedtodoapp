@@ -21,13 +21,25 @@
     <div v-else class="messages-container">
       <div v-for="msg in messages" :key="msg.id" class="message-item">
         <div style="display: flex; justify-content: space-between">
-          <div><strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}</div>
-          <div style="position: relative;">
+          <div>
+            <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
+          </div>
+          <div style="position: relative">
             <button
               @click="toggleReplyOption(msg.id)"
               style="background: none; border: none; cursor: pointer"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                viewBox="0 0 24 24"
+              >
                 <circle cx="12" cy="5" r="1" />
                 <circle cx="12" cy="12" r="1" />
                 <circle cx="12" cy="19" r="1" />
@@ -43,18 +55,24 @@
         </div>
 
         <p><strong>Contenu :</strong> {{ msg.content }}</p>
-        <p><strong>Tâche liée :</strong> {{ msg.taskId }}</p>
+        <p>
+          <strong>Tâche liée :</strong> {{ msg.task?.task }} <br />
+          <strong for="">ID : </strong>{{ msg.taskId }}
+        </p>
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
         </p>
       </div>
     </div>
 
-    <!-- MODAL DE RÉPONSE -->
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h4>Répondre à ce message</h4>
-        <textarea v-model="replyContent" rows="4" placeholder="Écrire votre réponse..."></textarea>
+        <textarea
+          v-model="replyContent"
+          rows="4"
+          placeholder="Écrire votre réponse..."
+        ></textarea>
         <div class="modal-actions">
           <button class="cancel-btn" @click="closeModal">Annuler</button>
           <button class="send-btn" @click="sendReply">Envoyer</button>
@@ -122,7 +140,6 @@ const sendReply = async () => {
   }
 };
 </script>
-
 
 <style scoped>
 .messages-list {
@@ -196,7 +213,7 @@ const sendReply = async () => {
   background: white;
   border: 1px solid #eee;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
@@ -213,7 +230,6 @@ const sendReply = async () => {
 .reply-option-button:hover {
   background-color: #f5f5f5;
 }
-
 
 .modal-overlay {
   position: fixed;
@@ -234,7 +250,7 @@ const sendReply = async () => {
   width: 90%;
   max-width: 500px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .modal-content h4 {
