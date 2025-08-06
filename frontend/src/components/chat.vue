@@ -1,9 +1,9 @@
 <template>
   <div class="messages-list">
-    <h3>Mes messages</h3>
+    <h3>Comments</h3>
 
     <div class="filter-container">
-      <label for="userFilter">Filtrer par utilisateur :</label>
+      <label for="userFilter">Filter by user :</label>
       <select v-model="selectedUserId" @change="onUserChange">
         <option value="">-- Choisir un utilisateur --</option>
         <option v-for="user in users" :key="user.user_id" :value="user.user_id">

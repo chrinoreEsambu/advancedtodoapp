@@ -266,7 +266,7 @@ export const useAdminStore = defineStore("adminstore", {
             withCredentials: true,
           }
         );
-        alert("reply send ! ");
+        alert("Reply send ! ");
         return response.data.data;
       } catch (err) {
         console.error("Erreur lors de l'envoi de la réponse :", err);
