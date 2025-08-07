@@ -396,7 +396,7 @@ exports.admincreatTask = async (req, res) => {
         .json({ message: "Accès refusé : admin uniquement" });
     }
 
-    const { user_id, task,description, state } = req.body;
+    const { user_id, task, description, state } = req.body;
 
     const userfind = await prisma.users.findUnique({
       where: { user_id },
@@ -409,6 +409,7 @@ exports.admincreatTask = async (req, res) => {
     const newTask = await prisma.tasks.create({
       data: {
         task,
+        description,
         state: state || "pending",
         creator: {
           connect: {
@@ -794,7 +795,6 @@ exports.replyToMessage = async (req, res) => {
       },
     });
 
-    
     await logAdminAction(
       req.session.admin_id,
       "Commentaire sur tâche",
