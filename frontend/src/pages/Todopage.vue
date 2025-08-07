@@ -467,7 +467,9 @@ const sendChatMessage = () => {
 * {
   list-style: none;
 }
-
+.description {
+  color: red;
+}
 .todo {
   background-color: #7bf1a8;
 }
@@ -586,7 +588,6 @@ const sendChatMessage = () => {
   width: 400px;
   max-width: 90%;
 }
-
 
 .bento-grid {
   display: grid;
