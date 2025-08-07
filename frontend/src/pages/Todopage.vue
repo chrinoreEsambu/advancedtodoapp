@@ -587,7 +587,7 @@ const sendChatMessage = () => {
   max-width: 90%;
 }
 
-/* Bento Grid Styles */
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
