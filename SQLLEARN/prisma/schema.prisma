@@ -39,7 +39,9 @@ enum TaskState {
 }
 model Tasks {
   task_id    String   @id @default(uuid())
+  
   task       String?
+  description String?
 
   state      String?   @default("pending")
 
