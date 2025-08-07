@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,79 +8,85 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model comments {
-  id                              String     @id
-  content                         String
-  taskId                          String?
-  authorId                        String
-  replyById                       String?
-  replyToId                       String?
-  createdAt                       DateTime   @default(now())
-  users_comments_authorIdTousers  users      @relation("comments_authorIdTousers", fields: [authorId], references: [user_id], map: "Comments_authorId_fkey")
-  users_comments_replyByIdTousers users?     @relation("comments_replyByIdTousers", fields: [replyById], references: [user_id], map: "Comments_replyById_fkey")
-  comments                        comments?  @relation("commentsTocomments", fields: [replyToId], references: [id], map: "Comments_replyToId_fkey")
-  other_comments                  comments[] @relation("commentsTocomments")
-  tasks                           tasks?     @relation(fields: [taskId], references: [task_id], map: "Comments_taskId_fkey")
+model Users {
+  user_id   String   @id
+  nom       String   @unique
+  mail      String   @unique
+  password  String  
+  role      String   @default("users")
+  
+  createdTasks Tasks[] @relation("createdTasks") 
+  assignedTasks Tasks[] @relation("assignedTasks") 
+  adminAssignedTasks Tasks[] @relation("adminAssignedTasks")
 
-  @@index([authorId], map: "Comments_authorId_fkey")
-  @@index([replyById], map: "Comments_replyById_fkey")
-  @@index([replyToId], map: "Comments_replyToId_fkey")
-  @@index([taskId], map: "Comments_taskId_fkey")
+  logRelation Logs[] @relation("logRelation")
+
+  by Comments[] @relation("by")
+
+  replyBy Comments[] @relation("replyBy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model logs {
-  id       String   @id
-  adminId  String
-  action   String
-  details  String
-  createAt DateTime @default(now())
-  users    users    @relation(fields: [adminId], references: [user_id], map: "Logs_adminId_fkey")
-
-  @@index([adminId], map: "Logs_adminId_fkey")
-}
-
-model tasks {
-  task_id                         String           @id
-  task                            String?
-  state                           String?          @default("pending")
-  assignedById                    String?
-  assigneeId                      String?
-  createdAt                       DateTime         @default(now())
-  creatorId                       String?
-  updatedAt                       DateTime
-  taskState                       tasks_taskState? @default(todo)
-  description                     String?
-  comments                        comments[]
-  users_tasks_assignedByIdTousers users?           @relation("tasks_assignedByIdTousers", fields: [assignedById], references: [user_id], map: "Tasks_assignedById_fkey")
-  users_tasks_assigneeIdTousers   users?           @relation("tasks_assigneeIdTousers", fields: [assigneeId], references: [user_id], map: "Tasks_assigneeId_fkey")
-  users_tasks_creatorIdTousers    users?           @relation("tasks_creatorIdTousers", fields: [creatorId], references: [user_id], map: "Tasks_creatorId_fkey")
-
-  @@index([assignedById], map: "Tasks_assignedById_fkey")
-  @@index([assigneeId], map: "Tasks_assigneeId_fkey")
-  @@index([creatorId], map: "Tasks_creatorId_fkey")
-}
-
-model users {
-  user_id                            String     @id
-  nom                                String     @unique(map: "Users_nom_key")
-  mail                               String     @unique(map: "Users_mail_key")
-  password                           String
-  role                               String     @default("users")
-  createdAt                          DateTime   @default(now())
-  updatedAt                          DateTime
-  comments_comments_authorIdTousers  comments[] @relation("comments_authorIdTousers")
-  comments_comments_replyByIdTousers comments[] @relation("comments_replyByIdTousers")
-  logs                               logs[]
-  tasks_tasks_assignedByIdTousers    tasks[]    @relation("tasks_assignedByIdTousers")
-  tasks_tasks_assigneeIdTousers      tasks[]    @relation("tasks_assigneeIdTousers")
-  tasks_tasks_creatorIdTousers       tasks[]    @relation("tasks_creatorIdTousers")
-}
-
-enum tasks_taskState {
+enum TaskState {
   todo
   inprogress
   request
   denied
   accepted
   done
+}
+model Tasks {
+  task_id    String   @id @default(uuid())
+  
+  task       String?
+  description String?
+
+  state      String?   @default("pending")
+
+  taskState  TaskState? @default(todo)
+
+  creatorId  String?
+  creator    Users?    @relation("createdTasks", fields: [creatorId], references: [user_id])
+ 
+  assignedById String?
+  assignedBy  Users?  @relation("adminAssignedTasks", fields: [assignedById], references: [user_id])
+ 
+  assigneeId String?
+  assignee   Users ?   @relation("assignedTasks", fields: [assigneeId], references: [user_id])
+
+  taskfor Comments[] @relation("taskfor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Logs{
+  id String @id @default(uuid())
+  adminId  String
+  action String
+  details String
+  createAt DateTime @default(now())
+
+  admin Users @relation("logRelation", fields: [adminId],references: [user_id])
+}
+model Comments {
+id String @id @default(uuid())
+
+content String
+
+taskId String?
+task Tasks? @relation("taskfor",fields:[taskId], references: [task_id] )
+
+authorId  String
+author Users @relation("by",fields: [authorId], references: [user_id])
+
+replyById String?
+replyBy Users? @relation("replyBy", fields: [replyById], references: [user_id])
+
+replyToId String?
+replyTo Comments? @relation("replyRelation", fields: [replyToId], references: [id])
+replyRelation Comments[] @relation("replyRelation")
+
+createdAt DateTime @default(now())
 }
