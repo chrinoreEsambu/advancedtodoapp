@@ -39,7 +39,10 @@
               >
                 <div class="task-info">
                   {{ task.task }}
+                  <br />
+                  <lavel style="description">{{ task.description }}</lavel>
                 </div>
+
                 <div class="task-actions">
                   <button
                     class="question-btn"
@@ -291,6 +294,7 @@
           <h3>Discussion</h3>
           <button @click="closeChatModal" class="close-chat">✕</button>
         </div>
+
         <div class="chat-messages">
           <div
             v-for="(msg, index) in chatMessages"
@@ -306,6 +310,7 @@
             Pas encore de messages...
           </div>
         </div>
+
         <div class="chat-input">
           <textarea
             v-model="chatInput"
