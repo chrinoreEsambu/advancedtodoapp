@@ -87,6 +87,8 @@
               >
                 <div class="task-info">
                   {{ task.task }}
+                  <br />
+                  <lavel class="description">{{ task.description }}</lavel>
                 </div>
                 <div class="task-actions">
                   <button
@@ -468,7 +470,7 @@ const sendChatMessage = () => {
   list-style: none;
 }
 .description {
-  color: #A1ABB9;
+  color: #a1abb9;
   font-size: 0.85rem;
 }
 .todo {
