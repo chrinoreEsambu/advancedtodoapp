@@ -40,7 +40,7 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel style="description">{{ task.description }}</lavel>
+                  <lavel class="description">{{ task.description }}</lavel>
                 </div>
 
                 <div class="task-actions">
@@ -468,7 +468,8 @@ const sendChatMessage = () => {
   list-style: none;
 }
 .description {
-  color: red;
+  color: #A1ABB9;
+  font-size: 0.85rem;
 }
 .todo {
   background-color: #7bf1a8;
