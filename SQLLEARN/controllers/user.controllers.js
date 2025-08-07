@@ -396,7 +396,7 @@ exports.admincreatTask = async (req, res) => {
         .json({ message: "Accès refusé : admin uniquement" });
     }
 
-    const { user_id, task, state } = req.body;
+    const { user_id, task,description, state } = req.body;
 
     const userfind = await prisma.users.findUnique({
       where: { user_id },

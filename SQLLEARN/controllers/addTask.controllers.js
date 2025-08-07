@@ -4,7 +4,7 @@ const { logAdminAction } = require("../log/logger.controller");
 
 exports.addtask = async (req, res) => {
   try {
-    const { task, message, state } = req.body;
+    const { task, description, message, state } = req.body;
     const user_id = req.session.user_id;
 
     if (!user_id) {
@@ -14,6 +14,7 @@ exports.addtask = async (req, res) => {
     const newtask = await prisma.tasks.create({
       data: {
         task,
+        description,
         message,
         state: state || "delivered",
         creatorId: user_id,
