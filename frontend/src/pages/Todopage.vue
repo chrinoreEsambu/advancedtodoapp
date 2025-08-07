@@ -181,6 +181,8 @@
               >
                 <div class="task-info">
                   {{ task.task }}
+                  <br />
+                  <lavel class="description">{{ task.description }}</lavel>
                 </div>
                 <div class="task-actions">
                   <button
