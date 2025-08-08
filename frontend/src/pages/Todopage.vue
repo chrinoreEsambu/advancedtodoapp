@@ -9,14 +9,15 @@
 
     <div class="centered-zone">
       <div class="add-task">
-        <p>{{ dateDisplay }}</p>
-        <input
+        <p style="margin-left: 5px">{{ dateDisplay }}</p>
+
+        <!-- <input
           v-model="taskText"
           placeholder="Nouvelle tâche..."
           class="input-task wide-input"
-        />
+        /> -->
         <button @click="handleAddTask" class="wide-button">
-          Ajouter <Plus class="addplus" size="17" />
+          <Plus class="addplus" size="17" />Ajouter
         </button>
       </div>
 
@@ -585,7 +586,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: center;
+  /* align-items: center; */
   border: 1px solid #000;
   border-radius: 10px;
   padding: 25px;
@@ -603,19 +604,22 @@ onMounted(() => {
 }
 
 .add-task button {
+  /* ici */
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #000;
-  color: white;
+  /* justify-content: center; */
+  /* background-color: #000; */
+  /* color: white; */
   padding: 10px;
+  gap: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .add-task button:hover {
-  background-color: #222;
+  background-color: #dc2626;
+  color: #fff;
 }
 
 .wide-input {
@@ -625,7 +629,7 @@ onMounted(() => {
 
 .wide-button {
   width: 400px;
-  max-width: 90%;
+  max-width: 30%;
 }
 
 .bento-grid {
