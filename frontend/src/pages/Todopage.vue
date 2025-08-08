@@ -7,8 +7,9 @@
       </button>
     </header>
 
-    <div class="centered-zone">
-      <div class="add-task">
+    <div class="centered-zone" >
+
+      <div class="add-task" >
         <input
           v-model="taskText"
           placeholder="Nouvelle tâche..."
@@ -18,6 +19,17 @@
           Ajouter <Plus class="addplus" size="17" />
         </button>
       </div>
+
+      <!-- <div class="add-task" >
+        <input
+          v-model="taskText"
+          placeholder="Nouvelle tâche..."
+          class="input-task wide-input"
+        />
+        <button @click="handleAddTask" class="wide-button">
+          Ajouter <Plus class="addplus" size="17" />
+        </button>
+      </div> -->
 
       <div class="bento-grid">
         <div class="bento-card todo-bento">
