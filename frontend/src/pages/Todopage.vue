@@ -11,7 +11,7 @@
       <div class="add-task">
         <p>{{ dateDisplay }}</p>
         <hr class="style-line" />
-       
+
         <button @click="handleAddTask" class="wide-button">
           <Plus class="addplus" size="17" />Ajouter une tâche
         </button>
@@ -49,7 +49,7 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description">{{ task.description }}</lavel>
+                  <lavel class="description" v-html="task.description"></lavel>
                 </div>
 
                 <div class="task-actions">
@@ -97,7 +97,7 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description">{{ task.description }}</lavel>
+                  <lavel class="description" v-html="task.description"></lavel>
                 </div>
                 <div class="task-actions">
                   <button
@@ -144,7 +144,7 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description">{{ task.description }}</lavel>
+                  <lavel class="description" v-html="task.description"></lavel>
                 </div>
                 <div class="task-actions">
                   <button
@@ -191,7 +191,7 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description">{{ task.description }}</lavel>
+                  <lavel class="description" v-html="task.description"></lavel>
                 </div>
                 <div class="task-actions">
                   <button

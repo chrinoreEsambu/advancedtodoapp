@@ -88,7 +88,7 @@ const handleAddTask = async () => {
 }
 
 .wide-button {
-  background-color: black;
+  background-color: #DC2626;
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -99,6 +99,6 @@ const handleAddTask = async () => {
 }
 
 .wide-button:hover {
-  background-color: #222;
+  background-color: #a51f1f;
 }
 </style>
