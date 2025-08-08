@@ -589,17 +589,6 @@ onMounted(() => {
   gap: 40px;
   margin-top: -13px;
 }
-.add-task {
-  /* display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid #000;
-  border-left: 5px solid#DC2626;
-  border-radius: 10px;
-  padding: 25px;
-  width: 40%;
-  height: 100px; */
-}
 
 .input-task {
   padding: 10px;
@@ -623,7 +612,7 @@ onMounted(() => {
   gap: 20px;
   flex-wrap: nowrap !important;
   width: 100%;
-  margin-bottom:-10px;
+  margin-bottom: -10px;
 }
 .add-task button {
   display: flex;
