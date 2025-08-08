@@ -29,8 +29,11 @@
 
       <div class="form-group">
         <label>Task :</label>
-        <input type="text" class="object" placeholder="Nouvelle tâche" />
+
+        <input type="text" class="object" placeholder="Nouvelle tâche" v-model="Newtask"/>
+
         <label>Description :</label>
+
         <textarea
           v-model="taskDescription"
           class="form-textarea"
@@ -62,6 +65,7 @@ const adminStore = useAdminStore();
 const { users } = storeToRefs(adminStore);
 
 const selectedUserId = ref("");
+const Newtask = ref("");
 const taskDescription = ref("");
 const taskState = ref("pending");
 const errorMessage = ref("");
@@ -73,7 +77,7 @@ const handleCreate = async () => {
   errorMessage.value = "";
   successMessage.value = "";
 
-  if (!selectedUserId.value || !taskDescription.value) {
+  if (!selectedUserId.value || !taskDescription.value || !Newtask.value) {
     errorMessage.value = "Veuillez remplir tous les champs";
     return;
   }
@@ -81,7 +85,8 @@ const handleCreate = async () => {
   try {
     const result = await adminStore.createTask({
       user_id: selectedUserId.value,
-      task: taskDescription.value,
+      task:Newtask.value,
+      description: taskDescription.value,
       state: taskState.value,
     });
 
