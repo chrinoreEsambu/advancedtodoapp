@@ -587,6 +587,7 @@ onMounted(() => {
   flex-direction: column;
   gap: 10px;
   border: 1px solid #000;
+  border-left: 5px solid#DC2626;
   border-radius: 10px;
   padding: 25px;
   width: 40%;
