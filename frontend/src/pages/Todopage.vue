@@ -590,7 +590,6 @@ onMounted(() => {
   margin-top: -13px;
 }
 .add-task {
-
   /* display: flex;
   flex-direction: column;
   gap: 10px;
@@ -609,21 +608,22 @@ onMounted(() => {
 }
 
 .addplus {
-
   margin-left: 2px;
-  color: #ff4444;
-  border: 1px solid #ff4444;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
   padding: 5px;
   border-radius: 50px;
 }
 .flex {
   display: flex;
+  align-items: center;
   flex-direction: row !important;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: nowrap !important;
   width: 100%;
+  margin-bottom:-10px;
 }
 .add-task button {
   display: flex;
@@ -666,15 +666,17 @@ onMounted(() => {
   gap: 6px;
   width: 200px;
   height: 45px;
-  border:1px solid #000;
-  background-color: #DC2626;
-  color:#fff;
-  /* max-width: 50%; */
-
+  border: 1px solid #dc2626;
+  background-color: #ff4444;
+  color: #fff;
+  border-radius: 5px;
   position: relative;
   right: 13px;
+  transition: 0.2s ease;
 }
-
+.wide-button:hover {
+  background-color: #dc2626;
+}
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
