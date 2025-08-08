@@ -7,9 +7,9 @@
       </button>
     </header>
 
-    <div class="centered-zone" >
-
-      <div class="add-task" >
+    <div class="centered-zone">
+      <div class="add-task">
+        <p>{{ dateDisplay }}</p>
         <input
           v-model="taskText"
           placeholder="Nouvelle tâche..."
@@ -377,6 +377,8 @@ const sending = ref(false);
 const currentTaskId = ref(null);
 const showChat = ref(false);
 
+const dateDisplay = ref("");
+
 const todoTasks = computed(() =>
   userStore.tasks.filter((task) => task.taskState === "todo")
 );
@@ -479,6 +481,20 @@ const sendChatMessage = () => {
     });
   }, 1000);
 };
+
+function getDateFormatted() {
+  const today = new Date();
+
+  const mois = today.toLocaleDateString("fr-FR", { month: "long" });
+  const jourDuMois = today.toLocaleDateString("fr-FR", { day: "2-digit" });
+  const jourNom = today.toLocaleDateString("fr-FR", { weekday: "long" });
+
+  return `${mois} ${jourDuMois} • Aujourd'hui • ${jourNom}`;
+}
+
+onMounted(() => {
+  dateDisplay.value = getDateFormatted();
+});
 </script>
 
 <style scoped>
@@ -562,7 +578,7 @@ const sendChatMessage = () => {
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  margin-top: 40px;
+  margin-top: -10px;
 }
 
 .add-task {
@@ -570,6 +586,10 @@ const sendChatMessage = () => {
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 25px;
+  width: 40%;
 }
 
 .input-task {
