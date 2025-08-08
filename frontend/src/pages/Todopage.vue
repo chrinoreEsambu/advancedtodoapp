@@ -12,9 +12,19 @@
         <p>{{ dateDisplay }}</p>
         <hr class="style-line" />
 
-        <button @click="handleAddTask" class="wide-button">
+        <button @click="openAddTaskModal" class="wide-button">
           <Plus class="addplus" size="17" />Ajouter une tâche
         </button>
+      </div>
+
+      <div
+        v-if="showAddTaskModal"
+        class="modal-overlay"
+        @click.self="closeAddTaskModal"
+      >
+        <div class="modal-content add-task-modal">
+          <addTaskUser @close="closeAddTaskModal" />
+        </div>
       </div>
 
       <div class="bento-grid">
@@ -349,6 +359,8 @@ import {
   Hourglass,
   CloudCheck,
 } from "lucide-vue-next";
+import AddTaskUser from "./addTaskUser.vue";
+import addTaskUser from "../pages/addTaskUser.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -466,6 +478,16 @@ const sendChatMessage = () => {
       text: "feature not available refer to the comments area ' ? ' to ask your questions ! Thank you.",
     });
   }, 1000);
+};
+
+const showAddTaskModal = ref(false); // ← Change en ref
+
+const openAddTaskModal = () => {
+  showAddTaskModal.value = true; // ← Nouvelle fonction pour ouvrir
+};
+
+const closeAddTaskModal = () => {
+  showAddTaskModal.value = false; // ← Fonction pour fermer
 };
 
 function getDateFormatted() {
@@ -829,11 +851,17 @@ select:disabled {
   z-index: 1000;
 }
 
+.add-task-modal .container {
+  width: 100%;
+  height: 110%;
+}
+
+
 .modal-content {
   background: #ffffff;
   padding: 20px;
   border-radius: 10px;
-  max-width: 600px;
+  max-width: 800px;
   width: 90%;
   display: flex;
   flex-direction: column;

@@ -63,6 +63,7 @@ const handleAddTask = async () => {
 </script>
 
 <style scoped>
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -96,6 +97,7 @@ const handleAddTask = async () => {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 140px;
 }
 
 .wide-button:hover {
