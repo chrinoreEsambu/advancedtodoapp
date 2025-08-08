@@ -89,15 +89,17 @@
         </div>
       </div>
       <ul>
-
         <li
           v-for="task in paginatedRequest"
           :key="task.task_id"
           class="request-item"
         >
-        
           <span>{{ task.task }}</span>
-          
+          <span
+            style="color: #a1abb9; font-size: 0.85rem"
+            v-html="task.description"
+          ></span>
+
           <div class="request-controls">
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState
