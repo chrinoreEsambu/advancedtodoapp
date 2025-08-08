@@ -29,7 +29,7 @@
 
       <div class="form-group">
         <label>Task :</label>
-        <input type="text" class="object" />
+        <input type="text" class="object" placeholder="Nouvelle tâche" />
         <label>Description :</label>
         <textarea
           v-model="taskDescription"
@@ -110,9 +110,8 @@ const handleCreate = async () => {
 .object {
   width: 101%;
   height: 30px;
-  border:1px solid #000;
+  border: 1px solid #000;
   border-radius: 5px;
-  outline: none;
   margin-bottom: 10px;
   padding: 5px;
 }

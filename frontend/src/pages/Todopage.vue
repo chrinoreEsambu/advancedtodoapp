@@ -480,14 +480,14 @@ const sendChatMessage = () => {
   }, 1000);
 };
 
-const showAddTaskModal = ref(false); // ← Change en ref
+const showAddTaskModal = ref(false); 
 
 const openAddTaskModal = () => {
-  showAddTaskModal.value = true; // ← Nouvelle fonction pour ouvrir
+  showAddTaskModal.value = true; 
 };
 
 const closeAddTaskModal = () => {
-  showAddTaskModal.value = false; // ← Fonction pour fermer
+  showAddTaskModal.value = false; 
 };
 
 function getDateFormatted() {
@@ -865,7 +865,7 @@ select:disabled {
   width: 90%;
   display: flex;
   flex-direction: column;
-  height: 70vh;
+  height: 75vh;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
