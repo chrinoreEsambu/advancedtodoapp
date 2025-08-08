@@ -9,15 +9,15 @@
 
     <div class="centered-zone">
       <div class="add-task">
-        <p style="margin-left: 5px">{{ dateDisplay }}</p>
-
+        <p>{{ dateDisplay }}</p>
+        <hr class="style-line" />
         <!-- <input
           v-model="taskText"
           placeholder="Nouvelle tâche..."
           class="input-task wide-input"
         /> -->
         <button @click="handleAddTask" class="wide-button">
-          <Plus class="addplus" size="17" />Ajouter
+          <Plus class="addplus" size="17" />Ajouter une tâche
         </button>
       </div>
 
@@ -579,7 +579,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  margin-top: -10px;
+  margin-top: -13px;
 }
 
 .add-task {
@@ -591,6 +591,7 @@ onMounted(() => {
   border-radius: 10px;
   padding: 25px;
   width: 40%;
+  height: 100px;
 }
 
 .input-task {
@@ -601,35 +602,52 @@ onMounted(() => {
 
 .addplus {
   margin-left: 2px;
+  color: #ff4444;
+  border: 1px solid #ff4444;
+  padding: 5px;
+  border-radius: 50px;
 }
 
 .add-task button {
   /* ici */
   display: flex;
   align-items: center;
-  /* justify-content: center; */
-  /* background-color: #000; */
-  /* color: white; */
   padding: 10px;
   gap: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+.style-line {
+  height: 1px;
+  background: #000;
+  border-radius: 2px;
+  margin: 1px 0;
+  opacity: 0.7;
+  margin-top: -10px;
+}
+.add-task button:hover {
+  color: #ff4444;
 }
 
-.add-task button:hover {
-  background-color: #dc2626;
+.add-task button:hover .addplus {
+  background: #ff4444;
   color: #fff;
+  transition: 0.2s ease;
 }
 
 .wide-input {
   width: 400px;
-  max-width: 90%;
+  max-width: 100%;
 }
 
 .wide-button {
   width: 400px;
-  max-width: 30%;
+  max-width: 50%;
+  background-color: transparent;
+  position: relative;
+  right: 13px;
 }
 
 .bento-grid {
@@ -1118,13 +1136,24 @@ select:disabled {
     justify-content: center;
     width: 100%;
   }
+  .add-task {
+    width: 90%;
+  }
+  .wide-button {
+    max-width: 90%;
+  }
 }
 
 @media (max-width: 480px) {
   .todo-container {
     padding: 15px;
   }
-
+  .add-task {
+    width: 90%;
+  }
+  .wide-button {
+    max-width: 90%;
+  }
   .bento-grid {
     gap: 15px;
   }
