@@ -47,8 +47,8 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    async addTask(taskData) {
-      await api.post("/addtask", taskData);
+    async addTask(taskData,description) {
+      await api.post("/addtask", taskData, description);
       await this.fetchTasks();
     },
 

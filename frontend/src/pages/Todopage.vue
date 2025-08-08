@@ -11,11 +11,7 @@
       <div class="add-task">
         <p>{{ dateDisplay }}</p>
         <hr class="style-line" />
-        <!-- <input
-          v-model="taskText"
-          placeholder="Nouvelle tâche..."
-          class="input-task wide-input"
-        /> -->
+       
         <button @click="handleAddTask" class="wide-button">
           <Plus class="addplus" size="17" />Ajouter une tâche
         </button>

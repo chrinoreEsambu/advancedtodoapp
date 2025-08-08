@@ -7,6 +7,7 @@ import { useUserStore } from "../store/UserTask.service";
 import dashboard from "../pages/dashboard.vue";
 import AdminLog from "../pages/adminLog.vue";
 import { useAdminStore } from "../store/admin.service";
+import addTaskUser from "../pages/addTaskUser.vue";
 
 const routes = [
   { path: "/", component: Login },
@@ -14,6 +15,11 @@ const routes = [
   { path: "/todopage", component: Todopage, meta: { requiresAuth: true } },
   { path: "/adminlogin", component: AdminLog },
   { path: "/dashboard", component: dashboard, meta: { requiresAuth: true } },
+  {
+    path: "/addTaskUser",
+    component: addTaskUser,
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({
