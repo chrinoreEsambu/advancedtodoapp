@@ -8,13 +8,14 @@
     </header>
 
     <div class="centered-zone">
-      <div class="add-task">
+      <div class="flex">
         <p>{{ dateDisplay }}</p>
-        <hr class="style-line" />
-
         <button @click="openAddTaskModal" class="wide-button">
           <Plus class="addplus" size="17" />Ajouter une tâche
         </button>
+        <!-- <div class="add-task">
+         
+        </div> -->
       </div>
 
       <div
@@ -480,14 +481,14 @@ const sendChatMessage = () => {
   }, 1000);
 };
 
-const showAddTaskModal = ref(false); 
+const showAddTaskModal = ref(false);
 
 const openAddTaskModal = () => {
-  showAddTaskModal.value = true; 
+  showAddTaskModal.value = true;
 };
 
 const closeAddTaskModal = () => {
-  showAddTaskModal.value = false; 
+  showAddTaskModal.value = false;
 };
 
 function getDateFormatted() {
@@ -588,9 +589,9 @@ onMounted(() => {
   gap: 40px;
   margin-top: -13px;
 }
-
 .add-task {
-  display: flex;
+
+  /* display: flex;
   flex-direction: column;
   gap: 10px;
   border: 1px solid #000;
@@ -598,7 +599,7 @@ onMounted(() => {
   border-radius: 10px;
   padding: 25px;
   width: 40%;
-  height: 100px;
+  height: 100px; */
 }
 
 .input-task {
@@ -608,15 +609,25 @@ onMounted(() => {
 }
 
 .addplus {
+
   margin-left: 2px;
   color: #ff4444;
   border: 1px solid #ff4444;
   padding: 5px;
   border-radius: 50px;
 }
-
+.flex {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap !important;
+  width: 100%;
+}
 .add-task button {
   display: flex;
+
   align-items: center;
   padding: 10px;
   gap: 5px;
@@ -649,9 +660,17 @@ onMounted(() => {
 }
 
 .wide-button {
-  width: 400px;
-  max-width: 50%;
-  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  width: 200px;
+  height: 45px;
+  border:1px solid #000;
+  background-color: #DC2626;
+  color:#fff;
+  /* max-width: 50%; */
+
   position: relative;
   right: 13px;
 }
@@ -855,7 +874,6 @@ select:disabled {
   width: 100%;
   height: 110%;
 }
-
 
 .modal-content {
   background: #ffffff;
