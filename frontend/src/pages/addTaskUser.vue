@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <strong>Créer une tâche</strong>
     <input
       v-model="taskText"
       placeholder="Nouvelle tâche..."
@@ -7,9 +8,7 @@
     />
     <div ref="quillEditor" class="quill-editor"></div>
     <div class="button-wrapper">
-      <button @click="handleAddTask" class="wide-button">
-        Ajouter
-      </button>
+      <button @click="handleAddTask" class="wide-button">Ajouter</button>
     </div>
   </div>
 </template>
@@ -63,7 +62,6 @@ const handleAddTask = async () => {
 </script>
 
 <style scoped>
-
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -89,7 +87,7 @@ const handleAddTask = async () => {
 }
 
 .wide-button {
-  background-color: #DC2626;
+  background-color: #dc2626;
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;

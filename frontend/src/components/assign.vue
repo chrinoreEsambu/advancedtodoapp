@@ -28,6 +28,8 @@
       </div>
 
       <div class="form-group">
+        <label>Task :</label>
+        <input type="text" class="object" />
         <label>Description :</label>
         <textarea
           v-model="taskDescription"
@@ -104,6 +106,15 @@ const handleCreate = async () => {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+}
+.object {
+  width: 101%;
+  height: 30px;
+  border:1px solid #000;
+  border-radius: 5px;
+  outline: none;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 h2 {
