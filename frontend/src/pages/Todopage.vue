@@ -586,7 +586,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* align-items: center; */
   border: 1px solid #000;
   border-radius: 10px;
   padding: 25px;
@@ -609,7 +608,6 @@ onMounted(() => {
 }
 
 .add-task button {
-  /* ici */
   display: flex;
   align-items: center;
   padding: 10px;
