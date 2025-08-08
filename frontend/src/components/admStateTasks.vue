@@ -97,6 +97,7 @@
         >
         
           <span>{{ task.task }}</span>
+          
           <div class="request-controls">
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState

@@ -59,7 +59,13 @@
 
         <p><strong>Contenu :</strong> {{ msg.content }}</p>
         <p>
-          <strong>Tâche liée :</strong> {{ msg.task?.task }}<br />
+          <strong>Tâche liée :</strong>
+          {{ msg.task?.task }}<br />
+
+          <label style="color: #a1abb9; margin-bottom: 10px">{{
+            msg.task.description
+          }}</label>
+          <br />
           <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
           >
