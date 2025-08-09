@@ -105,11 +105,7 @@ import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { Info } from "lucide-vue-next";
-const truncateText = (text) => {
-  if (text.length > 74) {
-    return text.substring(0, 74) + "..."; 
-  }
-};
+
 const store = useAdminStore();
 const { users, messages, loading, error } = storeToRefs(store);
 
@@ -162,6 +158,12 @@ const sendReply = async () => {
     await store.fetchMessages(selectedUserId.value || null);
   } catch (err) {
     console.error("Erreur lors de l'envoi de la réponse :", err);
+  }
+};
+
+const truncateText = (text) => {
+  if (text.length > 74) {
+    return text.substring(0, 74) + "...";
   }
 };
 </script>
