@@ -51,7 +51,7 @@
                 Répondre ?
               </button>
               <button @click="tired()" class="reply-option-button">
-                Supprimer
+                Details <Info class="detaills-Icon" />
               </button>
             </div>
           </div>
@@ -64,12 +64,12 @@
 
           <label
             style="color: #a1abb9; margin-bottom: 10px"
-            v-html="msg.task.description"
+            v-html="msg.task?.description"
           ></label>
           <br />
-          <strong style="margin-left: 2px; color: #005b47"
+          <!-- <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
-          >
+          > -->
         </p>
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
@@ -98,6 +98,7 @@
 import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
+import { Info } from "lucide-vue-next";
 
 const store = useAdminStore();
 const { users, messages, loading, error } = storeToRefs(store);
@@ -156,6 +157,13 @@ const sendReply = async () => {
 </script>
 
 <style scoped>
+.detaills-Icon {
+  color: rgba(94, 94, 94, 0.637);
+  height: 15px;
+  width: 15px;
+  margin-left: 5px;
+  
+}
 .messages-list {
   max-width: 800px;
   margin: 0 auto;
@@ -232,6 +240,7 @@ const sendReply = async () => {
 }
 
 .reply-option-button {
+  display: flex;
   padding: 6px 12px;
   background: none;
   border: none;

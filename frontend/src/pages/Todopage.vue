@@ -13,9 +13,6 @@
         <button @click="openAddTaskModal" class="wide-button">
           <Plus class="addplus" size="17" />Ajouter une tâche
         </button>
-        <!-- <div class="add-task">
-         
-        </div> -->
       </div>
 
       <div
@@ -874,7 +871,7 @@ select:disabled {
   width: 90%;
   display: flex;
   flex-direction: column;
-  height: 75vh;
+
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
