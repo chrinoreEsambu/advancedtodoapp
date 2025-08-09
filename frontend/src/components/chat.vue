@@ -1,25 +1,38 @@
 <template>
   <div class="messages-list">
     <div class="info">
-      <div v-for="msg in messages" :key="msg.id" class="message-item">
+      <div v-if="selectedMessage" class="message-item">
         <div style="display: flex; justify-content: space-between">
           <div>
-            <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
+            <strong>Auteur :</strong>
+            {{ selectedMessage.author?.nom || "Inconnu" }}
           </div>
+          <button
+            @click="closeInfo"
+            style="
+              background: none;
+              border: none;
+              cursor: pointer;
+              font-size: 18px;
+            "
+          >
+            ✕
+          </button>
         </div>
 
-        <p><strong>Contenu :</strong> {{ msg.content }}</p>
+        <p><strong>Contenu :</strong> {{ selectedMessage.content }}</p>
         <p>
           <strong>Tâche liée :</strong>
-          {{ msg.task?.task }}<br />
+          {{ selectedMessage.task?.task }}<br />
 
           <label
             style="color: #a1abb9; margin-bottom: 10px"
-            v-html="truncateText(msg.task?.description, 74)"
+            v-html="selectedMessage.task?.description"
           ></label>
         </p>
-        <p v-if="msg.replyBy">
-          <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
+        <p v-if="selectedMessage.replyBy">
+          <strong class="redo">Réponse de :</strong>
+          {{ selectedMessage.replyBy.nom }}
         </p>
       </div>
     </div>
@@ -123,6 +136,7 @@ import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { Info } from "lucide-vue-next";
+const selectedMessage = ref(null);
 
 const store = useAdminStore();
 const { users, messages, loading, error } = storeToRefs(store);
@@ -157,11 +171,20 @@ const closeModal = () => {
   replyToMessage.value = null;
   replyContent.value = "";
 };
-const openInfotoggle = () => {
+const openInfotoggle = (msg) => {
+  selectedMessage.value = msg;
   const infoElement = document.getElementsByClassName("info")[0];
   if (infoElement) {
     infoElement.style.display = "flex";
   }
+  console.log(msg);
+};
+const closeInfo = () => {
+  const infoElement = document.getElementsByClassName("info")[0];
+  if (infoElement) {
+    infoElement.style.display = "none";
+  }
+  selectedMessage.value = null;
 };
 const sendReply = async () => {
   if (!replyContent.value.trim()) return;
@@ -183,17 +206,42 @@ const sendReply = async () => {
 };
 
 const truncateText = (text) => {
+  if (!text) return "";
   if (text.length > 74) {
     return text.substring(0, 74) + "...";
   }
+  return text;
 };
 </script>
 
 <style scoped>
 .info {
-  display: flex;
+  position: fixed; 
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  display: none; 
   flex-direction: column;
   background-color: #e9fdfa;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 500px; 
+  width: 90%;
+  max-height: 80vh; 
+  overflow-y: auto; 
+  z-index: 1000; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+}
+
+.info-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
   display: none;
 }
 .info label {
