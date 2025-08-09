@@ -163,6 +163,16 @@ const sendReply = async () => {
 </script>
 
 <style scoped>
+.info {
+  display: flex;
+  flex-direction: column;
+  background-color: #e9fdfa;
+  display: none;
+}
+.info label {
+  color: rgb(0, 0, 0);
+  margin: 8px;
+}
 .detaills-Icon {
   color: rgba(94, 94, 94, 0.637);
   height: 15px;
