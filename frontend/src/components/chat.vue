@@ -70,7 +70,7 @@
 
           <label
             style="color: #a1abb9; margin-bottom: 10px"
-            v-html="msg.task?.description"
+            v-html="truncateText(msg.task?.description, 74)"
           ></label>
           <br />
           <!-- <strong style="margin-left: 2px; color: #005b47"
@@ -105,7 +105,11 @@ import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
 import { Info } from "lucide-vue-next";
-
+const truncateText = (text) => {
+  if (text.length > 74) {
+    return text + "...";
+  }
+};
 const store = useAdminStore();
 const { users, messages, loading, error } = storeToRefs(store);
 
