@@ -132,9 +132,7 @@ const replyContent = ref("");
 const showReplyOptionFor = ref(null);
 const showModal = ref(false);
 const replyToMessage = ref(null);
-const tired = async () => {
-  alert("la suppression n'est pas disponible !");
-};
+
 onMounted(async () => {
   await store.fetchMessages();
 });
@@ -160,8 +158,11 @@ const closeModal = () => {
   replyContent.value = "";
 };
 const openInfotoggle = () => {
-  
-} 
+  const infoElement = document.getElementsByClassName("info")[0];
+  if (infoElement) {
+    infoElement.style.display = "flex";
+  }
+};
 const sendReply = async () => {
   if (!replyContent.value.trim()) return;
 
@@ -193,7 +194,7 @@ const truncateText = (text) => {
   display: flex;
   flex-direction: column;
   background-color: #e9fdfa;
-  /* display: none; */
+  display: none;
 }
 .info label {
   color: rgb(0, 0, 0);
