@@ -1,5 +1,11 @@
 <template>
   <div class="messages-list">
+    <div class="info">
+      <label for="">Auteur :</label>
+      <label for="">Contenu : </label>
+      <label for="">Tâche liée :</label>
+      <label for="">descrisption :</label>
+    </div>
     <h3>Comments</h3>
 
     <div class="filter-container">
@@ -162,7 +168,6 @@ const sendReply = async () => {
   height: 15px;
   width: 15px;
   margin-left: 5px;
-  
 }
 .messages-list {
   max-width: 800px;
