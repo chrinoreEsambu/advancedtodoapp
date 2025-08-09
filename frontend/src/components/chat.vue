@@ -1,6 +1,5 @@
 <template>
   <div class="messages-list">
-
     <div class="info">
       <div v-for="msg in messages" :key="msg.id" class="message-item">
         <div style="display: flex; justify-content: space-between">
@@ -75,7 +74,7 @@
               <button @click="openReplyModal(msg)" class="reply-option-button">
                 Répondre ?
               </button>
-              <button @click="tired()" class="reply-option-button">
+              <button @click="openInfotoggle(msg)" class="reply-option-button">
                 Details <Info class="detaills-Icon" />
               </button>
             </div>
@@ -160,7 +159,9 @@ const closeModal = () => {
   replyToMessage.value = null;
   replyContent.value = "";
 };
-
+const openInfotoggle = () => {
+  
+} 
 const sendReply = async () => {
   if (!replyContent.value.trim()) return;
 
