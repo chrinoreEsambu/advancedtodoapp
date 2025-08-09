@@ -6,23 +6,6 @@
           <div>
             <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
           </div>
-          <div style="position: relative">
-            <button
-              @click="toggleReplyOption(msg.id)"
-              style="background: none; border: none; cursor: pointer"
-            >
-             
-            </button>
-
-            <div v-if="showReplyOptionFor === msg.id" class="reply-option">
-              <button @click="openReplyModal(msg)" class="reply-option-button">
-                Répondre ?
-              </button>
-              <button @click="tired()" class="reply-option-button">
-                Details <Info class="detaills-Icon" />
-              </button>
-            </div>
-          </div>
         </div>
 
         <p><strong>Contenu :</strong> {{ msg.content }}</p>
