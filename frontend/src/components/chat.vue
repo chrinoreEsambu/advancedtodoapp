@@ -73,9 +73,9 @@
             v-html="truncateText(msg.task?.description, 74)"
           ></label>
           <br />
-          <!-- <strong style="margin-left: 2px; color: #005b47"
+          <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
-          > -->
+          >
         </p>
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
