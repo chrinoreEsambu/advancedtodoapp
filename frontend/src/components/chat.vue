@@ -1,10 +1,48 @@
 <template>
   <div class="messages-list">
     <div class="info">
-      <label for="">Auteur :</label>
-      <label for="">Contenu : </label>
-      <label for="">Tâche liée :</label>
-      <label for="">descrisption :</label>
+      <div v-for="msg in messages" :key="msg.id" class="message-item">
+        <div style="display: flex; justify-content: space-between">
+          <div>
+            <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
+          </div>
+          <div style="position: relative">
+            <button
+              @click="toggleReplyOption(msg.id)"
+              style="background: none; border: none; cursor: pointer"
+            >
+             
+            </button>
+
+            <div v-if="showReplyOptionFor === msg.id" class="reply-option">
+              <button @click="openReplyModal(msg)" class="reply-option-button">
+                Répondre ?
+              </button>
+              <button @click="tired()" class="reply-option-button">
+                Details <Info class="detaills-Icon" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Contenu :</strong> {{ msg.content }}</p>
+        <p>
+          <strong>Tâche liée :</strong>
+          {{ msg.task?.task }}<br />
+
+          <label
+            style="color: #a1abb9; margin-bottom: 10px"
+            v-html="truncateText(msg.task?.description, 74)"
+          ></label>
+          <br />
+          <!-- <strong style="margin-left: 2px; color: #005b47"
+            >ID : {{ msg.taskId }}</strong
+          > -->
+        </p>
+        <p v-if="msg.replyBy">
+          <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
+        </p>
+      </div>
     </div>
     <h3>Comments</h3>
 
