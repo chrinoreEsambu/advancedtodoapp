@@ -1,5 +1,6 @@
 <template>
   <div class="messages-list">
+
     <div class="info">
       <div v-for="msg in messages" :key="msg.id" class="message-item">
         <div style="display: flex; justify-content: space-between">
@@ -17,16 +18,13 @@
             style="color: #a1abb9; margin-bottom: 10px"
             v-html="truncateText(msg.task?.description, 74)"
           ></label>
-          <br />
-          <!-- <strong style="margin-left: 2px; color: #005b47"
-            >ID : {{ msg.taskId }}</strong
-          > -->
         </p>
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
         </p>
       </div>
     </div>
+
     <h3>Comments</h3>
 
     <div class="filter-container">
@@ -42,7 +40,7 @@
     <div v-if="loading" class="loading-message">Chargement des messages...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="!messages || messages.length === 0" class="empty-message">
-      Aucun message trouvé
+      Aucun message trouv
     </div>
 
     <div v-else class="messages-container">
@@ -194,7 +192,7 @@ const truncateText = (text) => {
   display: flex;
   flex-direction: column;
   background-color: #e9fdfa;
-  display: none;
+  /* display: none; */
 }
 .info label {
   color: rgb(0, 0, 0);
