@@ -107,7 +107,7 @@ import { storeToRefs } from "pinia";
 import { Info } from "lucide-vue-next";
 const truncateText = (text) => {
   if (text.length > 74) {
-    return text + "...";
+    return text.substring(0, 74) + "..."; 
   }
 };
 const store = useAdminStore();
