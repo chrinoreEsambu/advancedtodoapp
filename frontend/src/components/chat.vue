@@ -40,7 +40,7 @@
     <div v-if="loading" class="loading-message">Chargement des messages...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="!messages || messages.length === 0" class="empty-message">
-      Aucun message trouv
+      Aucun message trouvé
     </div>
 
     <div v-else class="messages-container">
