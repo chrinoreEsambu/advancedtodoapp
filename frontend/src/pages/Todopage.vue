@@ -564,13 +564,30 @@ const closeTaskModal = () => {
   showTaskModal.value = false;
   selectedTask.value = null;
 };
+// cette fonction est celle que j'afais mais de facon simple
+// // vue quelle n'est plus adapter bien quelle work je met celle
+// // du du bas
+// const truncateText = (text) => {
+//   if (!text) return "";
+//   if (text.length > 74) {
+//     return text.substring(0, 74) + "...";
+//   }
+//   return text;
+// };
+const truncateText = (htmlText) => {
+  if (!htmlText) return "";
 
-const truncateText = (text) => {
-  if (!text) return "";
-  if (text.length > 74) {
-    return text.substring(0, 74) + "...";
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlText;
+  const textOnly = tempDiv.textContent || tempDiv.innerText || "";
+
+  if (textOnly.length <= 74) {
+    return htmlText;
   }
-  return text;
+
+  const truncatedText = textOnly.substring(0, 74) + "...";
+
+  return `<span style="color: #a1abb9;">${truncatedText}</span>`;
 };
 </script>
 
@@ -578,6 +595,7 @@ const truncateText = (text) => {
 * {
   list-style: none;
 }
+
 .description {
   color: #a1abb9;
   font-size: 0.85rem;

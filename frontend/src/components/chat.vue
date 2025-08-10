@@ -7,26 +7,22 @@
             <strong>Auteur :</strong>
             {{ selectedMessage.author?.nom || "Inconnu" }}
           </div>
-          <button
-            @click="closeInfo"
-            class="closeInfo"
-          >
-            ✕
-          </button>
+          <button @click="closeInfo" class="closeInfo">✕</button>
         </div>
 
         <p><strong>Question :</strong> {{ selectedMessage.content }}</p>
         <div>
           <strong>Tâche liée :</strong>
           {{ selectedMessage.task?.task }}<br />
-          
-          <div style="text-align: center; display: flex;flex-direction: column;">
-          
-          <strong>Description</strong>
-          <label
-            style="color: #4a148c  ; margin-top: 10px"
-            v-html="selectedMessage.task?.description"
-          ></label>
+
+          <div
+            style="text-align: center; display: flex; flex-direction: column"
+          >
+            <strong>Description</strong>
+            <label
+              style="color: #4a148c; margin-top: 10px"
+              v-html="selectedMessage.task?.description"
+            ></label>
           </div>
         </div>
         <p v-if="selectedMessage.replyBy">
@@ -99,13 +95,13 @@
           {{ msg.task?.task }}<br />
 
           <div>
-          <strong>Description : </strong>
-             <label
-            style="color: #a1abb9; margin-bottom: 10px"
-            v-html="truncateText(msg.task?.description, 74)"
-          ></label>
+            <strong>Description : </strong>
+            <label
+              style="color: #a1abb9; margin-bottom: 10px"
+              v-html="truncateText(msg.task?.description, 74)"
+            ></label>
           </div>
-         
+
           <br />
           <!-- <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
@@ -207,13 +203,30 @@ const sendReply = async () => {
     console.error("Erreur lors de l'envoi de la réponse :", err);
   }
 };
+// cette fonction est celle que j'afais mais de facon simple
+// vue quelle n'est plus adapter bien quelle work je met celle
+// du dessus
+// const truncateText = (text) => {
+//   if (!text) return "";
+//   if (text.length > 74) {
+//     return text.substring(0, 74) + "...";
+//   }
+//   return text;
+// };
+const truncateText = (htmlText) => {
+  if (!htmlText) return "";
 
-const truncateText = (text) => {
-  if (!text) return "";
-  if (text.length > 74) {
-    return text.substring(0, 74) + "...";
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlText;
+  const textOnly = tempDiv.textContent || tempDiv.innerText || "";
+
+  if (textOnly.length <= 74) {
+    return htmlText;
   }
-  return text;
+
+  const truncatedText = textOnly.substring(0, 74) + "...";
+
+  return `<span style="color: #a1abb9;">${truncatedText}</span>`;
 };
 </script>
 
@@ -251,16 +264,15 @@ const truncateText = (text) => {
   color: rgb(0, 0, 0);
   margin: 8px;
 }
-.closeInfo{
+.closeInfo {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 18px;
   transition: 0.1s ease;
 }
-.closeInfo:hover{
+.closeInfo:hover {
   color: red;
-  
 }
 .detaills-Icon {
   color: rgba(94, 94, 94, 0.637);
