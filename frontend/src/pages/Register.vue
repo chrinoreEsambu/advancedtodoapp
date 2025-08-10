@@ -9,7 +9,10 @@
         <input v-model="nom" placeholder="Nom complet" />
         <input type="email" v-model="mail" placeholder="Email" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
-        <button @click="handleInscription">S'inscrire</button>
+        <button @click="handleInscription" :disabled="loading">
+          <span v-if="loading" class="spinner"></span>
+          <span v-else>S'inscrire</span>
+        </button>
         <p class="login-link">
           Déjà un compte ? <a @click="goToLogin">Se connecter</a>
         </p>
@@ -29,13 +32,17 @@ const userStore = useUserStore();
 const nom = ref("");
 const mail = ref("");
 const password = ref("");
+const loading = ref(false);
 
 const handleInscription = async () => {
+  loading.value = true;
   try {
     await userStore.register(nom.value, mail.value, password.value);
     router.push("/");
   } catch (error) {
     console.error("Erreur d'inscription:", error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -122,6 +129,10 @@ const goToLogin = () => {
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-form button:hover:not(:disabled) {
@@ -131,6 +142,22 @@ const goToLogin = () => {
 .login-form button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-message {
