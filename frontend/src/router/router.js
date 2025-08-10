@@ -1,5 +1,4 @@
-import { createRouter } from "vue-router";
-import { createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import Todopage from "../pages/Todopage.vue";
@@ -31,6 +30,17 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const adminStore = useAdminStore();
 
+  // Vérifier la session admin dans localStorage
+  const adminData = localStorage.getItem("admin_info");
+  if (adminData) {
+    const parsed = JSON.parse(adminData);
+    adminStore.admin = parsed.email;
+    adminStore.role = parsed.role;
+  } else {
+    adminStore.admin = null;
+    adminStore.role = null;
+  }
+
   if (to.path === "/dashboard") {
     if (!adminStore.role) {
       return next("/adminlogin");
@@ -44,4 +54,5 @@ router.beforeEach((to, from, next) => {
 
   next();
 });
+
 export default router;

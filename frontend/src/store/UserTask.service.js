@@ -18,13 +18,35 @@ export const useUserStore = defineStore("user", {
     usersList: [],
     loading: false,
     comments: [],
+    isAuthenticated: false,
   }),
 
   actions: {
     async login(user_id, password) {
       const res = await api.post("/connexion", { user_id, password });
       this.user = res.data.user;
+      this.isAuthenticated = true;
       localStorage.setItem("user", JSON.stringify(res.data.user));
+    },
+
+    async checkAuth() {
+      try {
+        const response = await api.get("/getusertasks");
+
+        if (response.status === 200) {
+          this.isAuthenticated = true;
+          return true;
+        } else {
+          this.user = null;
+          this.isAuthenticated = false;
+          return false;
+        }
+      } catch (error) {
+        console.error("Utilisateur non authentifié");
+        this.user = null;
+        this.isAuthenticated = false;
+        return false;
+      }
     },
 
     async fetchTasks() {
@@ -36,7 +58,6 @@ export const useUserStore = defineStore("user", {
             Pragma: "no-cache",
           },
         });
-        // console.log("Tâches récupérées :", res.data);
         this.tasks = Array.isArray(res.data.tasks) ? res.data.tasks : [];
         this.taskState = res.date.tasks;
       } catch (error) {
@@ -47,7 +68,7 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    async addTask(taskData,description) {
+    async addTask(taskData, description) {
       await api.post("/addtask", taskData, description);
       await this.fetchTasks();
     },
@@ -56,6 +77,8 @@ export const useUserStore = defineStore("user", {
       await api.post("/logOut", {});
       this.user = null;
       this.tasks = [];
+      this.isAuthenticated = false;
+      localStorage.removeItem("user");
     },
 
     async register(nom, mail, password) {
@@ -83,8 +106,6 @@ export const useUserStore = defineStore("user", {
     async addComment(taskId, content) {
       await api.post(`/addComments/${taskId}`, {
         content,
-        // replyToId: null,
-        // replyById: null,
       });
     },
 
@@ -108,7 +129,7 @@ export const useUserStore = defineStore("user", {
         if (error.response?.data?.messageT) {
           alert(error.response.data.messageT);
         } else {
-          alert("Une erreur s’est produite !");
+          alert("Une erreur s'est produite !");
         }
       }
     },

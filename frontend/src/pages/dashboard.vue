@@ -59,7 +59,7 @@ import {
   Menu,
   FileClock,
   CircleDotDashed,
-  MessageSquareMore ,
+  MessageSquareMore,
 } from "lucide-vue-next";
 
 import { ref, computed, onMounted } from "vue";
@@ -99,7 +99,7 @@ const tabs = [
   { id: "Tasklist", icon: Shield, label: "Tasklist", component: tasklist },
   { id: "logList", icon: FileClock, label: "Log list", component: logList },
 
-  { id: "chat", icon: MessageSquareMore , label: "Comments", component: chat },
+  { id: "chat", icon: MessageSquareMore, label: "Comments", component: chat },
 ];
 
 const activeTab = ref("home");

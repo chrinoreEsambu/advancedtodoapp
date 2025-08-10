@@ -176,14 +176,15 @@ export const useAdminStore = defineStore("adminstore", {
 
     async logoutAdmin() {
       try {
-        api.post("/logOutAdmin");
+        await api.post("/logOutAdmin");
         this.admin = null;
         this.role = null;
-        localStorage.removeItem(this.admin);
+        localStorage.removeItem("admin_info");
       } catch (error) {
         console.error("Logout error:", error);
       }
     },
+
     async adminlog(page) {
       try {
         const response = await api.get("/logs", {
