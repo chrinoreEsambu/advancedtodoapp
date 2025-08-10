@@ -15,7 +15,7 @@
           </button>
         </div>
 
-        <p><strong>Replied with :</strong> {{ selectedMessage.content }}</p>
+        <p><strong>Question :</strong> {{ selectedMessage.content }}</p>
         <p>
           <strong>Tâche liée :</strong>
           {{ selectedMessage.task?.task }}<br />

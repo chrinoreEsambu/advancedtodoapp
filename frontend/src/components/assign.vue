@@ -70,7 +70,7 @@ const { users } = storeToRefs(adminStore);
 
 const selectedUserId = ref("");
 const Newtask = ref("");
-const taskDescription = ref(""); // ici on stockera le HTML
+const taskDescription = ref("");
 const taskState = ref("pending");
 const errorMessage = ref("");
 const successMessage = ref("");
@@ -92,7 +92,7 @@ onMounted(() => {
     },
   });
 
-  // Synchroniser contenu Quill dans taskDescription
+ 
   quill.on("text-change", () => {
     taskDescription.value = quill.root.innerHTML;
   });
@@ -104,7 +104,6 @@ const handleCreate = async () => {
   errorMessage.value = "";
   successMessage.value = "";
 
-  // Vérifie que taskDescription contient du contenu non vide (html <p><br></p> est vide)
   const plainText = quill.getText().trim();
 
   if (!selectedUserId.value || !Newtask.value || !plainText) {
@@ -123,7 +122,7 @@ const handleCreate = async () => {
     if (result.success) {
       successMessage.value = result.data?.message || "Tâche créée avec succès";
       taskDescription.value = "";
-      quill.setText(""); // reset Quill
+      quill.setText("");
       Newtask.value = "";
       selectedUserId.value = "";
       emit("task-created");
