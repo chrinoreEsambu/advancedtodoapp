@@ -46,7 +46,11 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description" v-html="task.description"></lavel>
+                  <label
+                    class="description clickable-description"
+                    v-html="truncateText(task.description)"
+                    @click="openTaskModal(task)"
+                  ></label>
                 </div>
 
                 <div class="task-actions">
@@ -94,7 +98,11 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description" v-html="task.description"></lavel>
+                  <label
+                    class="description clickable-description"
+                    v-html="truncateText(task.description)"
+                    @click="openTaskModal(task)"
+                  ></label>
                 </div>
                 <div class="task-actions">
                   <button
@@ -141,7 +149,11 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description" v-html="task.description"></lavel>
+                  <label
+                    class="description clickable-description"
+                    v-html="truncateText(task.description)"
+                    @click="openTaskModal(task)"
+                  ></label>
                 </div>
                 <div class="task-actions">
                   <button
@@ -188,7 +200,11 @@
                 <div class="task-info">
                   {{ task.task }}
                   <br />
-                  <lavel class="description" v-html="task.description"></lavel>
+                  <label
+                    class="description clickable-description"
+                    v-html="truncateText(task.description)"
+                    @click="openTaskModal(task)"
+                  ></label>
                 </div>
                 <div class="task-actions">
                   <button
@@ -340,6 +356,34 @@
     <button class="chat-button" @click="openChatModal" aria-label="Ouvrir chat">
       <MessageCircleIcon size="22" />
     </button>
+
+    <div
+      v-if="showTaskModal"
+      class="modal-overlay"
+      @click.self="closeTaskModal"
+    >
+      <div class="modal-content task-modal">
+        <div class="task-modal-header">
+          <h3>{{ selectedTask?.task }}</h3>
+          <button @click="closeTaskModal" class="close-btn">✕</button>
+        </div>
+
+        <div class="task-modal-content">
+          <p><strong>Titre :</strong> {{ selectedTask?.task }}</p>
+          <p>
+            <strong>État :</strong>
+            <span :class="selectedTask?.taskState">{{
+              selectedTask?.taskState
+            }}</span>
+          </p>
+          <p><strong>Description complète :</strong></p>
+          <div
+            class="full-description"
+            v-html="selectedTask?.description"
+          ></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -374,6 +418,9 @@ const currentTaskId = ref(null);
 const showChat = ref(false);
 
 const dateDisplay = ref("");
+
+const showTaskModal = ref(false);
+const selectedTask = ref(null);
 
 const todoTasks = computed(() =>
   userStore.tasks.filter((task) => task.taskState === "todo")
@@ -501,6 +548,24 @@ function getDateFormatted() {
 onMounted(() => {
   dateDisplay.value = getDateFormatted();
 });
+
+const openTaskModal = (task) => {
+  selectedTask.value = task;
+  showTaskModal.value = true;
+};
+
+const closeTaskModal = () => {
+  showTaskModal.value = false;
+  selectedTask.value = null;
+};
+
+const truncateText = (text) => {
+  if (!text) return "";
+  if (text.length > 74) {
+    return text.substring(0, 74) + "...";
+  }
+  return text;
+};
 </script>
 
 <style scoped>
@@ -1114,6 +1179,64 @@ select:disabled {
 
 .chat-button:hover {
   background-color: #c3ebfc;
+}
+.clickable-description {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.clickable-description:hover {
+  color: #6366f1;
+  text-decoration: underline;
+}
+
+.task-modal {
+  max-width: 600px;
+  width: 90%;
+}
+
+.task-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.task-modal-header h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.close-btn:hover {
+  color: #ef4444;
+}
+
+.task-modal-content {
+  line-height: 1.6;
+}
+
+.task-modal-content p {
+  margin-bottom: 15px;
+}
+
+.full-description {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #6366f1;
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 @media (max-width: 768px) {

@@ -20,7 +20,7 @@
           </button>
         </div>
 
-        <p><strong>User question :</strong> {{ selectedMessage.content }}</p>
+        <p><strong>Replied with :</strong> {{ selectedMessage.content }}</p>
         <p>
           <strong>Tâche liée :</strong>
           {{ selectedMessage.task?.task }}<br />
@@ -35,7 +35,7 @@
           </div>
         </p>
         <p v-if="selectedMessage.replyBy">
-          <strong class="redo">Réponse de :</strong>
+          <strong class="redo">Réponse Admin :</strong>
           {{ selectedMessage.replyBy.nom }}
         </p>
       </div>
