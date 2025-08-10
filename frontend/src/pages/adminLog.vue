@@ -10,8 +10,11 @@
         <input v-model="mail" type="email" placeholder="email@exemple.com" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
-        <button @click="handleLogin">Se connecter</button>
-        <span v-if="loading" class="spinner"></span>
+        <button @click="handleLogin" :disabled="loading">
+          <span v-if="loading" class="spinner"></span>
+          <span v-else>Se connecter</span>
+        </button>
+
         <p class="login-link">
           Pas Admin ? <a @click="loginAdmin">connexion</a>
         </p>
@@ -27,24 +30,26 @@ import { useAdminStore } from "../store/admin.service";
 
 const mail = ref("");
 const password = ref("");
+const loading = ref(false);
 const router = useRouter();
 const adminstore = useAdminStore();
-
 
 const handleLogin = async () => {
   if (!mail.value || !password.value) {
     alert("Veuillez remplir tous les champs");
     return;
   }
-  
+  loading.value = true;
   const success = await adminstore.adminlogin(mail.value, password.value);
-  
+  loading.value = false;
+
   if (success) {
     router.push("/dashboard");
   } else {
     alert(adminstore.errorMessage || "Échec de la connexion");
   }
 };
+
 const loginAdmin = () => {
   router.push("/");
 };
@@ -146,9 +151,18 @@ const loginAdmin = () => {
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-form button:hover {
+.login-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-form button:hover:not(:disabled) {
   background-color: #fae37d;
 }
 
@@ -165,6 +179,21 @@ const loginAdmin = () => {
   .login-form-wrapper {
     flex: 1;
     padding: 1rem;
+  }
+}
+.spinner {
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-top: 3px solid #000;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>
