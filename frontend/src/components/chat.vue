@@ -16,7 +16,7 @@
         </div>
 
         <p><strong>Question :</strong> {{ selectedMessage.content }}</p>
-        <p>
+        <div>
           <strong>Tâche liée :</strong>
           {{ selectedMessage.task?.task }}<br />
           
@@ -28,7 +28,7 @@
             v-html="selectedMessage.task?.description"
           ></label>
           </div>
-        </p>
+        </div>
         <p v-if="selectedMessage.replyBy">
           <strong class="redo">Réponse Admin :</strong>
           {{ selectedMessage.replyBy.nom }}
@@ -94,7 +94,7 @@
         </div>
 
         <p><strong>Question :</strong> {{ msg.content }}</p>
-        <p>
+        <div>
           <strong>Tâche liée :</strong>
           {{ msg.task?.task }}<br />
 
@@ -110,7 +110,7 @@
           <!-- <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
           > -->
-        </p>
+        </div>
         <p v-if="msg.replyBy">
           <strong class="redo">Réponse de :</strong> {{ msg.replyBy.nom }}
         </p>
