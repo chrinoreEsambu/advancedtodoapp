@@ -20,15 +20,19 @@
           </button>
         </div>
 
-        <p><strong>Contenu :</strong> {{ selectedMessage.content }}</p>
+        <p><strong>User question :</strong> {{ selectedMessage.content }}</p>
         <p>
           <strong>Tâche liée :</strong>
           {{ selectedMessage.task?.task }}<br />
-
+          
+          <div style="text-align: center; display: flex;flex-direction: column;">
+          
+          <strong>Description</strong>
           <label
-            style="color: #a1abb9; margin-bottom: 10px"
+            style="color: #4a148c  ; margin-top: 10px"
             v-html="selectedMessage.task?.description"
           ></label>
+          </div>
         </p>
         <p v-if="selectedMessage.replyBy">
           <strong class="redo">Réponse de :</strong>
@@ -94,15 +98,19 @@
           </div>
         </div>
 
-        <p><strong>Contenu :</strong> {{ msg.content }}</p>
+        <p><strong>Question :</strong> {{ msg.content }}</p>
         <p>
           <strong>Tâche liée :</strong>
           {{ msg.task?.task }}<br />
 
-          <label
+          <div>
+          <strong>Description : </strong>
+             <label
             style="color: #a1abb9; margin-bottom: 10px"
             v-html="truncateText(msg.task?.description, 74)"
           ></label>
+          </div>
+         
           <br />
           <!-- <strong style="margin-left: 2px; color: #005b47"
             >ID : {{ msg.taskId }}</strong
@@ -216,22 +224,22 @@ const truncateText = (text) => {
 
 <style scoped>
 .info {
-  position: fixed; 
-  top: 50%; 
+  position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
-  display: none; 
+  transform: translate(-50%, -50%);
+  display: none;
   flex-direction: column;
-  background-color: #e9fdfa;
+  background-color: #ffffff;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
   padding: 20px;
-  max-width: 500px; 
+  max-width: 500px;
   width: 90%;
-  max-height: 80vh; 
-  overflow-y: auto; 
-  z-index: 1000; 
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .info-overlay {

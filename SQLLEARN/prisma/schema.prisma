@@ -41,7 +41,7 @@ model Tasks {
   task_id    String   @id @default(uuid())
   
   task       String?
-  description String?
+  description String? @db.VarChar(600)
 
   state      String?   @default("pending")
 
