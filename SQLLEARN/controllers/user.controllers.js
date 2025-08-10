@@ -14,7 +14,7 @@ exports.createUser = async (req, res) => {
       type: argon2.argon2id,
       memoryCost: 2 * 12,
       timeCost: 2,
-      hachLegth: 50,
+      hashLength: 50,
       parallelism: 3,
     });
 
