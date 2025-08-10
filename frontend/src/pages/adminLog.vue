@@ -89,7 +89,6 @@ const loginAdmin = () => {
 }
 .login-image {
   flex: 0 0 60%;
-  /* background-color: #f5f5f5; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +102,7 @@ const loginAdmin = () => {
   border-radius: 8px;
   background-image: url("/one.jpg");
   background-size: cover;
-  /* background-position: center; */
+ 
 }
 
 .login-form-wrapper {
