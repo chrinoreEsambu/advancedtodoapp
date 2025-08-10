@@ -11,6 +11,7 @@
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
         <button @click="handleLogin">Se connecter</button>
+        <span v-if="loading" class="spinner"></span>
         <p class="login-link">
           Pas Admin ? <a @click="loginAdmin">connexion</a>
         </p>

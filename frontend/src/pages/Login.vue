@@ -10,7 +10,11 @@
         <input v-model="user_id" placeholder="email@exemple.com" />
         <input v-model="password" type="password" placeholder="Mot de passe" />
 
-        <button @click="handleLogin">Se connecter</button>
+        <button @click="handleLogin" :disabled="loading">
+          <span v-if="loading" class="spinner"></span>
+          <span v-else>Se connecter</span>
+        </button>
+
         <p class="login-link">
           Pas de compte ? <a @click="goToregistration">S'inscrire</a>
         </p>
@@ -31,19 +35,23 @@ import { ShieldCheck } from "lucide-vue-next";
 
 const user_id = ref("");
 const password = ref("");
+const loading = ref(false);
 const router = useRouter();
 const userStore = useUserStore();
 
 const handleLogin = async () => {
   if (!user_id.value || !password.value) {
-    alert("champs vide");
+    alert("Champs vide");
     return;
   }
+  loading.value = true;
   try {
     await userStore.login(user_id.value, password.value);
     router.push("/todopage");
   } catch (err) {
     alert("Erreur de connexion");
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -131,9 +139,17 @@ const admin = () => {
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-form button:hover {
+.login-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-form button:hover:not(:disabled) {
   background-color: #222;
 }
 
@@ -191,6 +207,23 @@ const admin = () => {
   .login-form-wrapper {
     flex: 1;
     padding: 1rem;
+  }
+}
+
+
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

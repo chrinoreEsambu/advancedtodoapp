@@ -5,6 +5,7 @@
     <div class="task-form">
       <div class="form-row">
         <div class="form-group">
+        
           <label>Utilisateur :</label>
           <select v-model="selectedUserId" class="form-select" required>
             <option value="" disabled>Sélectionnez un utilisateur</option>
@@ -144,7 +145,7 @@ const handleCreate = async () => {
   margin-bottom: 20px;
 }
 .object {
-  width: 101%;
+  width: 98%;
   height: 30px;
   border: 1px solid #000;
   border-radius: 5px;
