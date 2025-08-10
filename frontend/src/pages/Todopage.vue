@@ -244,6 +244,12 @@
               >
                 <div class="task-info">
                   {{ task.task }}
+                  <br />
+                  <label
+                    class="description clickable-description"
+                    v-html="truncateText(task.description)"
+                    @click="openTaskModal(task)"
+                  ></label>
                 </div>
                 <div class="task-actions">
                   <button

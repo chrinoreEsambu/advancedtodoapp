@@ -29,17 +29,19 @@
 
       <div class="form-group">
         <label>Task :</label>
-
-        <input type="text" class="object" placeholder="Nouvelle tâche" v-model="Newtask"/>
+        <input
+          type="text"
+          class="object"
+          placeholder="Nouvelle tâche"
+          v-model="Newtask"
+        />
 
         <label>Description :</label>
-
-        <textarea
-          v-model="taskDescription"
-          class="form-textarea"
-          required
-          placeholder="Décrivez la tâche..."
-        ></textarea>
+        <div
+          ref="quillEditor"
+          class="quill-editor"
+          style="border: 1px solid #ddd; border-radius: 6px; min-height: 100px; padding: 8px;"
+        ></div>
       </div>
 
       <button @click="handleCreate" class="submit-button">
@@ -57,19 +59,44 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useAdminStore } from "../store/admin.service";
 import { storeToRefs } from "pinia";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
 
 const adminStore = useAdminStore();
 const { users } = storeToRefs(adminStore);
 
 const selectedUserId = ref("");
 const Newtask = ref("");
-const taskDescription = ref("");
+const taskDescription = ref(""); // ici on stockera le HTML
 const taskState = ref("pending");
 const errorMessage = ref("");
 const successMessage = ref("");
+
+const quillEditor = ref(null);
+let quill = null;
+
+onMounted(() => {
+  quill = new Quill(quillEditor.value, {
+    theme: "snow",
+    modules: {
+      toolbar: [
+        ["bold", "italic", "underline"],
+        [{ header: [1, 2, 3, false] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ align: [] }],
+        ["clean"],
+      ],
+    },
+  });
+
+  // Synchroniser contenu Quill dans taskDescription
+  quill.on("text-change", () => {
+    taskDescription.value = quill.root.innerHTML;
+  });
+});
 
 const emit = defineEmits(["task-created"]);
 
@@ -77,7 +104,10 @@ const handleCreate = async () => {
   errorMessage.value = "";
   successMessage.value = "";
 
-  if (!selectedUserId.value || !taskDescription.value || !Newtask.value) {
+  // Vérifie que taskDescription contient du contenu non vide (html <p><br></p> est vide)
+  const plainText = quill.getText().trim();
+
+  if (!selectedUserId.value || !Newtask.value || !plainText) {
     errorMessage.value = "Veuillez remplir tous les champs";
     return;
   }
@@ -85,7 +115,7 @@ const handleCreate = async () => {
   try {
     const result = await adminStore.createTask({
       user_id: selectedUserId.value,
-      task:Newtask.value,
+      task: Newtask.value,
       description: taskDescription.value,
       state: taskState.value,
     });
@@ -93,6 +123,8 @@ const handleCreate = async () => {
     if (result.success) {
       successMessage.value = result.data?.message || "Tâche créée avec succès";
       taskDescription.value = "";
+      quill.setText(""); // reset Quill
+      Newtask.value = "";
       selectedUserId.value = "";
       emit("task-created");
     } else {
@@ -199,5 +231,18 @@ label {
     flex-direction: column;
     gap: 15px;
   }
+}
+
+
+.ql-toolbar.ql-snow {
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #ddd;
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 6px 6px;
+  border: 1px solid #ddd;
+  height: 150px;
+  font-size: 14px;
 }
 </style>

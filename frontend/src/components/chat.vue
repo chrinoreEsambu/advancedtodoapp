@@ -9,12 +9,7 @@
           </div>
           <button
             @click="closeInfo"
-            style="
-              background: none;
-              border: none;
-              cursor: pointer;
-              font-size: 18px;
-            "
+            class="closeInfo"
           >
             ✕
           </button>
@@ -255,6 +250,17 @@ const truncateText = (text) => {
 .info label {
   color: rgb(0, 0, 0);
   margin: 8px;
+}
+.closeInfo{
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.1s ease;
+}
+.closeInfo:hover{
+  color: red;
+  
 }
 .detaills-Icon {
   color: rgba(94, 94, 94, 0.637);
