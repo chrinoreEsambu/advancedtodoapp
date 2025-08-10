@@ -29,8 +29,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   const adminStore = useAdminStore();
-
-  // Vérifier la session admin dans localStorage
+  
   const adminData = localStorage.getItem("admin_info");
   if (adminData) {
     const parsed = JSON.parse(adminData);
