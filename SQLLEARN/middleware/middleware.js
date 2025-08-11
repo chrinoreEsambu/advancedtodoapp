@@ -6,6 +6,7 @@ const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
+
 const RedisStore = require("connect-redis").default;
 const { createClient } = require("redis");
 
@@ -37,7 +38,6 @@ exports.usersession = session({
   cookie: {
     httpOnly: true,
     secure: false,
-    // maxAge: 1000 * 60 * 60,
   },
 });
 
