@@ -22,16 +22,22 @@ const { createUser } = require("../controllers/user.controllers");
 //     // maxAge: 1000 * 60 * 60,
 //   },
 // });
+const redisClient = createClient({
+  url: process.env.REDIS_URL || "redis://localhost:6379",
+});
+redisClient.connect().catch(console.error);
+
+
 exports.usersession = session({
-  store: new PrismaSessionStore(prisma, {
-    checkPeriod: 2 * 60 * 1000, // toutes les 2 minutes
-  }),
+  store: new RedisStore({ client: redisClient }),
   secret: "votre_clef_secrete_supersecrete",
   resave: false,
+  sameSite: "lax",
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure: false,
+    // maxAge: 1000 * 60 * 60,
   },
 });
 
