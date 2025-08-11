@@ -26,19 +26,19 @@ const { createUser } = require("../controllers/user.controllers");
 //   },
 // });
 const redisClient = createClient({
-  url: process.env.REDIS_URL,
+  url: process.env.REDIS_URL, 
 });
 redisClient.connect().catch(console.error);
 
 exports.usersession = session({
   store: new RedisStore({ client: redisClient }),
-  secret: "votre_clef_secrete_supersecrete",
+  secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
-  sameSite: "lax",
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   },
 });
 
