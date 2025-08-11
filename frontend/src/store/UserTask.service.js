@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const islocaly = window.location.hostname === "localhost";
+const isDevTunnel = window.location.hostname.includes("devtunnels");
 
 const api = axios.create({
   baseURL: islocaly
