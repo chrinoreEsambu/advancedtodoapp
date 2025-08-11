@@ -6,7 +6,8 @@ const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
-const PrismaSessionStore = require("prisma-session-store").PrismaSessionStore;
+const RedisStore = require("connect-redis").default;
+const { createClient } = require("redis");
 
 const { createUser } = require("../controllers/user.controllers");
 
@@ -26,7 +27,6 @@ const redisClient = createClient({
   url: process.env.REDIS_URL || "redis://localhost:6379",
 });
 redisClient.connect().catch(console.error);
-
 
 exports.usersession = session({
   store: new RedisStore({ client: redisClient }),
