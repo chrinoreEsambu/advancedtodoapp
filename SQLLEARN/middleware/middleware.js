@@ -6,17 +6,32 @@ const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
+const PrismaSessionStore = require("prisma-session-store").PrismaSessionStore;
+
 const { createUser } = require("../controllers/user.controllers");
 
+// pour les session express session
+// exports.usersession = session({
+//   secret: "votre_clef_secrete_supersecrete",
+//   resave: false,
+//   sameSite: "lax",
+//   saveUninitialized: false,
+//   cookie: {
+//     httpOnly: true,
+//     secure: false,
+//     // maxAge: 1000 * 60 * 60,
+//   },
+// });
 exports.usersession = session({
+  store: new PrismaSessionStore(prisma, {
+    checkPeriod: 2 * 60 * 1000, // toutes les 2 minutes
+  }),
   secret: "votre_clef_secrete_supersecrete",
   resave: false,
-  sameSite: "lax",
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     secure: false,
-    // maxAge: 1000 * 60 * 60,
   },
 });
 
