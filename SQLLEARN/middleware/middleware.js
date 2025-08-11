@@ -4,6 +4,7 @@ const app = express();
 const session = require("express-session");
 const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
+require("dotenv").config();
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
 
