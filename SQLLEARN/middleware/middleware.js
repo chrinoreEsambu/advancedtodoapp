@@ -4,41 +4,19 @@ const app = express();
 const session = require("express-session");
 const ratelimit = require("express-rate-limit");
 const argon2 = require("argon2");
-require("dotenv").config();
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
-
-const RedisStore = require("connect-redis").default;
-const { createClient } = require("redis");
-
 const { createUser } = require("../controllers/user.controllers");
 
-// pour les session express session
-// exports.usersession = session({
-//   secret: "votre_clef_secrete_supersecrete",
-//   resave: false,
-//   sameSite: "lax",
-//   saveUninitialized: false,
-//   cookie: {
-//     httpOnly: true,
-//     secure: false,
-//     // maxAge: 1000 * 60 * 60,
-//   },
-// });
-const redisClient = createClient({
-  url: process.env.REDIS_URL, 
-});
-redisClient.connect().catch(console.error);
-
 exports.usersession = session({
-  store: new RedisStore({ client: redisClient }),
-  secret: process.env.SESSION_SECRET || "default_secret",
+  secret: "votre_clef_secrete_supersecrete",
   resave: false,
+  sameSite: "lax",
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: false,
+    // maxAge: 1000 * 60 * 60,
   },
 });
 
