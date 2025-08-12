@@ -27,7 +27,7 @@ export const useUserStore = defineStore("user", {
 
   actions: {
     async login(user_id, password) {
-      const res = await api.post("/connexion", { user_id, password });
+      const res = await api.post("/api/connexion", { user_id, password });
       this.user = res.data.user;
       this.isAuthenticated = true;
       localStorage.setItem("user", JSON.stringify(res.data.user));
