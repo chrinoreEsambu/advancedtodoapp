@@ -8,12 +8,11 @@ const prisma = require("../config/prismaClient");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
 exports.usersession = session({
-  name: "sessionId", // Nom personnalisé pour le cookie
   cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-    httpOnly: true, // Garde au moins cette sécurité
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    
   },
-  secret: process.env.SESSION_SECRET || "your_fallback_secret_here",
+  secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
   saveUninitialized: false,
   store: new PrismaSessionStore(prisma, {
