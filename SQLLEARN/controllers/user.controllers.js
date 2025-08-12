@@ -35,12 +35,17 @@ exports.createUser = async (req, res) => {
   }
 };
 
+// CORRIGÉ: getUser - cohérence avec la vérification du rôle
 exports.getUser = async (req, res) => {
   try {
     const role = req.session?.role;
-    if (role !== "admin") {
+    console.log("Session data in getUser:", req.session); // Debug
+
+    if (!role || role.toLowerCase() !== "admin") {
+      // CORRIGÉ: utilise toLowerCase()
       return res.status(401).json({ message: "Aucune session admin ouverte" });
     }
+
     const findalluser = await prisma.users.findMany({
       orderBy: {
         createdAt: "desc",
@@ -86,60 +91,59 @@ exports.getUserByid = async (req, res) => {
   }
 };
 
+// CORRIGÉ: userUpdate - logique inversée
 exports.userUpdate = async (req, res) => {
   const { user_id } = req.params;
   const { nom, mail } = req.body;
   try {
     const finduser = await prisma.users.findUnique({
-      where: {
-        user_id: user_id,
-      },
+      where: { user_id: user_id },
     });
+
+    if (!finduser) {
+      // CORRIGÉ: vérification AVANT la mise à jour
+      return res.status(404).json({
+        message: "user does not exist",
+      });
+    }
 
     const putuser = await prisma.users.update({
       where: { user_id },
-      data: {
-        nom,
-        mail,
-      },
+      data: { nom, mail },
     });
 
     res.status(201).json({
       message: "user update successfully",
       putuser,
     });
-
-    if (!finduser) {
-      res.status(404).json({
-        message: "user does not exit",
-        error: { message: error.message },
-      });
-    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: "Error updating user",
+      error: { message: error.message },
+    });
   }
 };
 
+// CORRIGÉ: userDelete - logique de vérification
 exports.userDelete = async (req, res) => {
-  async function finder(user_id) {
-    return await prisma.users.findUnique({
-      where: {
-        user_id: user_id,
-      },
-    });
-  }
   try {
     const { user_id } = req.params;
-    finder(user_id);
-    if (!user_id) {
-      res.status(204).json({
-        message: "User doesn't exit !",
+
+    // CORRIGÉ: vérification correcte de l'utilisateur
+    const userExists = await prisma.users.findUnique({
+      where: { user_id: user_id },
+    });
+
+    if (!userExists) {
+      // CORRIGÉ: vérification de l'existence
+      return res.status(404).json({
+        // CORRIGÉ: return pour éviter la double réponse
+        message: "User doesn't exist !",
       });
     }
+
     const deleted = await prisma.users.delete({
-      where: {
-        user_id: user_id,
-      },
+      where: { user_id: user_id },
     });
 
     await logAdminAction(
@@ -191,17 +195,20 @@ exports.connexion = async (req, res) => {
   }
 };
 
+// CORRIGÉ: logOut - variable error/err
 exports.logOut = async (req, res) => {
   try {
     const { user_id } = req.body;
     req.session.destroy((err) => {
+      // err est le bon paramètre
       if (err) {
+        // CORRIGÉ: utilise err au lieu d'error
         return res.status(500).json({
           message: "error during logout request",
-          error: { message: error.message },
+          error: { message: err.message }, // CORRIGÉ: err.message
         });
       }
-      res.clearCookie("connect.sid");
+      res.clearCookie("connect.sid"); // ou le nom de votre cookie de session
       return res
         .status(200)
         .json({ message: "Logout successful", user_id: user_id });
@@ -355,7 +362,8 @@ exports.adminconnexion = async (req, res) => {
         .status(401)
         .json({ message: "mot de passe ou mail incorrect" });
     }
-    if (userfinder.role.toLocaleLowerCase() !== "admin") {
+    if (userfinder.role.toLowerCase() !== "admin") {
+      // CORRIGÉ: cohérence toLowerCase
       return res
         .status(403)
         .json({ message: "Accès réservé aux administrateurs" });
@@ -363,6 +371,8 @@ exports.adminconnexion = async (req, res) => {
     req.session.mail = userfinder.mail;
     req.session.role = userfinder.role;
     req.session.admin_id = userfinder.user_id;
+
+    console.log("Admin session created:", req.session); // Debug
 
     await logAdminAction(
       req.session.admin_id,
@@ -385,10 +395,13 @@ exports.adminconnexion = async (req, res) => {
   }
 };
 
+// CORRIGÉ: admincreatTask - vérification du rôle améliorée
 exports.admincreatTask = async (req, res) => {
   try {
     const role = req.session?.role;
     const admin_id = req.session?.admin_id;
+
+    console.log("Create task - Role:", role, "Admin ID:", admin_id); // Debug
 
     if (!role || role.toLowerCase() !== "admin" || !admin_id) {
       return res
@@ -468,15 +481,14 @@ exports.getusertasksfront = async (req, res) => {
     const jump = (page - 1) * limit;
 
     let tasks;
-    if (role === "admin") {
+    if (role && role.toLowerCase() === "admin") {
+      // CORRIGÉ: cohérence toLowerCase
       tasks = await prisma.tasks.findMany({
         orderBy: {
           createdAt: "desc",
         },
-
         skip: jump,
         take: limit,
-
         include: {
           creator: true,
           assignedBy: true,
@@ -499,7 +511,10 @@ exports.getusertasksfront = async (req, res) => {
     const nbrTasks = await prisma.tasks.count();
     const countTasks = Math.ceil(nbrTasks / limit);
     return res.status(200).json({
-      message: role === "admin" ? "Toutes les tâches" : "Vos tâches",
+      message:
+        role && role.toLowerCase() === "admin"
+          ? "Toutes les tâches"
+          : "Vos tâches",
       tasks,
       countTasks,
     });
@@ -544,10 +559,13 @@ exports.userTasksCount = async (req, res) => {
   }
 };
 
+// CORRIGÉ: logOutAdmin - variable error/err
 exports.logOutAdmin = async (req, res) => {
   try {
     req.session.destroy((err) => {
+      // err est le bon paramètre
       if (err) {
+        // CORRIGÉ: utilise err au lieu d'error
         return res
           .status(500)
           .json({ message: "Erreur lors de la déconnexion" });
@@ -564,10 +582,13 @@ exports.logOutAdmin = async (req, res) => {
   }
 };
 
+// CORRIGÉ: adminUpdateTaskState - vérification du rôle améliorée
 exports.adminUpdateTaskState = async (req, res) => {
   try {
     const role = req.session?.role;
     const admin_id = req.session?.admin_id;
+
+    console.log("Update task state - Role:", role, "Admin ID:", admin_id); // Debug
 
     if (!role || role.toLowerCase() !== "admin" || !admin_id) {
       return res
@@ -703,23 +724,25 @@ exports.admStateFinder = async (req, res) => {
   }
 };
 
+// CORRIGÉ: getAdminLogs - vérification du rôle cohérente
 exports.getAdminLogs = async (req, res) => {
   try {
     const role = req.session?.role;
-    if (role !== "admin") {
+
+    console.log("Get admin logs - Role:", role); // Debug
+
+    if (!role || role.toLowerCase() !== "admin") {
+      // CORRIGÉ: cohérence toLowerCase
       return res.status(403).json({ message: "Accès refusé" });
     }
 
     const page = parseInt(req.query.page) || 1;
     const limit = 4;
-    // const limit = parseInt(req.query.limit) || 4;
-
     const jump = (page - 1) * limit;
 
     const logs = await prisma.logs.findMany({
       skip: jump,
       take: limit,
-
       orderBy: {
         createAt: "desc",
       },
@@ -839,6 +862,49 @@ exports.getCommentsByTask = async (req, res) => {
     return res.status(500).json({
       message: "Erreur lors de la récupération des commentaires.",
       error: error.message,
+    });
+  }
+};
+
+// AJOUT: Middlewares de debug et vérification
+exports.debugSession = (req, res, next) => {
+  console.log("=== SESSION DEBUG ===");
+  console.log("Session exists:", !!req.session);
+  console.log("Session ID:", req.sessionID);
+  console.log("User ID:", req.session?.user_id);
+  console.log("Admin ID:", req.session?.admin_id);
+  console.log("Role:", req.session?.role);
+  console.log("Mail:", req.session?.mail);
+  console.log("Cookie:", req.headers.cookie);
+  console.log("====================");
+  next();
+};
+
+// AJOUT: Fonction de vérification du rôle admin plus robuste
+exports.checkAdminRole = (req, res, next) => {
+  try {
+    const role = req.session?.role;
+    const admin_id = req.session?.admin_id;
+
+    console.log("Admin check - Role:", role, "Admin ID:", admin_id); // Debug
+
+    if (!role || !admin_id) {
+      return res.status(401).json({
+        message: "Session non trouvée ou invalide",
+      });
+    }
+
+    if (role.toLowerCase() !== "admin") {
+      return res.status(403).json({
+        message: "Accès réservé aux administrateurs",
+      });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erreur lors de la vérification du rôle",
+      error: { message: error.message },
     });
   }
 };
