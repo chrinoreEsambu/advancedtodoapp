@@ -9,6 +9,17 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 
 const { createUser } = require("../controllers/user.controllers");
+// "https://n95rp9vf-5173.euw.devtunnels.ms",
+//   "https://todoxc.netlify.app",
+// http://localhost:5173
+const allowOrigin = "https://todoxc.netlify.app";
+
+app.use(
+  cors({
+    origin: allowOrigin,
+    credentials: true,
+  })
+);
 
 // exports.usersession = session({
 //   secret: "votre_clef_secrete_supersecrete",
@@ -45,17 +56,6 @@ exports.limiter = ratelimit({
   max: 10,
   message: "too musch request",
 });
-// "https://n95rp9vf-5173.euw.devtunnels.ms",
-//   "https://todoxc.netlify.app",
-// http://localhost:5173
-const allowOrigin = "https://todoxc.netlify.app";
-
-app.use(
-  cors({
-    origin: allowOrigin,
-    credentials: true,
-  })
-);
 
 exports.validate = async (req, res, next) => {
   const { nom, mail, password, role } = req.body;
