@@ -24,7 +24,7 @@ app.use(usersession);
 app.use(middleware);
 app.use(router);
 
-app.use(validate);
+// app.use(validate);
 
 app.use(express.Router);
 app.use(schekrole);

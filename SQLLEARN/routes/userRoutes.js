@@ -40,7 +40,7 @@ const {
 
 const { addtask } = require("../controllers/addTask.controllers");
 
-router.post("/api/usercreat", validate, createUser);
+router.post("/api/usercreat",  createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
 router.put("/api/userupdate/:user_id", userUpdate);
 router.delete("/api/userdelete/:user_id", userDelete);
@@ -49,7 +49,7 @@ router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
 router.get("/api/getusertasks", usersession, getusertasks);
 
-router.post("/api/admincreateuser", validate, adminCreateUser);
+router.post("/api/admincreateuser",  adminCreateUser);
 router.post("/api/adminconnexion", usersession, adminconnexion);
 router.get("/api/admingetuser", usersession, getUser);
 router.post("/api/admincreattask", usersession, admincreatTask);
