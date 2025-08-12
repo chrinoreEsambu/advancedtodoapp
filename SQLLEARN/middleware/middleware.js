@@ -32,17 +32,8 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
-
 exports.corsi = cors({
-  origin: function (origin, callback) {
-    console.log("CORS Origin:", origin);
-    if (!origin || allowOrigin.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: true, // Autorise toutes les origines
   credentials: true,
 });
 
