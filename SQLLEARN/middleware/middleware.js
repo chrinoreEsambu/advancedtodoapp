@@ -3,21 +3,37 @@ const path = require("path");
 const app = express();
 const session = require("express-session");
 const ratelimit = require("express-rate-limit");
-const argon2 = require("argon2");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
+
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { PrismaClient } = require("@prisma/client");
+
 const { createUser } = require("../controllers/user.controllers");
 
+// exports.usersession = session({
+//   secret: "votre_clef_secrete_supersecrete",
+//   resave: false,
+//   sameSite: "lax",
+//   saveUninitialized: false,
+//   cookie: {
+//     httpOnly: true,
+//     secure: false,
+//     // maxAge: 1000 * 60 * 60,
+//   },
+// });
 exports.usersession = session({
-  secret: "votre_clef_secrete_supersecrete",
-  resave: false,
-  sameSite: "lax",
-  saveUninitialized: false,
   cookie: {
-    httpOnly: true,
-    secure: false,
-    // maxAge: 1000 * 60 * 60,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   },
+  secret: process.env.SESSION_SECRET || "default_secret",
+  resave: false,
+  saveUninitialized: false,
+  store: new PrismaSessionStore(prisma, {
+    checkPeriod: 2 * 60 * 1000,
+    dbRecordIdIsSessionId: true,
+    dbRecordIdFunction: undefined,
+  }),
 });
 
 exports.middleware = app.use(express.json());
