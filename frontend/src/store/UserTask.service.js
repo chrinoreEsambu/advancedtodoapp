@@ -10,7 +10,7 @@ import axios from "axios";
 //     : "https://advancedtodoapp.onrender.com/api",
 
 const api = axios.create({
-  baseURL: "https://advancedtodoapp.onrender.com/api",
+  baseURL: "https://advancedtodoapp.onrender.com",
 
   withCredentials: true,
 });

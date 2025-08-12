@@ -13,7 +13,7 @@ const isDevTunnel = window.location.hostname.includes("devtunnels");
 //   withCredentials: true,
 // });
 const api = axios.create({
-  baseURL: "https://advancedtodoapp.onrender.com/api",
+  baseURL: "https://advancedtodoapp.onrender.com",
 
   withCredentials: true,
 });
