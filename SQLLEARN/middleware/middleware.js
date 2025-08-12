@@ -52,13 +52,7 @@ const allowOrigin = "https://todoxc.netlify.app";
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowOrigin.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: allowOrigin,
     credentials: true,
   })
 );
