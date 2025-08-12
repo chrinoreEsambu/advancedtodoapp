@@ -5,7 +5,6 @@ const session = require("express-session");
 const ratelimit = require("express-rate-limit");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
-
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 
