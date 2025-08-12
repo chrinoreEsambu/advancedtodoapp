@@ -6,12 +6,12 @@ const ratelimit = require("express-rate-limit");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
-
+  
 exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    sameSite: "none",
-    secure: true,
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
   },
   secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
