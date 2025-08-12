@@ -19,9 +19,8 @@ const {
 const router = require("./routes/userRoutes");
 
 app.use(corsi);
-app.use(usersession);
-
 app.use(middleware);
+app.use(usersession);
 app.use(router);
 
 // app.use(validate);
