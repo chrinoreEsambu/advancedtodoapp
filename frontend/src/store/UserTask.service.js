@@ -6,7 +6,7 @@ const islocaly = window.location.hostname === "localhost";
 const api = axios.create({
   baseURL: islocaly
     ? "http://localhost:8000/api"
-    : "https://advancedtodoapp.onrender.com/api",
+    : "https://backchr.onrender.com/api",
 
   withCredentials: true,
 });
