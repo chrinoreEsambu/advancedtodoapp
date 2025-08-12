@@ -1,16 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-// const islocaly = window.location.hostname === "localhost";
-// const isDevTunnel = window.location.hostname.includes("devtunnels");
-
-// ? "http://localhost:8000/api"
-//     : isDevTunnel
-//     ? "https://n95rp9vf-8000.euw.devtunnels.ms/api"
-//     : "https://advancedtodoapp.onrender.com/api",
+const islocaly = window.location.hostname === "localhost";
 
 const api = axios.create({
-  baseURL: "https://advancedtodoapp.onrender.com/api",
+  baseURL: islocaly
+    ? "http://localhost:8000/api"
+    : "https://advancedtodoapp.onrender.com/api",
 
   withCredentials: true,
 });

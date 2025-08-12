@@ -6,32 +6,10 @@ const ratelimit = require("express-rate-limit");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
-const { PrismaClient } = require("@prisma/client");
 
-const { createUser } = require("../controllers/user.controllers");
-// "https://n95rp9vf-5173.euw.devtunnels.ms",
-// "https://todoxc.netlify.app",
-// "http://localhost:5173",
-const allowOrigin = "https://todoxc.netlify.app";
+// const { PrismaClient } = require("@prisma/client");
+// const { createUser } = require("../controllers/user.controllers");
 
-app.use(
-  cors({
-    origin: allowOrigin,
-    credentials: true,
-  })
-);
-
-// exports.usersession = session({
-//   secret: "votre_clef_secrete_supersecrete",
-//   resave: false,
-//   sameSite: "lax",
-//   saveUninitialized: false,
-//   cookie: {
-//     httpOnly: true,
-//     secure: false,
-//     // maxAge: 1000 * 60 * 60,
-//   },
-// });
 exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -57,23 +35,38 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-// exports.validate = async (req, res, next) => {
-//   const { nom, mail, password, role } = req.body;
-//   if (!nom || !mail || !password) {
-//     return res
-//       .status(400)
-//       .json({ message: "Tous les champs sont obligatoires" });
-//   }
-//   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
-//     return res.status(400).json({ message: "Format d'email invalide" });
-//   }
-//   if (role && role !== "admin" && role !== "users") {
-//     return res
-//       .status(400)
-//       .json({ message: "Rôle invalide. Choisissez 'admin' ou 'users'" });
-//   }
-//   next();
-// };
+const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowOrigin.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+exports.validate = async (req, res, next) => {
+  const { nom, mail, password, role } = req.body;
+  if (!nom || !mail || !password) {
+    return res
+      .status(400)
+      .json({ message: "Tous les champs sont obligatoires" });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+    return res.status(400).json({ message: "Format d'email invalide" });
+  }
+  if (role && role !== "admin" && role !== "users") {
+    return res
+      .status(400)
+      .json({ message: "Rôle invalide. Choisissez 'admin' ou 'users'" });
+  }
+  next();
+};
 
 exports.schekrole = async (req, res, next) => {
   try {
