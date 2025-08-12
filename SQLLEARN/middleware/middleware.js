@@ -45,13 +45,11 @@ exports.limiter = ratelimit({
   max: 10,
   message: "too musch request",
 });
+// "https://n95rp9vf-5173.euw.devtunnels.ms",
+//   "https://todoxc.netlify.app",
+// http://localhost:5173
+const allowOrigin = "https://todoxc.netlify.app";
 
-const allowOrigin = [
-  "https://n95rp9vf-5173.euw.devtunnels.ms",
-  "http://localhost:5173",
-  "https://todoxc.netlify.app",
-];
-// nouvelle versioon prod
 app.use(
   cors({
     origin: function (origin, callback) {
