@@ -11,6 +11,8 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: "none",
+    secure:true
   },
   secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
