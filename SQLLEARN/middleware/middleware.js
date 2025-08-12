@@ -7,9 +7,6 @@ const cors = require("cors");
 const prisma = require("../config/prismaClient");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
-// const { PrismaClient } = require("@prisma/client");
-// const { createUser } = require("../controllers/user.controllers");
-
 exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -39,6 +36,7 @@ const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
 
 exports.corsi = cors({
   origin: function (origin, callback) {
+    console.log("CORS Origin:", origin);
     if (!origin || allowOrigin.includes(origin)) {
       callback(null, true);
     } else {

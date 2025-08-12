@@ -6,13 +6,11 @@ const os = require("os");
 const ip = require("ip");
 const session = require("express-session");
 const cors = require("cors");
-const { Server } = require("socket.io");
-const http = require("http");
+
 
 require("dotenv").config();
 const {
   middleware,
-  validate,
   usersession,
   schekrole,
   allowOrigin,
