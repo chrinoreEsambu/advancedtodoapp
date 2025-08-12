@@ -37,18 +37,16 @@ exports.limiter = ratelimit({
 
 const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowOrigin.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+exports.corsi = cors({
+  origin: function (origin, callback) {
+    if (!origin || allowOrigin.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+});
 
 exports.validate = async (req, res, next) => {
   const { nom, mail, password, role } = req.body;

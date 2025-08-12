@@ -16,9 +16,11 @@ const {
   usersession,
   schekrole,
   allowOrigin,
+  corsi,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
+app.use(corsi);
 app.use(usersession);
 
 app.use(middleware);
