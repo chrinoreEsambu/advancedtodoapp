@@ -168,20 +168,27 @@ exports.connexion = async (req, res) => {
     });
 
     if (!userfinder) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).json({ message: "Utilisateur non trouvé" });
     }
 
     const compare = await argon2.verify(userfinder.password, password);
 
     if (compare) {
       req.session.user_id = userfinder.user_id;
-      return res
-        .status(200)
-        .json({ message: "bienvenue", user: userfinder.user_id });
+      req.session.role = userfinder.role;
+      req.session.mail = userfinder.mail;
+      // Tu peux ajouter d'autres infos utiles ici
+      return res.status(200).json({
+        message: "Connexion réussie",
+        user: {
+          user_id: userfinder.user_id,
+          nom: userfinder.nom,
+          mail: userfinder.mail,
+          role: userfinder.role,
+        },
+      });
     } else {
-      return res
-        .status(401)
-        .json({ message: "mot de passe ou userId incorrect" });
+      return res.status(401).json({ message: "Mot de passe incorrect" });
     }
   } catch (error) {
     res.status(500).json({
