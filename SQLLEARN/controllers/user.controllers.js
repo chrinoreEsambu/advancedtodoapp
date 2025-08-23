@@ -5,7 +5,7 @@ const { logAdminAction } = require("../log/logger.controller");
 
 exports.createUser = async (req, res) => {
   try {
-    const { nom, mail, password } = req.body
+    const { nom, mail, password } = req.body;
     const date = new Date().getFullYear();
     const suffix = Math.floor(100 + Math.random() * 900);
     const user_id = `${date}todox${suffix}`;
