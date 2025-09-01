@@ -37,7 +37,7 @@ const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
 
 exports.corsi = cors({
   origin: function (origin, callback) {
-    console.log("CORS Origin:", origin);
+    // console.log("CORS Origin:", origin);
     if (!origin || allowOrigin.includes(origin)) {
       callback(null, true);
     } else {
