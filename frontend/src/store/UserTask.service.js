@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const islocaly = window.location.hostname === "localhost";
+// const islocaly = window.location.hostname === "localhost";
 
 const api = axios.create({
-  baseURL: islocaly
-    ? "http://localhost:8000/api"
-    : "https://backchr.onrender.com/api",
-
+  baseURL:
+     "http://localhost:8000/api",
   withCredentials: true,
 });
 
