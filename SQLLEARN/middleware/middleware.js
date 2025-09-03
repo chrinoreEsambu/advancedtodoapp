@@ -10,7 +10,6 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    
   },
   secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
@@ -33,12 +32,17 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
-const allowOrigin = ["http://localhost:5173", "https://todoxc.netlify.app"];
+const allowOrigin = [
+  "http://localhost:5173",
+  "https://n95rp9vf-5173.euw.devtunnels.ms",
+];
 
 exports.corsi = cors({
   origin: function (origin, callback) {
-    // console.log("CORS Origin:", origin);
-    if (!origin || allowOrigin.includes(origin)) {
+    console.log("CORS Origin reçu:", origin);
+    if (process.env.NODE_ENV === "development") {
+      callback(null, true); 
+    } else if (!origin || allowOrigin.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
