@@ -410,7 +410,7 @@ optgroup {
 
 .item-billboard {
   grid-column: span 2;
-  background-color: #c3ebfc;
+  background-color: #e1f2fa;
 }
 
 .item-tote {
