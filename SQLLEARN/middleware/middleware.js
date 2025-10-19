@@ -36,7 +36,7 @@ const allowOrigin = [
   "https://n95rp9vf-5173.euw.devtunnels.ms",
   "http://localhost:5173",
 ];
-
+const chrinore = "chrinore ";
 exports.corsi = cors({
   origin: function (origin, callback) {
     if (!origin || allowOrigin.includes(origin)) {
