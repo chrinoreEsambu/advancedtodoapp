@@ -6,10 +6,19 @@
     <div class="login-form-wrapper">
       <div class="login-form">
         <h2>Inscription</h2>
-        <input v-model="nom" placeholder="Nom complet" />
-        <input type="email" v-model="mail" placeholder="Email" />
-        <input v-model="password" type="password" placeholder="Mot de passe" />
-        <button @click="handleInscription" :disabled="loading">
+        <input v-model="nom" placeholder="Nom complet" required />
+        <input type="email" v-model="mail" placeholder="Email" required />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Mot de passe"
+          required
+        />
+        <button
+          @click="handleInscription"
+          :disabled="isDisable || loading"
+          ref="submit"
+        >
           <span v-if="loading" class="spinner"></span>
           <span v-else>S'inscrire</span>
         </button>
@@ -22,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/UserTask.service";
 
@@ -36,8 +45,12 @@ const loading = ref(false);
 
 const handleInscription = async () => {
   loading.value = true;
+  if (nom.value === "" || mail.value === "" || password.value === "") {
+    alert("Les champs sont vides !");
+  }
   try {
     await userStore.register(nom.value, mail.value, password.value);
+    alert("Inscription reussi !");
     router.push("/");
   } catch (error) {
     console.error("Erreur d'inscription:", error);
