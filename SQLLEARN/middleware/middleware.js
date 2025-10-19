@@ -37,10 +37,7 @@ exports.limiter = ratelimit({
 //   "http://localhost:5173",
 // ];
 
-const allowOrigin = [
-  "https://todoxc.netlify.app/",
-  "https://todoxc.netlify.app/",
-];
+const allowOrigin = ["https://todoxc.netlify.app"];
 const chrinore = "chrinore ";
 exports.corsi = cors({
   origin: function (origin, callback) {
