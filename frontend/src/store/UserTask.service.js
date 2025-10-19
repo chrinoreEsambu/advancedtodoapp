@@ -3,10 +3,17 @@ import axios from "axios";
 
 const islocaly = window.location.hostname === "localhost";
 
+// const api = axios.create({
+//   baseURL: islocaly
+//     ? "http://localhost:8000/api"
+//     : "https://n95rp9vf-8000.euw.devtunnels.ms/api",
+
+//   withCredentials: true,
+// });
 const api = axios.create({
   baseURL: islocaly
-    ? "http://localhost:8000/api"
-    : "https://n95rp9vf-8000.euw.devtunnels.ms/api",
+    ? "https://backchr.onrender.com/api"
+    : "https://backchr.onrender.com/api",
 
   withCredentials: true,
 });

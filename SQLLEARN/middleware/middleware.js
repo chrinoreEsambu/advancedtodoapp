@@ -32,9 +32,14 @@ exports.limiter = ratelimit({
   message: "too musch request",
 });
 
+// const allowOrigin = [
+//   "https://n95rp9vf-5173.euw.devtunnels.ms",
+//   "http://localhost:5173",
+// ];
+
 const allowOrigin = [
-  "https://n95rp9vf-5173.euw.devtunnels.ms",
-  "http://localhost:5173",
+  "https://todoxc.netlify.app/",
+  "https://todoxc.netlify.app/",
 ];
 const chrinore = "chrinore ";
 exports.corsi = cors({
