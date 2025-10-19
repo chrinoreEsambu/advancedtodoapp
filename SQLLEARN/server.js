@@ -1,55 +1,45 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-const bodyparser = require("body-parser");
-const os = require("os");
-const ip = require("ip");
-const session = require("express-session");
-const cors = require("cors");
-
-
 require("dotenv").config();
+
 const {
   middleware,
   usersession,
   schekrole,
   allowOrigin,
   corsi,
+  staticfiles,
 } = require("./middleware/middleware");
 const router = require("./routes/userRoutes");
 
-app.use(corsi);
-app.use(middleware);
-app.use(usersession);
-app.use(router);
-
-// app.use(validate);
-
-app.use(express.Router);
-app.use(schekrole);
 const port = process.env.PORT || 5000;
 
-// const io = new Server(Server, {
-//   cors: { origin: [allowOrigin], credentials: true },
-// });
+// IMPORTANT : permet aux cookies sécurisés de fonctionner derrière un proxy (Render)
+app.set("trust proxy", 1);
+
+// Ordre recommandé : CORS -> body parser -> session -> static -> routes
+app.use(corsi);
+app.use(middleware); // middleware exporté (express.json())
+app.use(usersession);
+
+// sert les fichiers statiques si exporté depuis middleware
+if (typeof staticfiles !== "undefined") {
+  app.use(staticfiles);
+}
+
+// routes (conservez l'usage existant de router dans votre projet)
+app.use(router);
+
+// middleware de contrôle de rôle (à appliquer seulement sur les routes admin si besoin)
+// app.use(schekrole);
 
 (async () => {
   try {
     app.listen(port, "0.0.0.0", () => {
-      console.log(`Server runnig on http://localhost:${port}`);
+      console.log(`Server running on http://localhost:${port}`);
     });
   } catch (error) {
     console.log("error starting the server", error);
   }
 })();
-
-// const localip = getWifiIP();
-// const { connexion } = require("./connection/dbconnection");
-// const getWifiIP = () => {
-//   const interfaces = os.networkInterfaces();
-//   return (
-//     (interfaces["Wi-Fi"] &&
-//       interfaces["Wi-Fi"].find((i) => i.family === "IPv4")?.address) ||
-//     ip.address()
-//   );
-// };

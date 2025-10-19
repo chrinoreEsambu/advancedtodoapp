@@ -1,53 +1,62 @@
+// ...existing code...
 const express = require("express");
 const path = require("path");
-const app = express();
 const session = require("express-session");
 const ratelimit = require("express-rate-limit");
 const cors = require("cors");
 const prisma = require("../config/prismaClient");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
+const isDev = process.env.NODE_ENV !== "production";
+
+// Origines frontend autorisées (ajoute ton URL Netlify exacte et ngrok si nécessaire)
+const allowOrigin = [
+  "http://localhost:5173",
+  "https://todoxc.netlify.app",
+  // "https://7bdeb8f0e3f6.ngrok-free.app", // décommente pour debug
+];
+
+exports.allowOrigin = allowOrigin;
+
 exports.usersession = session({
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  },
   secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
   saveUninitialized: false,
+  proxy: true, // important si l'app est derrière un proxy (Render)
   store: new PrismaSessionStore(prisma, {
     checkPeriod: 2 * 60 * 1000,
     dbRecordIdIsSessionId: true,
     dbRecordIdFunction: undefined,
   }),
+  cookie: {
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: isDev ? "lax" : "none", // none en prod pour cross-site (Netlify <-> Render)
+    secure: isDev ? false : true, // secure requis en prod (HTTPS)
+  },
 });
 
-exports.middleware = app.use(express.json());
-exports.staticfiles = app.use(
-  express.static(path.join(__dirname, "../public"))
-);
+// export de middlewares purs (ne pas appeler app.use ici)
+exports.middleware = express.json();
+exports.staticfiles = express.static(path.join(__dirname, "../public"));
 
 exports.limiter = ratelimit({
-  window: 15 * 60 * 1000,
+  windowMs: 15 * 60 * 1000,
   max: 10,
-  message: "too musch request",
+  message: "too much request",
 });
 
-// const allowOrigin = [
-//   "https://n95rp9vf-5173.euw.devtunnels.ms",
-//   "http://localhost:5173",
-// ];
-
-const allowOrigin = ["https://todoxc.netlify.app"];
-const chrinore = "chrinore ";
 exports.corsi = cors({
   origin: function (origin, callback) {
-    if (!origin || allowOrigin.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
+    // autorise outils non-navigateurs (curl/postman)
+    if (!origin) return callback(null, true);
+    // en dev autorise toutes les origines
+    if (isDev) return callback(null, true);
+    if (allowOrigin.includes(origin)) return callback(null, true);
+    return callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
+  optionsSuccessStatus: 200,
 });
 
 exports.validate = async (req, res, next) => {
@@ -84,3 +93,4 @@ exports.schekrole = async (req, res, next) => {
     });
   }
 };
+// ...existing code...
