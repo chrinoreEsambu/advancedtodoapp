@@ -9,11 +9,12 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
 const isDev = process.env.NODE_ENV !== "production";
 
-// Origines frontend autorisées (ajoute ton URL Netlify exacte et ngrok si nécessaire)
+
 const allowOrigin = [
   "http://localhost:5173",
   "https://todoxc.netlify.app",
-  // "https://7bdeb8f0e3f6.ngrok-free.app", // décommente pour debug
+  "https://n95rp9vf-5173.euw.devtunnels.ms",
+  
 ];
 
 exports.allowOrigin = allowOrigin;
@@ -22,7 +23,7 @@ exports.usersession = session({
   secret: process.env.SESSION_SECRET || "default_secret",
   resave: false,
   saveUninitialized: false,
-  proxy: true, // important si l'app est derrière un proxy (Render)
+  proxy: true, 
   store: new PrismaSessionStore(prisma, {
     checkPeriod: 2 * 60 * 1000,
     dbRecordIdIsSessionId: true,
@@ -31,12 +32,12 @@ exports.usersession = session({
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: isDev ? "lax" : "none", // none en prod pour cross-site (Netlify <-> Render)
-    secure: isDev ? false : true, // secure requis en prod (HTTPS)
+    sameSite: isDev ? "lax" : "none", 
+    secure: isDev ? false : true,
   },
 });
 
-// export de middlewares purs (ne pas appeler app.use ici)
+
 exports.middleware = express.json();
 exports.staticfiles = express.static(path.join(__dirname, "../public"));
 
@@ -93,4 +94,4 @@ exports.schekrole = async (req, res, next) => {
     });
   }
 };
-// ...existing code...
+

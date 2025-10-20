@@ -15,23 +15,18 @@ const router = require("./routes/userRoutes");
 
 const port = process.env.PORT || 5000;
 
-// IMPORTANT : permet aux cookies sécurisés de fonctionner derrière un proxy (Render)
 app.set("trust proxy", 1);
 
-// Ordre recommandé : CORS -> body parser -> session -> static -> routes
 app.use(corsi);
-app.use(middleware); // middleware exporté (express.json())
+app.use(middleware);
 app.use(usersession);
 
-// sert les fichiers statiques si exporté depuis middleware
 if (typeof staticfiles !== "undefined") {
   app.use(staticfiles);
 }
 
-// routes (conservez l'usage existant de router dans votre projet)
 app.use(router);
 
-// middleware de contrôle de rôle (à appliquer seulement sur les routes admin si besoin)
 // app.use(schekrole);
 
 (async () => {

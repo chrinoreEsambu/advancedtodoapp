@@ -1,21 +1,24 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-// const islocaly = window.location.hostname === "localhost";
+const hostname = window.location.hostname;
 
-// const api = axios.create({
-//   baseURL: islocaly
-//     ? "http://localhost:8000/api"
-//     : "https://n95rp9vf-8000.euw.devtunnels.ms/api",
+let baseURL = "";
 
-//   withCredentials: true,
-// });
+if (hostname === "localhost") {
+  baseURL = "http://localhost:8000/api";
+} else if (hostname.includes("devtunnels.ms")) {
+  baseURL = "https://n95rp9vf-8000.euw.devtunnels.ms/api";
+} else {
+  baseURL = "https://backchr.onrender.com/api";
+}
 
 const api = axios.create({
-  baseURL: "https://backchr.onrender.com/api",
-
+  baseURL,
   withCredentials: true,
 });
+
+export default api;
 
 export const useAdminStore = defineStore("adminstore", {
   state: () => ({
