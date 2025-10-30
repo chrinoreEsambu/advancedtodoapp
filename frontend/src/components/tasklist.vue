@@ -12,7 +12,10 @@
       </button>
     </div>
 
-    <div v-if="loading" class="loading-message">Chargement en cours...</div>
+    <div v-if="loading" class="loading-message">
+      <div><img src="/box.png" alt="" /></div>
+      Chargement en cours...
+    </div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="tasks.length === 0" class="empty-message">
       Aucune tâche disponible
@@ -211,5 +214,11 @@ defineExpose({ fetchTasks });
   margin-left: 8px;
   color: #6c757d;
   font-size: 0.8rem;
+}
+.loading-message img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+  display: block;
 }
 </style>

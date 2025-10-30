@@ -44,7 +44,10 @@
       </select>
     </div>
 
-    <div v-if="loading" class="loading-message">Chargement des messages...</div>
+    <div v-if="loading" class="loading-message">
+      <div><img src="/box.png" alt="" /></div>
+      Chargement des messages...
+    </div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="!messages || messages.length === 0" class="empty-message">
       Aucun message trouvé
@@ -439,5 +442,12 @@ const truncateText = (htmlText) => {
   background: #fae04d;
   color: rgb(0, 0, 0);
   transition: 0.1s ease-in;
+}
+.loading-message img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 </style>

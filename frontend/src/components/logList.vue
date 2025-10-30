@@ -12,7 +12,10 @@
       </button>
     </div>
 
-    <div v-if="loading" class="loading-message">Chargement des logs...</div>
+    <div v-if="loading" class="loading-message">
+      <div><img src="/box.png" alt=""></div>
+      Chargement des logs...
+    </div>
     <div v-else-if="logs.length === 0" class="empty-message">
       Aucun log trouvé.
     </div>
@@ -131,5 +134,11 @@ const compter = computed(() => adminStore.compter);
   margin-top: 0.75rem;
   border-top: 1px dashed #cbd5e0;
   padding-top: 0.5rem;
+}
+.loading-message img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+  display: block;
 }
 </style>
