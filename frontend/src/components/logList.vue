@@ -13,7 +13,7 @@
     </div>
 
     <div v-if="loading" class="loading-message">
-      <div><img src="/box.png" alt=""></div>
+      <div><img src="/load.jpg" alt="" /></div>
       Chargement des logs...
     </div>
     <div v-else-if="logs.length === 0" class="empty-message">
@@ -136,8 +136,8 @@ const compter = computed(() => adminStore.compter);
   padding-top: 0.5rem;
 }
 .loading-message img {
-  width: 31px;
-  height: 31px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   display: block;
 }

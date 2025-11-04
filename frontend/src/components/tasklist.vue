@@ -13,7 +13,7 @@
     </div>
 
     <div v-if="loading" class="loading-message">
-      <div><img src="/box.png" alt="" /></div>
+      <div><img src="/load.jpg" alt="" /></div>
       Chargement en cours...
     </div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
@@ -216,8 +216,8 @@ defineExpose({ fetchTasks });
   font-size: 0.8rem;
 }
 .loading-message img {
-  width: 31px;
-  height: 31px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   display: block;
 }
