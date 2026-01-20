@@ -429,26 +429,26 @@ const showTaskModal = ref(false);
 const selectedTask = ref(null);
 
 const todoTasks = computed(() =>
-  userStore.tasks.filter((task) => task.taskState === "todo")
+  userStore.tasks.filter((task) => task.taskState === "todo"),
 );
 
 const inprogressTasks = computed(() =>
-  userStore.tasks.filter((task) => task.taskState === "inprogress")
+  userStore.tasks.filter((task) => task.taskState === "inprogress"),
 );
 
 const requestTasks = computed(() =>
-  userStore.tasks.filter((task) => task.taskState === "request")
+  userStore.tasks.filter((task) => task.taskState === "request"),
 );
 
 const doneTasks = computed(() =>
-  userStore.tasks.filter((task) => task.taskState === "done")
+  userStore.tasks.filter((task) => task.taskState === "done"),
 );
 
 const otherTasks = computed(() =>
   userStore.tasks.filter(
     (task) =>
-      !["todo", "inprogress", "request", "done"].includes(task.taskState)
-  )
+      !["todo", "inprogress", "request", "done"].includes(task.taskState),
+  ),
 );
 
 onMounted(async () => {

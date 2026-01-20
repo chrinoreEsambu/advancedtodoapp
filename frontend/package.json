@@ -9,10 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tsparticles/vue3": "^3.0.1",
     "axios": "^1.9.0",
     "lucide-vue-next": "^0.525.0",
     "pinia": "^3.0.3",
     "quill": "^2.0.3",
+    "tsparticles": "^3.9.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },

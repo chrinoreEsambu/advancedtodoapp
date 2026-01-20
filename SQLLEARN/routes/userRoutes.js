@@ -38,7 +38,12 @@ const {
   replyToMessage,
 } = require("../controllers/user.controllers");
 
-const { addtask } = require("../controllers/addTask.controllers");
+const {
+  addtask,
+  deleteTask,
+  adminDeleteTask,
+  adminAddTaskComment,
+} = require("../controllers/addTask.controllers");
 
 router.post("/api/usercreat", createUser);
 router.get("/api/getuserbyid/:user_id", getUserByid, getusertasks);
@@ -47,6 +52,8 @@ router.delete("/api/userdelete/:user_id", userDelete);
 router.post("/api/connexion", usersession, connexion, getusertasks);
 router.post("/api/logOut", usersession, logOut);
 router.post("/api/addtask", usersession, addtask);
+router.delete("/api/deletetask/:taskId", usersession, deleteTask);
+router.delete("/api/admin/deletetask/:taskId", usersession, adminDeleteTask);
 router.get("/api/getusertasks", usersession, getusertasks);
 
 router.post("/api/admincreateuser", adminCreateUser);
@@ -60,6 +67,7 @@ router.get("/api/adminTaskCount", userTasksCount);
 router.post("/api/logOutAdmin", logOutAdmin);
 router.post("/api/addComments/:task_id", addComments);
 router.get("/api/logs", getAdminLogs);
+router.post("/api/adminAddTaskComment", adminAddTaskComment);
 
 router.put("/api/updateTasksState/:task_id", updateTasksState);
 router.get("/api/admStateFinder", admStateFinder);

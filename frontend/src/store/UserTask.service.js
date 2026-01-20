@@ -82,6 +82,21 @@ export const useUserStore = defineStore("user", {
       await this.fetchTasks();
     },
 
+    async deleteTask(taskId) {
+      try {
+        await api.delete(`/deletetask/${taskId}`);
+        await this.fetchTasks();
+        return { success: true };
+      } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        return {
+          success: false,
+          error:
+            error.response?.data?.message || "Erreur lors de la suppression",
+        };
+      }
+    },
+
     async logout() {
       await api.post("/logOut", {});
       this.user = null;
@@ -132,7 +147,7 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'état de la tâche :",
-          error
+          error,
         );
 
         if (error.response?.data?.messageT) {
@@ -150,7 +165,7 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des commentaires :",
-          error
+          error,
         );
       }
     },

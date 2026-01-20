@@ -4,6 +4,10 @@ import { RouterView } from "vue-router";
 import { useUserStore } from "./store/UserTask.service";
 import { useAdminStore } from "./store/admin.service";
 
+// import Particles from "vue3-particles"
+// app.use(Particles);
+
+
 const userstore = useUserStore();
 const adminStore = useAdminStore();
 
@@ -22,6 +26,8 @@ if (savedAdmin) {
 
 <template>
   <div>
+  
+
     <router-view />
   </div>
 </template>

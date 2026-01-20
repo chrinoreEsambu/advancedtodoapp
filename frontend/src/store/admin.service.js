@@ -56,7 +56,7 @@ export const useAdminStore = defineStore("adminstore", {
           JSON.stringify({
             email: response.data.user.user_mail,
             role: response.data.user.role,
-          })
+          }),
         );
 
         return true;
@@ -133,6 +133,31 @@ export const useAdminStore = defineStore("adminstore", {
       }
     },
 
+    async updateUser(userId, userData) {
+      try {
+        const response = await api.put(`/userupdate/${userId}`, userData);
+
+        // Mettre à jour l'utilisateur dans la liste locale
+        const userIndex = this.users.findIndex(
+          (user) => user.user_id === userId,
+        );
+        if (userIndex !== -1) {
+          this.users[userIndex] = { ...this.users[userIndex], ...userData };
+        }
+
+        return { success: true, data: response.data };
+      } catch (error) {
+        console.error("Update error:", error);
+        return {
+          success: false,
+          error: {
+            message:
+              error.response?.data?.message || "Erreur lors de la modification",
+          },
+        };
+      }
+    },
+
     async createTask(taskData) {
       this.loadingTasks = true;
       try {
@@ -146,6 +171,21 @@ export const useAdminStore = defineStore("adminstore", {
         };
       } finally {
         this.loadingTasks = false;
+      }
+    },
+
+    async deleteTask(taskId) {
+      try {
+        await api.delete(`/admin/deletetask/${taskId}`);
+        return { success: true };
+      } catch (error) {
+        console.error("Delete task error:", error);
+        return {
+          success: false,
+          error:
+            error.response?.data?.message ||
+            "Erreur lors de la suppression de la tâche",
+        };
       }
     },
 
@@ -238,7 +278,7 @@ export const useAdminStore = defineStore("adminstore", {
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'état de la tâche :",
-          error
+          error,
         );
 
         if (error.response?.data?.messageT) {
@@ -275,13 +315,43 @@ export const useAdminStore = defineStore("adminstore", {
           },
           {
             withCredentials: true,
-          }
+          },
         );
         alert("Reply send !");
         return response.data.data;
       } catch (err) {
         console.error("Erreur lors de l'envoi de la réponse :", err);
         throw new Error("Échec de l'envoi du message.");
+      }
+    },
+
+    async addTaskComment(taskId, commentText) {
+      try {
+        console.log("=== Envoi commentaire ===");
+        console.log("TaskId:", taskId, "Type:", typeof taskId);
+        console.log("CommentText:", commentText);
+
+        const response = await api.post("/adminAddTaskComment", {
+          taskId,
+          commentText,
+        });
+
+        console.log("Réponse reçue:", response.data);
+
+        alert("Commentaire ajouté avec succès !");
+        return { success: true, data: response.data };
+      } catch (error) {
+        console.error("Erreur lors de l'ajout du commentaire:", error);
+        if (error.response && error.response.data) {
+          console.error("Erreur détaillée:", error.response.data);
+          alert(error.response.data.message);
+        } else {
+          alert("Une erreur s'est produite lors de l'ajout du commentaire !");
+        }
+        return {
+          success: false,
+          error: error.response?.data?.message || error.message,
+        };
       }
     },
   },

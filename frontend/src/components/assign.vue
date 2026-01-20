@@ -5,7 +5,6 @@
     <div class="task-form">
       <div class="form-row">
         <div class="form-group">
-        
           <label>Utilisateur :</label>
           <select v-model="selectedUserId" class="form-select" required>
             <option value="" disabled>Sélectionnez un utilisateur</option>
@@ -41,12 +40,22 @@
         <div
           ref="quillEditor"
           class="quill-editor"
-          style="border: 1px solid #ddd; border-radius: 6px; min-height: 100px; padding: 8px;"
+          style="
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            min-height: 100px;
+            padding: 8px;
+          "
         ></div>
       </div>
 
-      <button @click="handleCreate" class="submit-button">
-        Créer la tâche
+      <button
+        @click="handleCreate"
+        class="submit-button"
+        :disabled="isCreatingTask"
+      >
+        <span v-if="isCreatingTask" class="loader"></span>
+        {{ isCreatingTask ? "Création en cours..." : "Créer la tâche" }}
       </button>
 
       <div v-if="successMessage" class="success-message">
@@ -75,6 +84,7 @@ const taskDescription = ref("");
 const taskState = ref("pending");
 const errorMessage = ref("");
 const successMessage = ref("");
+const isCreatingTask = ref(false);
 
 const quillEditor = ref(null);
 let quill = null;
@@ -93,7 +103,6 @@ onMounted(() => {
     },
   });
 
- 
   quill.on("text-change", () => {
     taskDescription.value = quill.root.innerHTML;
   });
@@ -104,11 +113,13 @@ const emit = defineEmits(["task-created"]);
 const handleCreate = async () => {
   errorMessage.value = "";
   successMessage.value = "";
+  isCreatingTask.value = true;
 
   const plainText = quill.getText().trim();
 
   if (!selectedUserId.value || !Newtask.value || !plainText) {
     errorMessage.value = "Veuillez remplir tous les champs";
+    isCreatingTask.value = false;
     return;
   }
 
@@ -132,6 +143,8 @@ const handleCreate = async () => {
     }
   } catch (error) {
     errorMessage.value = "Une erreur est survenue";
+  } finally {
+    isCreatingTask.value = false;
   }
 };
 </script>
@@ -213,6 +226,32 @@ label {
   background-color: #fae37d;
 }
 
+.submit-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.loader {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .success-message {
   color: #42b983;
   margin-top: 15px;
@@ -232,7 +271,6 @@ label {
     gap: 15px;
   }
 }
-
 
 .ql-toolbar.ql-snow {
   border-radius: 6px 6px 0 0;

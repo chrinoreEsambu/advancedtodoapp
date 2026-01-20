@@ -30,7 +30,7 @@
       </nav>
     </div>
 
-    <div class="content-area">
+    <div class="content-area" :class="{ 'sidebar-open': !isSidebarVisible }">
       <label class="admconnect">Welcome {{ adminstore.admin }}</label>
       <div class="dashboard-stats">
         <div class="stat-card" v-for="stat in stats" :key="stat.title">
@@ -334,6 +334,12 @@ h3 {
   .content-area {
     margin-left: 0;
     padding-top: 80px;
+    transition: margin-left 0.3s ease;
+  }
+
+  /* Quand la sidebar est visible, ajuster le contenu */
+  .content-area.sidebar-open {
+    margin-left: 0;
   }
 }
 </style>

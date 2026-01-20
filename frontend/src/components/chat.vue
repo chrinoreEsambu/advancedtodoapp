@@ -53,16 +53,27 @@
       Aucun message trouvé
     </div>
 
-    <div v-else class="messages-container">
-      <div v-for="msg in messages" :key="msg.id" class="message-item">
+    <div v-else class="messages-container" @click="closeAllMenus">
+      <div
+        v-for="(msg, index) in messages"
+        :key="msg.id || index"
+        class="message-item"
+        @click.stop
+      >
         <div style="display: flex; justify-content: space-between">
           <div>
             <strong>Auteur :</strong> {{ msg.author?.nom || "Inconnu" }}
+            <small style="color: #999; font-size: 0.7rem"
+              >(Index: {{ index }}, ID: {{ msg.id }})</small
+            >
           </div>
           <div style="position: relative">
             <button
-              @click="toggleReplyOption(msg.id)"
-              style="background: none; border: none; cursor: pointer"
+              @click.stop="toggleReplyOption(index)"
+              :class="[
+                'toggle-button',
+                { active: showReplyOptionFor === index },
+              ]"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,11 +92,17 @@
               </svg>
             </button>
 
-            <div v-if="showReplyOptionFor === msg.id" class="reply-option">
-              <button @click="openReplyModal(msg)" class="reply-option-button">
+            <div v-if="showReplyOptionFor === index" class="reply-option">
+              <button
+                @click.stop="openReplyModal(msg)"
+                class="reply-option-button"
+              >
                 Répondre ?
               </button>
-              <button @click="openInfotoggle(msg)" class="reply-option-button">
+              <button
+                @click.stop="openInfotoggle(msg)"
+                class="reply-option-button"
+              >
                 Details <Info class="detaills-Icon" />
               </button>
             </div>
@@ -157,14 +174,24 @@ const onUserChange = () => {
   store.fetchMessages(selectedUserId.value || null);
 };
 
-const toggleReplyOption = (id) => {
-  showReplyOptionFor.value = showReplyOptionFor.value === id ? null : id;
+const toggleReplyOption = (index) => {
+  console.log("Toggle clicked for index:", index);
+  console.log("Current showReplyOptionFor:", showReplyOptionFor.value);
+
+  // Fermer tous les autres menus d'abord
+  if (showReplyOptionFor.value === index) {
+    showReplyOptionFor.value = null;
+    console.log("Closing menu for index:", index);
+  } else {
+    showReplyOptionFor.value = index;
+    console.log("Opening menu for index:", index);
+  }
 };
 
 const openReplyModal = (msg) => {
   replyToMessage.value = msg;
   replyContent.value = "";
-  showReplyOptionFor.value = null;
+  showReplyOptionFor.value = null; // Fermer le menu toggle
   showModal.value = true;
 };
 
@@ -173,13 +200,20 @@ const closeModal = () => {
   replyToMessage.value = null;
   replyContent.value = "";
 };
+
 const openInfotoggle = (msg) => {
   selectedMessage.value = msg;
+  showReplyOptionFor.value = null; // Fermer le menu toggle
   const infoElement = document.getElementsByClassName("info")[0];
   if (infoElement) {
     infoElement.style.display = "flex";
   }
   console.log(msg);
+};
+
+// Fonction pour fermer le menu quand on clique ailleurs
+const closeAllMenus = () => {
+  showReplyOptionFor.value = null;
 };
 const closeInfo = () => {
   const infoElement = document.getElementsByClassName("info")[0];
@@ -347,30 +381,72 @@ const truncateText = (htmlText) => {
   font-weight: bold;
 }
 
+.toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  background-color: #f3f4f6;
+}
+
+.toggle-button.active {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
 .reply-option {
   position: absolute;
   right: 0;
   top: 100%;
   background: white;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 120px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .reply-option-button {
   display: flex;
-  padding: 6px 12px;
+  align-items: center;
+  padding: 8px 12px;
   background: none;
   border: none;
   cursor: pointer;
   width: 100%;
   text-align: left;
   white-space: nowrap;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
 }
 
 .reply-option-button:hover {
-  background-color: #f5f5f5;
+  background-color: #f0f9ff;
+}
+
+.reply-option-button:first-child:hover {
+  background-color: #ecfdf5;
+}
+
+.reply-option-button:last-child:hover {
+  background-color: #fef3c7;
 }
 
 .modal-overlay {

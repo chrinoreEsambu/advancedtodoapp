@@ -8,7 +8,14 @@
     />
     <div ref="quillEditor" class="quill-editor"></div>
     <div class="button-wrapper">
-      <button @click="handleAddTask" class="wide-button">Ajouter</button>
+      <button
+        @click="handleAddTask"
+        class="wide-button"
+        :disabled="isAddingTask"
+      >
+        <span v-if="isAddingTask" class="loader"></span>
+        {{ isAddingTask ? "Ajout en cours..." : "Ajouter" }}
+      </button>
     </div>
   </div>
 </template>
@@ -23,6 +30,7 @@ const userStore = useUserStore();
 
 const taskText = ref("");
 const description = ref("");
+const isAddingTask = ref(false);
 
 const quillEditor = ref(null);
 let quill = null;
@@ -47,17 +55,25 @@ const handleAddTask = async () => {
 
   if (taskText.value.trim() === "") return;
 
-  const taskData = {
-    task: taskText.value,
-    description: description.value,
-  };
+  isAddingTask.value = true;
 
-  await userStore.addTask(taskData);
+  try {
+    const taskData = {
+      task: taskText.value,
+      description: description.value,
+    };
 
-  taskText.value = "";
-  quill.setText("");
+    await userStore.addTask(taskData);
 
-  await userStore.fetchTasks();
+    taskText.value = "";
+    quill.setText("");
+
+    await userStore.fetchTasks();
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de la tâche:", error);
+  } finally {
+    isAddingTask.value = false;
+  }
 };
 </script>
 
@@ -100,5 +116,31 @@ const handleAddTask = async () => {
 
 .wide-button:hover {
   background-color: #a51f1f;
+}
+
+.wide-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.loader {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

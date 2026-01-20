@@ -20,11 +20,49 @@
         </div>
       </div>
       <ul>
-        <li v-for="task in paginatedInProgress" :key="task.task_id">
-          {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">{{
-            task.taskState
-          }}</span>
+        <li
+          v-for="task in paginatedInProgress"
+          :key="task.task_id"
+          class="task-item"
+        >
+          <div class="task-content">
+            <div class="task-header">
+              <h3>{{ task.task }}</h3>
+              <div class="task-actions-menu">
+                <button
+                  @click.stop="toggleTaskActions(task.task_id)"
+                  class="actions-toggle-btn"
+                  :class="{ active: showActionsFor === task.task_id }"
+                >
+                  <MoreVertical :size="18" />
+                </button>
+
+                <div
+                  v-if="showActionsFor === task.task_id"
+                  class="actions-dropdown"
+                >
+                  <button
+                    @click="openCommentModal(task)"
+                    class="action-item comment-action"
+                  >
+                    <MessageSquare :size="16" />
+                    Commentaire
+                  </button>
+                  <button
+                    @click="deleteTask(task.task_id)"
+                    class="action-item delete-action"
+                  >
+                    <Trash2 :size="16" />
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <span :class="['badge', task.taskState.toLowerCase()]">{{
+              task.taskState
+            }}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -55,7 +93,7 @@
       </ul>
     </div>
 
-    <div class="item item-logo">
+    <div class="item item-logo item-request">
       <div class="bento-header">
         <div class="request-header">
           <h1>Request</h1>
@@ -101,6 +139,36 @@
           ></span>
 
           <div class="request-controls">
+            <div class="task-actions-menu">
+              <button
+                @click.stop="toggleTaskActions(task.task_id)"
+                class="actions-toggle-btn"
+                :class="{ active: showActionsFor === task.task_id }"
+              >
+                <MoreVertical :size="18" />
+              </button>
+
+              <div
+                v-if="showActionsFor === task.task_id"
+                class="actions-dropdown"
+              >
+                <button
+                  @click="openCommentModal(task)"
+                  class="action-item comment-action"
+                >
+                  <MessageSquare :size="16" />
+                  Commentaire
+                </button>
+                <button
+                  @click="deleteTask(task.task_id)"
+                  class="action-item delete-action"
+                >
+                  <Trash2 :size="16" />
+                  Supprimer
+                </button>
+              </div>
+            </div>
+
             <span :class="['badge', task.taskState.toLowerCase()]">{{
               task.taskState
             }}</span>
@@ -144,11 +212,49 @@
         </div>
       </div>
       <ul>
-        <li v-for="task in paginatedAccepted" :key="task.task_id">
-          {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">{{
-            task.taskState
-          }}</span>
+        <li
+          v-for="task in paginatedAccepted"
+          :key="task.task_id"
+          class="task-item"
+        >
+          <div class="task-content">
+            <div class="task-header">
+              <h3>{{ task.task }}</h3>
+              <div class="task-actions-menu">
+                <button
+                  @click.stop="toggleTaskActions(task.task_id)"
+                  class="actions-toggle-btn"
+                  :class="{ active: showActionsFor === task.task_id }"
+                >
+                  <MoreVertical :size="18" />
+                </button>
+
+                <div
+                  v-if="showActionsFor === task.task_id"
+                  class="actions-dropdown"
+                >
+                  <button
+                    @click="openCommentModal(task)"
+                    class="action-item comment-action"
+                  >
+                    <MessageSquare :size="16" />
+                    Commentaire
+                  </button>
+                  <button
+                    @click="deleteTask(task.task_id)"
+                    class="action-item delete-action"
+                  >
+                    <Trash2 :size="16" />
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <span :class="['badge', task.taskState.toLowerCase()]">{{
+              task.taskState
+            }}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -170,11 +276,45 @@
         </div>
       </div>
       <ul>
-        <li v-for="task in paginatedDone" :key="task.task_id">
-          {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">{{
-            task.taskState
-          }}</span>
+        <li v-for="task in paginatedDone" :key="task.task_id" class="task-item">
+          <div class="task-content">
+            <div class="task-header">
+              <h3>{{ task.task }}</h3>
+              <div class="task-actions-menu">
+                <button
+                  @click.stop="toggleTaskActions(task.task_id)"
+                  class="actions-toggle-btn"
+                  :class="{ active: showActionsFor === task.task_id }"
+                >
+                  <MoreVertical :size="18" />
+                </button>
+
+                <div
+                  v-if="showActionsFor === task.task_id"
+                  class="actions-dropdown"
+                >
+                  <button
+                    @click="openCommentModal(task)"
+                    class="action-item comment-action"
+                  >
+                    <MessageSquare :size="16" />
+                    Commentaire
+                  </button>
+                  <button
+                    @click="deleteTask(task.task_id)"
+                    class="action-item delete-action"
+                  >
+                    <Trash2 :size="16" />
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <span :class="['badge', task.taskState.toLowerCase()]">{{
+              task.taskState
+            }}</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -199,20 +339,105 @@
         </div>
       </div>
       <ul>
-        <li v-for="task in paginatedDenied" :key="task.task_id">
-          {{ task.task }}
-          <span :class="['badge', task.taskState.toLowerCase()]">{{
-            task.taskState
-          }}</span>
+        <li
+          v-for="task in paginatedDenied"
+          :key="task.task_id"
+          class="task-item"
+        >
+          <div class="task-content">
+            <div class="task-header">
+              <h3>{{ task.task }}</h3>
+              <div class="task-actions-menu">
+                <button
+                  @click.stop="toggleTaskActions(task.task_id)"
+                  class="actions-toggle-btn"
+                  :class="{ active: showActionsFor === task.task_id }"
+                >
+                  <MoreVertical :size="18" />
+                </button>
+
+                <div
+                  v-if="showActionsFor === task.task_id"
+                  class="actions-dropdown"
+                >
+                  <button
+                    @click="openCommentModal(task)"
+                    class="action-item comment-action"
+                  >
+                    <MessageSquare :size="16" />
+                    Commentaire
+                  </button>
+                  <button
+                    @click="deleteTask(task.task_id)"
+                    class="action-item delete-action"
+                  >
+                    <Trash2 :size="16" />
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <span :class="['badge', task.taskState.toLowerCase()]">{{
+              task.taskState
+            }}</span>
+          </div>
         </li>
       </ul>
+    </div>
+  </div>
+
+  <!-- Modal de commentaire -->
+  <div
+    v-if="showCommentModal"
+    class="modal-overlay"
+    @click.self="closeCommentModal"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Ajouter un commentaire</h3>
+        <button @click="closeCommentModal" class="close-btn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="task-info">
+          <p><strong>Tâche :</strong> {{ selectedTaskForComment?.task }}</p>
+          <p>
+            <strong>Utilisateur :</strong>
+            {{ getUserInfo(selectedTaskForComment?.assigneeId) }}
+          </p>
+        </div>
+
+        <div class="comment-form">
+          <label for="comment">Votre commentaire :</label>
+          <textarea
+            id="comment"
+            v-model="commentText"
+            placeholder="Entrez votre commentaire ici..."
+            rows="4"
+            class="comment-textarea"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button @click="closeCommentModal" class="btn-cancel">Annuler</button>
+        <button
+          @click="submitComment"
+          class="btn-submit"
+          :disabled="!commentText.trim() || isSubmittingComment"
+        >
+          {{ isSubmittingComment ? "Envoi..." : "Envoyer" }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { useAdminStore } from "../store/admin.service";
+import { Trash2, MoreVertical, MessageSquare } from "lucide-vue-next";
 
 const adminStore = useAdminStore();
 
@@ -224,6 +449,13 @@ const tachesDone = ref([]);
 const tachesRequest = ref([]);
 const allUsers = ref([]);
 const selectedUser = ref("");
+
+// Variables pour la gestion des actions et commentaires
+const showActionsFor = ref(null);
+const showCommentModal = ref(false);
+const selectedTaskForComment = ref(null);
+const commentText = ref("");
+const isSubmittingComment = ref(false);
 
 const currentPages = ref({
   todo: 1,
@@ -273,7 +505,7 @@ const filteredInProgress = computed(() => tachesInProgress.value);
 const filteredRequest = computed(() => {
   if (!selectedUser.value) return tachesRequest.value;
   return tachesRequest.value.filter(
-    (task) => task.assigneeId === selectedUser.value
+    (task) => task.assigneeId === selectedUser.value,
   );
 });
 const filteredAccepted = computed(() => tachesAccepted.value);
@@ -282,17 +514,17 @@ const filteredDenied = computed(() => tachesDenied.value);
 
 const paginatedTodo = computed(() => paginate(filteredTodo.value, "todo"));
 const paginatedInProgress = computed(() =>
-  paginate(filteredInProgress.value, "inprogress")
+  paginate(filteredInProgress.value, "inprogress"),
 );
 const paginatedRequest = computed(() =>
-  paginate(filteredRequest.value, "request")
+  paginate(filteredRequest.value, "request"),
 );
 const paginatedAccepted = computed(() =>
-  paginate(filteredAccepted.value, "accepted")
+  paginate(filteredAccepted.value, "accepted"),
 );
 const paginatedDone = computed(() => paginate(filteredDone.value, "done"));
 const paginatedDenied = computed(() =>
-  paginate(filteredDenied.value, "denied")
+  paginate(filteredDenied.value, "denied"),
 );
 
 const fetchtaches = async () => {
@@ -315,11 +547,83 @@ const fetchtaches = async () => {
 
 onMounted(() => {
   fetchtaches();
+
+  // Fermer le menu d'actions quand on clique ailleurs
+  document.addEventListener("click", handleClickOutside);
 });
+
+// Nettoyer l'event listener quand le composant est détruit
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
+// Fonction pour fermer le menu d'actions quand on clique ailleurs
+const handleClickOutside = () => {
+  showActionsFor.value = null;
+};
 
 const adminChangeState = async (task) => {
   await adminStore.submitTasksState(task.task_id, task.taskState);
   fetchtaches();
+};
+
+const deleteTask = async (taskId) => {
+  if (confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) {
+    try {
+      const result = await adminStore.deleteTask(taskId);
+      if (result.success) {
+        alert("Tâche supprimée avec succès");
+        fetchtaches(); // Rafraîchir la liste des tâches
+      } else {
+        alert(result.error || "Erreur lors de la suppression");
+      }
+    } catch (error) {
+      alert("Une erreur est survenue lors de la suppression");
+      console.error("Erreur de suppression:", error);
+    }
+  }
+  showActionsFor.value = null; // Fermer le menu
+};
+
+// Fonctions pour gérer le toggle du menu d'actions
+const toggleTaskActions = (taskId) => {
+  if (showActionsFor.value === taskId) {
+    showActionsFor.value = null;
+  } else {
+    showActionsFor.value = taskId;
+  }
+};
+
+// Fonctions pour gérer les commentaires
+const openCommentModal = (task) => {
+  selectedTaskForComment.value = task;
+  showCommentModal.value = true;
+  showActionsFor.value = null; // Fermer le menu d'actions
+  commentText.value = "";
+};
+
+const closeCommentModal = () => {
+  showCommentModal.value = false;
+  selectedTaskForComment.value = null;
+  commentText.value = "";
+  isSubmittingComment.value = false;
+};
+
+const submitComment = async () => {
+  if (!commentText.value.trim()) return;
+
+  isSubmittingComment.value = true;
+  try {
+    await adminStore.addTaskComment(
+      selectedTaskForComment.value.task_id,
+      commentText.value,
+    );
+    closeCommentModal();
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du commentaire:", error);
+  } finally {
+    isSubmittingComment.value = false;
+  }
 };
 </script>
 
@@ -508,6 +812,31 @@ select {
   background-color: #314158;
   color: #fff;
 }
+
+.delete-button {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5757 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
+
+.delete-button:hover {
+  background: linear-gradient(135deg, #ff5757 0%, #ff4444 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+}
+
+.delete-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
 @media (max-width: 1024px) {
   .bento-grid {
     display: grid;
@@ -542,5 +871,281 @@ select {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Styles pour les nouveaux éléments de tâche */
+.task-item {
+  position: relative;
+  border-left: 3px solid #13795b;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.task-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  flex: 1;
+  line-height: 1.3;
+}
+
+/* Styles pour le menu d'actions */
+.task-actions-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.actions-toggle-btn {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  color: #495057;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.actions-toggle-btn:hover {
+  background-color: #e9ecef;
+  color: #212529;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.actions-toggle-btn.active {
+  background-color: #13795b;
+  color: white;
+  border-color: #13795b;
+}
+
+.actions-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+/* Classe spéciale pour la section Request où le menu doit s'afficher à droite */
+.item-request .actions-dropdown {
+  right: auto;
+  left: 0;
+}
+
+.action-item {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.85rem 1.2rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.action-item:hover {
+  background-color: #f8f9fa;
+}
+
+.comment-action {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.comment-action:hover {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.delete-action:hover {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+/* Styles pour le modal de commentaire */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 70vh;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f7fafc;
+  flex-shrink: 0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #718096;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background-color: #e2e8f0;
+  color: #2d3748;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.task-info {
+  background-color: #f7fafc;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #13795b;
+}
+
+.task-info p {
+  margin: 0.25rem 0;
+  color: #4a5568;
+}
+
+.comment-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s ease;
+}
+
+.comment-textarea:focus {
+  outline: none;
+  border-color: #13795b;
+  box-shadow: 0 0 0 3px rgba(19, 121, 91, 0.1);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f7fafc;
+  flex-shrink: 0;
+}
+
+.btn-cancel,
+.btn-submit {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-cancel:hover {
+  background-color: #cbd5e0;
+}
+
+.btn-submit {
+  background-color: #13795b;
+  color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #0e5a43;
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
